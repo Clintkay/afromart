@@ -23,14 +23,13 @@ export function Header() {
             Home
           </Link>
           <Link to="/products" className="text-sm font-medium text-foreground transition-colors hover:text-primary">
-            Shop
+            Explore
           </Link>
-          <Link
-            to="/products"
-            search={{ categorySlug: "food-groceries" }}
-            className="text-sm font-medium text-foreground transition-colors hover:text-primary"
-          >
-            Groceries
+          <Link to="/sell" className="text-sm font-medium text-foreground transition-colors hover:text-primary">
+            Become a seller
+          </Link>
+          <Link to="/coming-soon" className="text-sm font-medium text-foreground transition-colors hover:text-primary">
+            Get the app
           </Link>
         </nav>
 
@@ -85,15 +84,13 @@ export function Header() {
               Home
             </Link>
             <Link to="/products" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
-              Shop
+              Explore
             </Link>
-            <Link
-              to="/products"
-              search={{ categorySlug: "food-groceries" }}
-              className="text-base font-medium text-foreground"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Groceries
+            <Link to="/sell" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
+              Become a seller
+            </Link>
+            <Link to="/coming-soon" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
+              Get the app
             </Link>
             {user ? (
               <>
