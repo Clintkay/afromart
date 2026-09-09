@@ -77,7 +77,7 @@ export function ProductDetail() {
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <Link to="/coming-soon">
-              <Button size="lg" className="gap-2 bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
+              <Button size="lg" className="gap-2">
                 <Smartphone className="h-4 w-4" />
                 Order in the app
               </Button>

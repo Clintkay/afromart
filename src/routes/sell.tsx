@@ -132,15 +132,17 @@ function SellPage() {
       </section>
 
       {/* Tools */}
-      <section className="bg-brand-ink text-white">
+      <section className="border-y bg-brand-cream">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <h2 className="font-heading text-3xl font-bold sm:text-4xl">Everything you need in one dashboard</h2>
+          <h2 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">
+            Everything you need in one dashboard
+          </h2>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {tools.map((tool) => (
-              <article key={tool.title} className="rounded-2xl border border-white/15 bg-white/5 p-6">
-                <tool.icon className="h-5 w-5 text-brand-gold" />
-                <h3 className="mt-4 font-heading text-lg font-semibold">{tool.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/70">{tool.body}</p>
+              <article key={tool.title} className="rounded-2xl border bg-card p-6 shadow-sm">
+                <tool.icon className="h-5 w-5 text-brand-green" />
+                <h3 className="mt-4 font-heading text-lg font-semibold text-foreground">{tool.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{tool.body}</p>
               </article>
             ))}
           </div>
@@ -149,24 +151,25 @@ function SellPage() {
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="relative isolate overflow-hidden rounded-3xl brand-gradient px-6 py-14 text-center text-primary-foreground sm:px-12">
-          <h2 className="font-heading text-3xl font-bold sm:text-4xl">Ready when you are</h2>
-          <p className="mx-auto mt-4 max-w-xl text-primary-foreground/80">
-            Join the seller waiting list and we will walk you through setting up your
-            store on day one.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <Link to="/coming-soon">
-              <Button size="lg" className="bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
-                Join the seller waiting list
-              </Button>
-            </Link>
-          </div>
-          <div className="mt-10 flex justify-center">
-            <StoreBadges />
+        <div className="relative isolate overflow-hidden rounded-3xl border brand-soft px-6 py-14 text-center sm:px-12">
+          <div className="absolute inset-0 brand-pattern-light opacity-25" aria-hidden="true" />
+          <div className="relative">
+            <h2 className="font-heading text-3xl font-bold text-brand-green sm:text-4xl">Ready when you are</h2>
+            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+              Join the seller waiting list and we will walk you through setting up your store on day one.
+            </p>
+            <div className="mt-8 flex justify-center">
+              <Link to="/coming-soon">
+                <Button size="lg">Join the seller waiting list</Button>
+              </Link>
+            </div>
+            <div className="mt-10 flex justify-center">
+              <StoreBadges />
+            </div>
           </div>
         </div>
       </section>
+
     </div>
   );
 }

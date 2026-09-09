@@ -100,46 +100,40 @@ function LandingPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative isolate overflow-hidden brand-gradient text-primary-foreground">
-        <div className="absolute inset-0 brand-pattern opacity-40" aria-hidden="true" />
-        <div className="absolute -left-32 top-0 h-96 w-96 rounded-full bg-brand-gold/25 blur-3xl" aria-hidden="true" />
-        <div className="absolute -bottom-24 right-10 h-80 w-80 rounded-full bg-brand-terracotta/25 blur-3xl" aria-hidden="true" />
+      <section className="relative isolate overflow-hidden brand-soft">
+        <div className="absolute inset-0 brand-pattern-light opacity-25" aria-hidden="true" />
+        <div className="absolute -left-32 top-0 h-96 w-96 rounded-full bg-brand-gold/10 blur-3xl" aria-hidden="true" />
+        <div className="absolute -bottom-24 right-10 h-80 w-80 rounded-full bg-brand-green/10 blur-3xl" aria-hidden="true" />
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-28">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand-gold/50 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest">
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand-gold/40 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-brand-green shadow-sm">
               <Sparkles className="h-3.5 w-3.5 text-brand-gold" />
               Connecting African commerce
             </span>
-            <h1 className="mt-6 font-heading text-4xl font-extrabold leading-[1.05] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-6 font-heading text-4xl font-extrabold leading-[1.05] text-brand-green sm:text-5xl lg:text-6xl">
               One home for Africa&apos;s <span className="text-gold-gradient">makers, growers and doers</span>
             </h1>
-            <p className="mt-6 max-w-xl text-base text-primary-foreground/85 sm:text-lg">
+            <p className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
               Afro Mart brings together food, fabric, craft, beauty and everyday services from across the continent — and
               the people who create them. Come and look around first; no account needed.
             </p>
 
             <div className="mt-9 flex flex-wrap gap-3">
               <Link to="/products">
-                <Button size="lg" className="gap-2 bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
+                <Button size="lg" className="gap-2">
                   <UserRound className="h-4 w-4" />
                   Continue as guest
                 </Button>
               </Link>
               <Link to="/sell">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-                >
+                <Button size="lg" variant="outline" className="border-brand-green/30 text-brand-green">
                   Become a seller
                 </Button>
               </Link>
             </div>
 
-            <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-primary-foreground/70">
-              Get the app
-            </p>
+            <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Get the app</p>
             <StoreBadges className="mt-3" />
           </div>
 
@@ -149,20 +143,20 @@ function LandingPage() {
               alt="The Afro Mart app shown on two phones"
               width={1024}
               height={1024}
-              className="mx-auto w-full max-w-md drop-shadow-2xl"
+              className="mx-auto w-full max-w-md drop-shadow-xl"
             />
           </div>
         </div>
 
         {/* Stats ribbon */}
-        <div className="relative border-t border-white/15 bg-brand-ink/30">
+        <div className="relative border-y bg-card/80">
           <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-4 lg:px-8">
             {stats.map((stat) => (
               <div key={stat.label}>
                 <dt className="sr-only">{stat.label}</dt>
                 <dd>
-                  <span className="font-heading text-3xl font-extrabold text-brand-gold">{stat.value}</span>
-                  <span className="mt-1 block text-xs uppercase tracking-widest text-primary-foreground/70">
+                  <span className="font-heading text-3xl font-extrabold text-brand-green">{stat.value}</span>
+                  <span className="mt-1 block text-xs uppercase tracking-widest text-muted-foreground">
                     {stat.label}
                   </span>
                 </dd>
@@ -192,6 +186,7 @@ function LandingPage() {
           </div>
         </div>
       </section>
+
 
       {/* Collections */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
@@ -296,9 +291,9 @@ function LandingPage() {
       </section>
 
       {/* Voices */}
-      <section className="bg-brand-ink text-white">
+      <section className="border-y bg-brand-cream">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <h2 className="font-heading text-3xl font-bold sm:text-4xl">Voices from the marketplace</h2>
+          <h2 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">Voices from the marketplace</h2>
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {[
               {
@@ -317,11 +312,11 @@ function LandingPage() {
                 role: "Event caterer • Durban",
               },
             ].map((item) => (
-              <figure key={item.name} className="rounded-3xl border border-white/15 bg-white/5 p-6">
+              <figure key={item.name} className="rounded-3xl border bg-card p-6 shadow-sm">
                 <Quote className="h-6 w-6 text-brand-gold" />
-                <blockquote className="mt-4 font-heading text-lg leading-relaxed">{item.quote}</blockquote>
-                <figcaption className="mt-5 text-sm text-white/70">
-                  <span className="font-semibold text-white">{item.name}</span> — {item.role}
+                <blockquote className="mt-4 font-heading text-lg leading-relaxed text-foreground">{item.quote}</blockquote>
+                <figcaption className="mt-5 text-sm text-muted-foreground">
+                  <span className="font-semibold text-brand-green">{item.name}</span> — {item.role}
                 </figcaption>
               </figure>
             ))}
@@ -330,7 +325,7 @@ function LandingPage() {
       </section>
 
       {/* Languages */}
-      <section className="brand-gradient text-primary-foreground">
+      <section className="bg-card">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-xl">
@@ -338,12 +333,14 @@ function LandingPage() {
                 <Globe2 className="h-4 w-4" />
                 Ten launch languages
               </span>
-              <h2 className="mt-3 font-heading text-2xl font-bold sm:text-3xl">Speak your own language</h2>
+              <h2 className="mt-3 font-heading text-2xl font-bold text-foreground sm:text-3xl">
+                Speak your own language
+              </h2>
             </div>
-            <ul className="flex flex-wrap gap-2 text-sm">
+            <ul className="flex flex-wrap gap-2 text-sm text-brand-green">
               {["English", "Français", "العربية", "Kiswahili", "Hausa", "Yorùbá", "isiZulu", "አማርኛ", "Igbo", "Português"].map(
                 (language) => (
-                  <li key={language} className="rounded-full border border-brand-gold/40 bg-white/10 px-3 py-1">
+                  <li key={language} className="rounded-full border border-brand-green/20 bg-brand-green/5 px-3 py-1">
                     {language}
                   </li>
                 ),
@@ -355,7 +352,7 @@ function LandingPage() {
 
       {/* Seller + support CTA */}
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-20 sm:px-6 lg:grid-cols-3 lg:px-8">
-        <div className="rounded-3xl bg-brand-cream px-6 py-12 text-center lg:col-span-2 lg:text-left">
+        <div className="rounded-3xl border bg-brand-cream px-6 py-12 text-center lg:col-span-2 lg:text-left">
           <span className="text-xs font-semibold uppercase tracking-widest text-brand-terracotta">For sellers</span>
           <h2 className="mt-3 font-heading text-3xl font-bold text-foreground sm:text-4xl">
             Turn your craft into a business
@@ -372,26 +369,27 @@ function LandingPage() {
               </Button>
             </Link>
             <Link to="/coming-soon">
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" className="border-brand-green/30 text-brand-green">
                 Get the app
               </Button>
             </Link>
           </div>
         </div>
 
-        <div className="flex flex-col justify-center rounded-3xl bg-brand-green px-6 py-12 text-primary-foreground">
-          <LifeBuoy className="h-8 w-8 text-brand-gold" />
-          <h2 className="mt-5 font-heading text-2xl font-bold">Need a hand?</h2>
-          <p className="mt-3 text-sm text-primary-foreground/80">
+        <div className="flex flex-col justify-center rounded-3xl border border-brand-green/20 bg-brand-green/5 px-6 py-12">
+          <LifeBuoy className="h-8 w-8 text-brand-green" />
+          <h2 className="mt-5 font-heading text-2xl font-bold text-foreground">Need a hand?</h2>
+          <p className="mt-3 text-sm text-muted-foreground">
             Orders, payments, selling or safety — our team answers in your language, every day of the week.
           </p>
           <Link to="/support" className="mt-6">
-            <Button size="lg" className="w-full bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
+            <Button size="lg" className="w-full">
               Visit support
             </Button>
           </Link>
         </div>
       </section>
+
     </div>
   );
 }

@@ -99,29 +99,29 @@ function SupportPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative isolate overflow-hidden brand-gradient text-primary-foreground">
-        <div className="absolute inset-0 brand-pattern opacity-40" aria-hidden="true" />
+      <section className="relative isolate overflow-hidden brand-soft">
+        <div className="absolute inset-0 brand-pattern-light opacity-25" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest">
-              <LifeBuoy className="h-3.5 w-3.5" />
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand-gold/40 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-brand-green shadow-sm">
+              <LifeBuoy className="h-3.5 w-3.5 text-brand-gold" />
               Support
             </span>
-            <h1 className="mt-6 font-heading text-4xl font-bold leading-tight sm:text-5xl">
+            <h1 className="mt-6 font-heading text-4xl font-bold leading-tight text-brand-green sm:text-5xl">
               We are here, in your language
             </h1>
-            <p className="mt-5 max-w-xl text-primary-foreground/85">
+            <p className="mt-5 max-w-xl text-muted-foreground">
               Real people, seven days a week. Find a quick answer below or send us a message and we will come back to
               you.
             </p>
             <div className="mt-8 flex flex-wrap gap-3 text-sm">
-              <span className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2">
+              <span className="inline-flex items-center gap-2 rounded-xl border bg-card px-4 py-2 text-foreground">
                 <Mail className="h-4 w-4 text-brand-gold" /> help@afromart.app
               </span>
-              <span className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2">
+              <span className="inline-flex items-center gap-2 rounded-xl border bg-card px-4 py-2 text-foreground">
                 <PhoneCall className="h-4 w-4 text-brand-gold" /> +234 800 000 0000
               </span>
-              <span className="inline-flex items-center gap-2 rounded-xl bg-white/10 px-4 py-2">
+              <span className="inline-flex items-center gap-2 rounded-xl border bg-card px-4 py-2 text-foreground">
                 <MessagesSquare className="h-4 w-4 text-brand-gold" /> Live chat in the app
               </span>
             </div>
@@ -132,7 +132,7 @@ function SupportPage() {
             alt="An Afro Mart support agent wearing a headset"
             width={1024}
             height={768}
-            className="w-full rounded-3xl border-4 border-brand-gold/40 object-cover shadow-2xl"
+            className="w-full rounded-3xl border object-cover shadow-lg"
           />
         </div>
       </section>
