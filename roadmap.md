@@ -14,3 +14,9 @@
 - Buyer-seller chat / support.
 - Seller onboarding and dashboard.
 - Admin moderation tools.
+
+## Landing / app marketing (done)
+- App-style landing page at / (guest browsing, seller CTA, App Store + Google Play buttons)
+- /sell become-a-seller page
+- /coming-soon app waiting-list page
+

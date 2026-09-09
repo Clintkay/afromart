@@ -13,7 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as SellRouteImport } from './routes/sell'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
@@ -37,9 +39,19 @@ const CartRoute = CartRouteImport.update({
   path: '/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComingSoonRoute = ComingSoonRouteImport.update({
+  id: '/coming-soon',
+  path: '/coming-soon',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsRoute = ProductsRouteImport.update({
   id: '/products',
   path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellRoute = SellRouteImport.update({
+  id: '/sell',
+  path: '/sell',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
@@ -62,7 +74,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/coming-soon': typeof ComingSoonRoute
   '/products': typeof ProductsRouteWithChildren
+  '/sell': typeof SellRoute
   '/account': typeof AuthenticatedAccountRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -71,7 +85,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/coming-soon': typeof ComingSoonRoute
   '/products': typeof ProductsRouteWithChildren
+  '/sell': typeof SellRoute
   '/account': typeof AuthenticatedAccountRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -82,7 +98,9 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/coming-soon': typeof ComingSoonRoute
   '/products': typeof ProductsRouteWithChildren
+  '/sell': typeof SellRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -93,7 +111,9 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/cart'
+    | '/coming-soon'
     | '/products'
+    | '/sell'
     | '/account'
     | '/checkout'
     | '/products/$slug'
@@ -102,7 +122,9 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/cart'
+    | '/coming-soon'
     | '/products'
+    | '/sell'
     | '/account'
     | '/checkout'
     | '/products/$slug'
@@ -112,7 +134,9 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/cart'
+    | '/coming-soon'
     | '/products'
+    | '/sell'
     | '/_authenticated/account'
     | '/_authenticated/checkout'
     | '/products/$slug'
@@ -123,7 +147,9 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
+  ComingSoonRoute: typeof ComingSoonRoute
   ProductsRoute: typeof ProductsRouteWithChildren
+  SellRoute: typeof SellRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -156,11 +182,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/coming-soon': {
+      id: '/coming-soon'
+      path: '/coming-soon'
+      fullPath: '/coming-soon'
+      preLoaderRoute: typeof ComingSoonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products': {
       id: '/products'
       path: '/products'
       fullPath: '/products'
       preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sell': {
+      id: '/sell'
+      path: '/sell'
+      fullPath: '/sell'
+      preLoaderRoute: typeof SellRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/account': {
@@ -217,7 +257,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
+  ComingSoonRoute: ComingSoonRoute,
   ProductsRoute: ProductsRouteWithChildren,
+  SellRoute: SellRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
