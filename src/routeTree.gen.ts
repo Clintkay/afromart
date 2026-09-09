@@ -16,6 +16,7 @@ import { Route as CartRouteImport } from './routes/cart'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as SellRouteImport } from './routes/sell'
+import { Route as SupportRouteImport } from './routes/support'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
@@ -54,6 +55,11 @@ const SellRoute = SellRouteImport.update({
   path: '/sell',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
   id: '/account',
   path: '/account',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/coming-soon': typeof ComingSoonRoute
   '/products': typeof ProductsRouteWithChildren
   '/sell': typeof SellRoute
+  '/support': typeof SupportRoute
   '/account': typeof AuthenticatedAccountRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/coming-soon': typeof ComingSoonRoute
   '/products': typeof ProductsRouteWithChildren
   '/sell': typeof SellRoute
+  '/support': typeof SupportRoute
   '/account': typeof AuthenticatedAccountRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/coming-soon': typeof ComingSoonRoute
   '/products': typeof ProductsRouteWithChildren
   '/sell': typeof SellRoute
+  '/support': typeof SupportRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/products'
     | '/sell'
+    | '/support'
     | '/account'
     | '/checkout'
     | '/products/$slug'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/products'
     | '/sell'
+    | '/support'
     | '/account'
     | '/checkout'
     | '/products/$slug'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/products'
     | '/sell'
+    | '/support'
     | '/_authenticated/account'
     | '/_authenticated/checkout'
     | '/products/$slug'
@@ -150,6 +162,7 @@ export interface RootRouteChildren {
   ComingSoonRoute: typeof ComingSoonRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   SellRoute: typeof SellRoute
+  SupportRoute: typeof SupportRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -201,6 +214,13 @@ declare module '@tanstack/react-router' {
       path: '/sell'
       fullPath: '/sell'
       preLoaderRoute: typeof SellRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/account': {
@@ -260,6 +280,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComingSoonRoute: ComingSoonRoute,
   ProductsRoute: ProductsRouteWithChildren,
   SellRoute: SellRoute,
+  SupportRoute: SupportRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

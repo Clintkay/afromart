@@ -29,11 +29,12 @@ function ComingSoonPage() {
   const [joined, setJoined] = useState(false);
 
   return (
-    <main className="relative isolate overflow-hidden bg-primary text-primary-foreground">
-      <div className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-accent/30 blur-3xl" aria-hidden="true" />
+    <div className="relative isolate overflow-hidden brand-gradient text-primary-foreground">
+      <div className="absolute inset-0 brand-pattern opacity-40" aria-hidden="true" />
+      <div className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-brand-gold/30 blur-3xl" aria-hidden="true" />
       <div className="mx-auto flex min-h-[80vh] max-w-3xl flex-col items-center justify-center px-4 py-24 text-center sm:px-6">
-        <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary-foreground/30 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest">
-          <Sparkles className="h-3.5 w-3.5" />
+        <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-gold/50 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest">
+          <Sparkles className="h-3.5 w-3.5 text-brand-gold" />
           Launching soon
         </span>
 
@@ -67,7 +68,7 @@ function ComingSoonPage() {
               aria-label="Email address"
               className="h-12 border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground placeholder:text-primary-foreground/60"
             />
-            <Button type="submit" size="lg" variant="secondary" className="h-12 shrink-0">
+            <Button type="submit" size="lg" className="h-12 shrink-0 bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
               Notify me
             </Button>
           </form>
@@ -82,6 +83,6 @@ function ComingSoonPage() {
           </Link>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

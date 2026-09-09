@@ -20,3 +20,13 @@
 - /sell become-a-seller page
 - /coming-soon app waiting-list page
 
+
+## Brand + colour pass (done)
+- Official Afro Mart logo files in header, footer and favicon
+- Expressive brand palette tokens (green, gold, terracotta, indigo, coral, leaf) + gradient/pattern utilities
+- Icons across nav, features, support topics; category and services imagery
+- Transparent-background app mockup on the landing hero
+- New /support page (help topics, FAQ, contact form) linked from header and footer
+- Website is preview/marketing only: no cart, no add-to-cart, no checkout entry points
+- Header: Home / Become a seller / Get the app on the left, Support + app button on the right, no nav icons
+- App store CTAs no longer say the app is unavailable

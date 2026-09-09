@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { SafeImage } from "@/components/SafeImage";
-import { useParams } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { productOptions } from "@/lib/queries";
-import { useCart } from "@/lib/cart-context";
 import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Minus, Plus, ShoppingCart, Truck } from "lucide-react";
+import { Smartphone, Truck } from "lucide-react";
 
 export function ProductDetail() {
   const { slug } = useParams({ from: "/products/$slug" });
   const { data: product, isLoading } = useSuspenseQuery(productOptions(slug));
-  const { addItem } = useCart();
-  const [quantity, setQuantity] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   if (isLoading || !product) {
     return (
@@ -33,20 +31,7 @@ export function ProductDetail() {
 
   const fallbackImage = { url: "https://placehold.co/600x600?text=Afro+Mart", alt_text: product.name };
   const images = product.product_images?.length ? product.product_images : [fallbackImage];
-  const [selectedImage, setSelectedImage] = useState(images[0] ?? fallbackImage);
-
-  const handleAddToCart = () => {
-    addItem(
-      {
-        productId: product.id,
-        slug: product.slug,
-        name: product.name,
-        price: product.price,
-        imageUrl: selectedImage.url,
-      },
-      quantity,
-    );
-  };
+  const selectedImage = images[Math.min(selectedIndex, images.length - 1)] ?? fallbackImage;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -64,9 +49,9 @@ export function ProductDetail() {
               {images.map((img, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setSelectedImage(img)}
+                  onClick={() => setSelectedIndex(idx)}
                   className={`h-20 w-20 shrink-0 overflow-hidden rounded-lg border-2 bg-muted ${
-                    selectedImage.url === img.url ? "border-primary" : "border-transparent"
+                    idx === selectedIndex ? "border-brand-gold" : "border-transparent"
                   }`}
                 >
                   <SafeImage src={img.url} alt={img.alt_text ?? product.name} className="h-full w-full object-cover" />
@@ -78,47 +63,36 @@ export function ProductDetail() {
 
         <div>
           {product.categories ? (
-            <p className="text-sm font-medium text-muted-foreground">{product.categories.name}</p>
+            <p className="text-sm font-semibold uppercase tracking-widest text-brand-terracotta">
+              {product.categories.name}
+            </p>
           ) : null}
           <h1 className="mt-2 font-heading text-3xl font-bold text-foreground sm:text-4xl">{product.name}</h1>
-          <p className="mt-4 text-2xl font-semibold text-foreground">{formatPrice(product.price)}</p>
+          <p className="mt-4 font-heading text-2xl font-bold text-brand-green">{formatPrice(product.price)}</p>
           {product.compare_at_price ? (
-            <p className="text-sm text-muted-foreground line-through">
-              {formatPrice(product.compare_at_price)}
-            </p>
+            <p className="text-sm text-muted-foreground line-through">{formatPrice(product.compare_at_price)}</p>
           ) : null}
 
           <p className="mt-6 leading-7 text-muted-foreground">{product.description}</p>
 
-          <div className="mt-8 flex items-center gap-4">
-            <div className="flex items-center rounded-md border">
-              <button
-                className="px-3 py-2 text-foreground hover:bg-secondary disabled:opacity-50"
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                disabled={quantity <= 1}
-                aria-label="Decrease quantity"
-              >
-                <Minus className="h-4 w-4" />
-              </button>
-              <span className="w-10 text-center text-sm font-medium">{quantity}</span>
-              <button
-                className="px-3 py-2 text-foreground hover:bg-secondary"
-                onClick={() => setQuantity((q) => q + 1)}
-                aria-label="Increase quantity"
-              >
-                <Plus className="h-4 w-4" />
-              </button>
-            </div>
-            <Button size="lg" className="gap-2" onClick={handleAddToCart}>
-              <ShoppingCart className="h-4 w-4" />
-              Add to cart
-            </Button>
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Link to="/coming-soon">
+              <Button size="lg" className="gap-2 bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
+                <Smartphone className="h-4 w-4" />
+                Order in the app
+              </Button>
+            </Link>
+            <Link to="/products">
+              <Button size="lg" variant="outline">
+                Keep browsing
+              </Button>
+            </Link>
           </div>
 
-          <div className="mt-8 rounded-lg bg-secondary/50 p-4 text-sm text-muted-foreground">
+          <div className="mt-8 rounded-lg bg-brand-cream p-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <Truck className="h-4 w-4" />
-              <span>Free shipping on orders over $50</span>
+              <Truck className="h-4 w-4 text-brand-green" />
+              <span>Verified sellers, tracked delivery and secure payment inside the app.</span>
             </div>
           </div>
         </div>
