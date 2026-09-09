@@ -291,9 +291,9 @@ function LandingPage() {
       </section>
 
       {/* Voices */}
-      <section className="bg-brand-ink text-white">
+      <section className="border-y bg-brand-cream">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <h2 className="font-heading text-3xl font-bold sm:text-4xl">Voices from the marketplace</h2>
+          <h2 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">Voices from the marketplace</h2>
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {[
               {
@@ -312,11 +312,11 @@ function LandingPage() {
                 role: "Event caterer • Durban",
               },
             ].map((item) => (
-              <figure key={item.name} className="rounded-3xl border border-white/15 bg-white/5 p-6">
+              <figure key={item.name} className="rounded-3xl border bg-card p-6 shadow-sm">
                 <Quote className="h-6 w-6 text-brand-gold" />
-                <blockquote className="mt-4 font-heading text-lg leading-relaxed">{item.quote}</blockquote>
-                <figcaption className="mt-5 text-sm text-white/70">
-                  <span className="font-semibold text-white">{item.name}</span> — {item.role}
+                <blockquote className="mt-4 font-heading text-lg leading-relaxed text-foreground">{item.quote}</blockquote>
+                <figcaption className="mt-5 text-sm text-muted-foreground">
+                  <span className="font-semibold text-brand-green">{item.name}</span> — {item.role}
                 </figcaption>
               </figure>
             ))}
@@ -325,7 +325,7 @@ function LandingPage() {
       </section>
 
       {/* Languages */}
-      <section className="brand-gradient text-primary-foreground">
+      <section className="bg-card">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-xl">
@@ -333,12 +333,14 @@ function LandingPage() {
                 <Globe2 className="h-4 w-4" />
                 Ten launch languages
               </span>
-              <h2 className="mt-3 font-heading text-2xl font-bold sm:text-3xl">Speak your own language</h2>
+              <h2 className="mt-3 font-heading text-2xl font-bold text-foreground sm:text-3xl">
+                Speak your own language
+              </h2>
             </div>
-            <ul className="flex flex-wrap gap-2 text-sm">
+            <ul className="flex flex-wrap gap-2 text-sm text-brand-green">
               {["English", "Français", "العربية", "Kiswahili", "Hausa", "Yorùbá", "isiZulu", "አማርኛ", "Igbo", "Português"].map(
                 (language) => (
-                  <li key={language} className="rounded-full border border-brand-gold/40 bg-white/10 px-3 py-1">
+                  <li key={language} className="rounded-full border border-brand-green/20 bg-brand-green/5 px-3 py-1">
                     {language}
                   </li>
                 ),
@@ -350,7 +352,7 @@ function LandingPage() {
 
       {/* Seller + support CTA */}
       <section className="mx-auto grid max-w-7xl gap-6 px-4 py-20 sm:px-6 lg:grid-cols-3 lg:px-8">
-        <div className="rounded-3xl bg-brand-cream px-6 py-12 text-center lg:col-span-2 lg:text-left">
+        <div className="rounded-3xl border bg-brand-cream px-6 py-12 text-center lg:col-span-2 lg:text-left">
           <span className="text-xs font-semibold uppercase tracking-widest text-brand-terracotta">For sellers</span>
           <h2 className="mt-3 font-heading text-3xl font-bold text-foreground sm:text-4xl">
             Turn your craft into a business
@@ -367,26 +369,27 @@ function LandingPage() {
               </Button>
             </Link>
             <Link to="/coming-soon">
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" className="border-brand-green/30 text-brand-green">
                 Get the app
               </Button>
             </Link>
           </div>
         </div>
 
-        <div className="flex flex-col justify-center rounded-3xl bg-brand-green px-6 py-12 text-primary-foreground">
-          <LifeBuoy className="h-8 w-8 text-brand-gold" />
-          <h2 className="mt-5 font-heading text-2xl font-bold">Need a hand?</h2>
-          <p className="mt-3 text-sm text-primary-foreground/80">
+        <div className="flex flex-col justify-center rounded-3xl border border-brand-green/20 bg-brand-green/5 px-6 py-12">
+          <LifeBuoy className="h-8 w-8 text-brand-green" />
+          <h2 className="mt-5 font-heading text-2xl font-bold text-foreground">Need a hand?</h2>
+          <p className="mt-3 text-sm text-muted-foreground">
             Orders, payments, selling or safety — our team answers in your language, every day of the week.
           </p>
           <Link to="/support" className="mt-6">
-            <Button size="lg" className="w-full bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
+            <Button size="lg" className="w-full">
               Visit support
             </Button>
           </Link>
         </div>
       </section>
+
     </div>
   );
 }
