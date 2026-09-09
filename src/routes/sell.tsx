@@ -72,9 +72,9 @@ const tools = [
 
 function SellPage() {
   return (
-    <main>
+    <div>
       {/* Hero */}
-      <section className="border-b bg-secondary/40">
+      <section className="border-b bg-brand-cream">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
@@ -113,14 +113,14 @@ function SellPage() {
       {/* Steps */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
-          <span className="text-xs font-semibold uppercase tracking-widest text-accent">How it works</span>
+          <span className="text-xs font-semibold uppercase tracking-widest text-brand-terracotta">How it works</span>
           <h2 className="mt-3 font-heading text-3xl font-bold text-foreground sm:text-4xl">Four steps to your first order</h2>
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((item) => (
             <article key={item.title} className="relative rounded-2xl border bg-card p-6 shadow-sm">
-              <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent/15 text-accent">
+              <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-gold/20 text-brand-gold">
                 <item.icon className="h-5 w-5" />
               </span>
               <p className="mt-5 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{item.step}</p>
@@ -132,15 +132,15 @@ function SellPage() {
       </section>
 
       {/* Tools */}
-      <section className="bg-foreground text-background">
+      <section className="bg-brand-ink text-white">
         <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <h2 className="font-heading text-3xl font-bold sm:text-4xl">Everything you need in one dashboard</h2>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {tools.map((tool) => (
-              <article key={tool.title} className="rounded-2xl border border-background/20 p-6">
-                <tool.icon className="h-5 w-5 text-accent" />
+              <article key={tool.title} className="rounded-2xl border border-white/15 bg-white/5 p-6">
+                <tool.icon className="h-5 w-5 text-brand-gold" />
                 <h3 className="mt-4 font-heading text-lg font-semibold">{tool.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-background/70">{tool.body}</p>
+                <p className="mt-2 text-sm leading-relaxed text-white/70">{tool.body}</p>
               </article>
             ))}
           </div>
@@ -149,15 +149,15 @@ function SellPage() {
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-primary px-6 py-14 text-center text-primary-foreground sm:px-12">
+        <div className="relative isolate overflow-hidden rounded-3xl brand-gradient px-6 py-14 text-center text-primary-foreground sm:px-12">
           <h2 className="font-heading text-3xl font-bold sm:text-4xl">Ready when you are</h2>
           <p className="mx-auto mt-4 max-w-xl text-primary-foreground/80">
-            Seller sign-up opens with the app launch. Join the waiting list and we will walk you through setting up your
+            Join the seller waiting list and we will walk you through setting up your
             store on day one.
           </p>
           <div className="mt-8 flex justify-center">
             <Link to="/coming-soon">
-              <Button size="lg" variant="secondary">
+              <Button size="lg" className="bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
                 Join the seller waiting list
               </Button>
             </Link>
@@ -167,6 +167,6 @@ function SellPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

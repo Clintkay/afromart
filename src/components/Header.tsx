@@ -1,71 +1,50 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X, ShoppingCart, User, Store } from "lucide-react";
-import { useAuth } from "@/lib/auth-context";
-import { useCart } from "@/lib/cart-context";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Logo } from "@/components/Logo";
+
+const navItems = [
+  { to: "/" as const, label: "Home" },
+  { to: "/sell" as const, label: "Become a seller" },
+  { to: "/coming-soon" as const, label: "Get the app" },
+];
 
 export function Header() {
-  const { user, signOut, isLoading } = useAuth();
-  const { totalItems } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+      <div className="h-1 w-full bg-gradient-to-r from-brand-green via-brand-gold to-brand-terracotta" aria-hidden="true" />
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" className="flex items-center gap-2 text-foreground transition-colors hover:text-primary">
-          <Store className="h-6 w-6 text-primary" />
-          <span className="font-heading text-xl font-bold tracking-tight">Afro Mart</span>
+        <Link to="/" aria-label="Afro Mart home">
+          <Logo />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          <Link to="/" className="text-sm font-medium text-foreground transition-colors hover:text-primary">
-            Home
-          </Link>
-          <Link to="/products" className="text-sm font-medium text-foreground transition-colors hover:text-primary">
-            Explore
-          </Link>
-          <Link to="/sell" className="text-sm font-medium text-foreground transition-colors hover:text-primary">
-            Become a seller
-          </Link>
-          <Link to="/coming-soon" className="text-sm font-medium text-foreground transition-colors hover:text-primary">
-            Get the app
-          </Link>
+          {navItems.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              className="text-sm font-semibold text-foreground transition-colors hover:text-brand-green"
+            >
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link to="/cart" className="relative rounded-full p-2 text-foreground transition-colors hover:bg-secondary hover:text-primary">
-            <ShoppingCart className="h-5 w-5" />
-            {totalItems > 0 && (
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
-                {totalItems > 99 ? "99+" : totalItems}
-              </span>
-            )}
+          <Link
+            to="/support"
+            className="hidden text-sm font-semibold text-foreground transition-colors hover:text-brand-green md:block"
+          >
+            Support
           </Link>
-
-          {!isLoading && (
-            <div className="hidden md:block">
-              {user ? (
-                <div className="flex items-center gap-3">
-                  <Link to="/account">
-                    <Button variant="ghost" size="icon" className="rounded-full">
-                      <User className="h-5 w-5" />
-                      <span className="sr-only">Account</span>
-                    </Button>
-                  </Link>
-                  <Button variant="outline" size="sm" onClick={() => signOut()}>
-                    Sign out
-                  </Button>
-                </div>
-              ) : (
-                <Link to="/auth">
-                  <Button variant="outline" size="sm">
-                    Sign in
-                  </Button>
-                </Link>
-              )}
-            </div>
-          )}
+          <Link to="/coming-soon" className="hidden md:block">
+            <Button size="sm" className="bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
+              Get the app
+            </Button>
+          </Link>
 
           <button
             className="rounded-md p-2 text-foreground md:hidden"
@@ -80,38 +59,19 @@ export function Header() {
       {mobileMenuOpen && (
         <div className="border-t bg-background px-4 py-4 md:hidden">
           <nav className="flex flex-col gap-3">
-            <Link to="/" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
-              Home
-            </Link>
-            <Link to="/products" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
-              Explore
-            </Link>
-            <Link to="/sell" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
-              Become a seller
-            </Link>
-            <Link to="/coming-soon" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
-              Get the app
-            </Link>
-            {user ? (
-              <>
-                <Link to="/account" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
-                  Account
-                </Link>
-                <button
-                  className="text-left text-base font-medium text-foreground"
-                  onClick={() => {
-                    signOut();
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  Sign out
-                </button>
-              </>
-            ) : (
-              <Link to="/auth" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
-                Sign in
+            {navItems.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className="text-base font-medium text-foreground"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {item.label}
               </Link>
-            )}
+            ))}
+            <Link to="/support" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
+              Support
+            </Link>
           </nav>
         </div>
       )}
