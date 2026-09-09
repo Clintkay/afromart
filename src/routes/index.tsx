@@ -100,46 +100,40 @@ function LandingPage() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative isolate overflow-hidden brand-gradient text-primary-foreground">
-        <div className="absolute inset-0 brand-pattern opacity-40" aria-hidden="true" />
-        <div className="absolute -left-32 top-0 h-96 w-96 rounded-full bg-brand-gold/25 blur-3xl" aria-hidden="true" />
-        <div className="absolute -bottom-24 right-10 h-80 w-80 rounded-full bg-brand-terracotta/25 blur-3xl" aria-hidden="true" />
+      <section className="relative isolate overflow-hidden brand-soft">
+        <div className="absolute inset-0 brand-pattern-light opacity-60" aria-hidden="true" />
+        <div className="absolute -left-32 top-0 h-96 w-96 rounded-full bg-brand-gold/10 blur-3xl" aria-hidden="true" />
+        <div className="absolute -bottom-24 right-10 h-80 w-80 rounded-full bg-brand-green/10 blur-3xl" aria-hidden="true" />
 
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-28">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand-gold/50 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest">
+            <span className="inline-flex items-center gap-2 rounded-full border border-brand-gold/40 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-brand-green shadow-sm">
               <Sparkles className="h-3.5 w-3.5 text-brand-gold" />
               Connecting African commerce
             </span>
-            <h1 className="mt-6 font-heading text-4xl font-extrabold leading-[1.05] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-6 font-heading text-4xl font-extrabold leading-[1.05] text-brand-green sm:text-5xl lg:text-6xl">
               One home for Africa&apos;s <span className="text-gold-gradient">makers, growers and doers</span>
             </h1>
-            <p className="mt-6 max-w-xl text-base text-primary-foreground/85 sm:text-lg">
+            <p className="mt-6 max-w-xl text-base text-muted-foreground sm:text-lg">
               Afro Mart brings together food, fabric, craft, beauty and everyday services from across the continent — and
               the people who create them. Come and look around first; no account needed.
             </p>
 
             <div className="mt-9 flex flex-wrap gap-3">
               <Link to="/products">
-                <Button size="lg" className="gap-2 bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
+                <Button size="lg" className="gap-2">
                   <UserRound className="h-4 w-4" />
                   Continue as guest
                 </Button>
               </Link>
               <Link to="/sell">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-primary-foreground/50 bg-transparent text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground"
-                >
+                <Button size="lg" variant="outline" className="border-brand-green/30 text-brand-green">
                   Become a seller
                 </Button>
               </Link>
             </div>
 
-            <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-primary-foreground/70">
-              Get the app
-            </p>
+            <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Get the app</p>
             <StoreBadges className="mt-3" />
           </div>
 
@@ -149,20 +143,20 @@ function LandingPage() {
               alt="The Afro Mart app shown on two phones"
               width={1024}
               height={1024}
-              className="mx-auto w-full max-w-md drop-shadow-2xl"
+              className="mx-auto w-full max-w-md drop-shadow-xl"
             />
           </div>
         </div>
 
         {/* Stats ribbon */}
-        <div className="relative border-t border-white/15 bg-brand-ink/30">
+        <div className="relative border-y bg-card/80">
           <dl className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 sm:px-6 lg:grid-cols-4 lg:px-8">
             {stats.map((stat) => (
               <div key={stat.label}>
                 <dt className="sr-only">{stat.label}</dt>
                 <dd>
-                  <span className="font-heading text-3xl font-extrabold text-brand-gold">{stat.value}</span>
-                  <span className="mt-1 block text-xs uppercase tracking-widest text-primary-foreground/70">
+                  <span className="font-heading text-3xl font-extrabold text-brand-green">{stat.value}</span>
+                  <span className="mt-1 block text-xs uppercase tracking-widest text-muted-foreground">
                     {stat.label}
                   </span>
                 </dd>
@@ -192,6 +186,7 @@ function LandingPage() {
           </div>
         </div>
       </section>
+
 
       {/* Collections */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
