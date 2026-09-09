@@ -1,0 +1,34 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1788984309383,
+      "tag": "0000_create_profiles_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788984372965,
+      "tag": "0001_create_product_catalog_schema",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788984394168,
+      "tag": "0002_seed_sample_products",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1788985071836,
+      "tag": "0003_add_stores_orders_wishlist",
+      "breakpoints": true
+    }
+  ]
+}
