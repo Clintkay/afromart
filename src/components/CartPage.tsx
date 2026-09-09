@@ -106,11 +106,13 @@ export function CartPage() {
               <span>{formatPrice(total)}</span>
             </div>
           </div>
-          <Button className="mt-6 w-full" size="lg" disabled>
-            Checkout coming soon
-          </Button>
+          <Link to="/checkout" className="mt-6 block w-full">
+            <Button className="w-full" size="lg">
+              Proceed to checkout
+            </Button>
+          </Link>
           <p className="mt-3 text-center text-xs text-muted-foreground">
-            Payment processing is not yet connected.
+            Payment collection will be connected next.
           </p>
         </div>
       </div>
