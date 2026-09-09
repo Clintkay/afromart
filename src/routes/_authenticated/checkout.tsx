@@ -108,7 +108,7 @@ function CheckoutPage() {
                     <input
                       type="radio"
                       name="address"
-                      defaultChecked={addr.is_default}
+                      defaultChecked={addr.is_default ?? false}
                       className="mt-1 accent-primary"
                     />
                     <div className="text-sm">
