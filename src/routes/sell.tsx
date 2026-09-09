@@ -152,7 +152,7 @@ function SellPage() {
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="relative isolate overflow-hidden rounded-3xl border brand-soft px-6 py-14 text-center sm:px-12">
-          <div className="absolute inset-0 brand-pattern-light opacity-50" aria-hidden="true" />
+          <div className="absolute inset-0 brand-pattern-light opacity-25" aria-hidden="true" />
           <div className="relative">
             <h2 className="font-heading text-3xl font-bold text-brand-green sm:text-4xl">Ready when you are</h2>
             <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
