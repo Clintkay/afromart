@@ -30,7 +30,7 @@ function ComingSoonPage() {
 
   return (
     <div className="relative isolate overflow-hidden brand-soft">
-      <div className="absolute inset-0 brand-pattern-light opacity-60" aria-hidden="true" />
+      <div className="absolute inset-0 brand-pattern-light opacity-25" aria-hidden="true" />
       <div className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-brand-gold/15 blur-3xl" aria-hidden="true" />
       <div className="relative mx-auto flex min-h-[80vh] max-w-3xl flex-col items-center justify-center px-4 py-24 text-center sm:px-6">
         <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-brand-gold/40 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-brand-green shadow-sm">

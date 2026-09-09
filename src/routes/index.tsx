@@ -101,7 +101,7 @@ function LandingPage() {
     <div>
       {/* Hero */}
       <section className="relative isolate overflow-hidden brand-soft">
-        <div className="absolute inset-0 brand-pattern-light opacity-60" aria-hidden="true" />
+        <div className="absolute inset-0 brand-pattern-light opacity-25" aria-hidden="true" />
         <div className="absolute -left-32 top-0 h-96 w-96 rounded-full bg-brand-gold/10 blur-3xl" aria-hidden="true" />
         <div className="absolute -bottom-24 right-10 h-80 w-80 rounded-full bg-brand-green/10 blur-3xl" aria-hidden="true" />
 

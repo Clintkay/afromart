@@ -100,7 +100,7 @@ function SupportPage() {
     <div>
       {/* Hero */}
       <section className="relative isolate overflow-hidden brand-soft">
-        <div className="absolute inset-0 brand-pattern-light opacity-60" aria-hidden="true" />
+        <div className="absolute inset-0 brand-pattern-light opacity-25" aria-hidden="true" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8">
           <div>
             <span className="inline-flex items-center gap-2 rounded-full border border-brand-gold/40 bg-card px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-brand-green shadow-sm">
