@@ -41,9 +41,7 @@ export function Header() {
             Support
           </Link>
           <Link to="/coming-soon" className="hidden md:block">
-            <Button size="sm" className="bg-brand-gold text-brand-ink hover:bg-brand-gold/90">
-              Get the app
-            </Button>
+            <Button size="sm">Get the app</Button>
           </Link>
 
           <button
