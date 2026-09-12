@@ -1,13 +1,13 @@
 # AfroMart Build Roadmap
 
-## In Progress / This Turn
-1. Fix every broken image and remove unreliable remote image fallbacks.
-2. Simplify the header: no Home item, no duplicate Get the app action, Support at the far end.
-3. Remove product-category presentation from the landing and guest experience.
-4. Rework the landing page around the mobile app experience and guest preview.
-5. Replace the coming-soon page with the seller onboarding screens from the approved design reference.
-6. Update the footer language presentation.
-7. Keep guest mode browse-only: no sign-up required, but no purchases or restricted account actions.
+## Completed This Turn
+1. Fixed broken images with reliable local fallbacks.
+2. Simplified the header: no Home item, no duplicate Get the app action, Support at the far end.
+3. Removed product-category presentation from the landing and guest experience.
+4. Reworked the landing page around the mobile app experience and guest preview.
+5. Replaced the coming-soon page with seller account and role-selection screens.
+6. Added the footer language selector.
+7. Kept guest mode browse-only: no sign-up required, but no purchases or restricted account actions.
 
 ## Upcoming
 - Payment integration (Stripe or Paystack) and order lifecycle.
@@ -18,8 +18,8 @@
 
 ## Landing / app marketing (done)
 - App-style landing page at / (guest browsing, seller CTA, App Store + Google Play buttons)
-- /sell become-a-seller page
-- /coming-soon app waiting-list page
+- /sell become-a-seller information page
+- /sell/start seller onboarding entry
 
 
 ## Brand + colour pass (done)
@@ -29,5 +29,5 @@
 - Transparent-background app mockup on the landing hero
 - New /support page (help topics, FAQ, contact form) linked from header and footer
 - Website is preview/marketing only: no cart, no add-to-cart, no checkout entry points
-- Header: Home / Become a seller / Get the app on the left, Support + app button on the right, no nav icons
+- Header: Browse as guest / Start selling, with Support + app preview at the right
 - App store CTAs no longer say the app is unavailable
