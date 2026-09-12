@@ -89,7 +89,7 @@ function SellPage() {
               looking for exactly what you offer. It is free to open a store.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/coming-soon">
+              <Link to="/sell/start">
                 <Button size="lg">Start selling</Button>
               </Link>
               <Link to="/products">
@@ -159,7 +159,7 @@ function SellPage() {
               Join the seller waiting list and we will walk you through setting up your store on day one.
             </p>
             <div className="mt-8 flex justify-center">
-              <Link to="/coming-soon">
+              <Link to="/sell/start">
                 <Button size="lg">Join the seller waiting list</Button>
               </Link>
             </div>
