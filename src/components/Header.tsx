@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
 
 const navItems = [
-  { to: "/" as const, label: "Home" },
-  { to: "/sell" as const, label: "Become a seller" },
-  { to: "/coming-soon" as const, label: "Get the app" },
+  { to: "/guest" as const, label: "Browse as guest" },
+  { to: "/sell/start" as const, label: "Start selling" },
 ];
 
 export function Header() {
@@ -40,8 +39,8 @@ export function Header() {
           >
             Support
           </Link>
-          <Link to="/coming-soon" className="hidden md:block">
-            <Button size="sm">Get the app</Button>
+          <Link to="/guest" className="hidden md:block">
+            <Button size="sm">Open app preview</Button>
           </Link>
 
           <button

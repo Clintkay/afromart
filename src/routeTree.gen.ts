@@ -14,12 +14,15 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
+import { Route as GuestRouteImport } from './routes/guest'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as SellRouteImport } from './routes/sell'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as SellIndexRouteImport } from './routes/sell.index'
+import { Route as SellStartRouteImport } from './routes/sell.start'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -43,6 +46,11 @@ const CartRoute = CartRouteImport.update({
 const ComingSoonRoute = ComingSoonRouteImport.update({
   id: '/coming-soon',
   path: '/coming-soon',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GuestRoute = GuestRouteImport.update({
+  id: '/guest',
+  path: '/guest',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -75,30 +83,45 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ProductsRoute,
 } as any)
+const SellIndexRoute = SellIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SellRoute,
+} as any)
+const SellStartRoute = SellStartRouteImport.update({
+  id: '/start',
+  path: '/start',
+  getParentRoute: () => SellRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/guest': typeof GuestRoute
   '/products': typeof ProductsRouteWithChildren
-  '/sell': typeof SellRoute
+  '/sell': typeof SellRouteWithChildren
   '/support': typeof SupportRoute
   '/account': typeof AuthenticatedAccountRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/sell/start': typeof SellStartRoute
+  '/sell/': typeof SellIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/guest': typeof GuestRoute
   '/products': typeof ProductsRouteWithChildren
-  '/sell': typeof SellRoute
   '/support': typeof SupportRoute
   '/account': typeof AuthenticatedAccountRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/sell/start': typeof SellStartRoute
+  '/sell': typeof SellIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,12 +130,15 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/guest': typeof GuestRoute
   '/products': typeof ProductsRouteWithChildren
-  '/sell': typeof SellRoute
+  '/sell': typeof SellRouteWithChildren
   '/support': typeof SupportRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
+  '/sell/start': typeof SellStartRoute
+  '/sell/': typeof SellIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,24 +147,29 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cart'
     | '/coming-soon'
+    | '/guest'
     | '/products'
     | '/sell'
     | '/support'
     | '/account'
     | '/checkout'
     | '/products/$slug'
+    | '/sell/start'
+    | '/sell/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/cart'
     | '/coming-soon'
+    | '/guest'
     | '/products'
-    | '/sell'
     | '/support'
     | '/account'
     | '/checkout'
     | '/products/$slug'
+    | '/sell/start'
+    | '/sell'
   id:
     | '__root__'
     | '/'
@@ -146,12 +177,15 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cart'
     | '/coming-soon'
+    | '/guest'
     | '/products'
     | '/sell'
     | '/support'
     | '/_authenticated/account'
     | '/_authenticated/checkout'
     | '/products/$slug'
+    | '/sell/start'
+    | '/sell/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -160,8 +194,9 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
   ComingSoonRoute: typeof ComingSoonRoute
+  GuestRoute: typeof GuestRoute
   ProductsRoute: typeof ProductsRouteWithChildren
-  SellRoute: typeof SellRoute
+  SellRoute: typeof SellRouteWithChildren
   SupportRoute: typeof SupportRoute
 }
 
@@ -200,6 +235,13 @@ declare module '@tanstack/react-router' {
       path: '/coming-soon'
       fullPath: '/coming-soon'
       preLoaderRoute: typeof ComingSoonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/guest': {
+      id: '/guest'
+      path: '/guest'
+      fullPath: '/guest'
+      preLoaderRoute: typeof GuestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -244,6 +286,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof ProductsRoute
     }
+    '/sell/': {
+      id: '/sell/'
+      path: '/'
+      fullPath: '/sell/'
+      preLoaderRoute: typeof SellIndexRouteImport
+      parentRoute: typeof SellRoute
+    }
+    '/sell/start': {
+      id: '/sell/start'
+      path: '/start'
+      fullPath: '/sell/start'
+      preLoaderRoute: typeof SellStartRouteImport
+      parentRoute: typeof SellRoute
+    }
   }
 }
 
@@ -272,14 +328,27 @@ const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
   ProductsRouteChildren,
 )
 
+interface SellRouteChildren {
+  SellStartRoute: typeof SellStartRoute
+  SellIndexRoute: typeof SellIndexRoute
+}
+
+const SellRouteChildren: SellRouteChildren = {
+  SellStartRoute: SellStartRoute,
+  SellIndexRoute: SellIndexRoute,
+}
+
+const SellRouteWithChildren = SellRoute._addFileChildren(SellRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
   ComingSoonRoute: ComingSoonRoute,
+  GuestRoute: GuestRoute,
   ProductsRoute: ProductsRouteWithChildren,
-  SellRoute: SellRoute,
+  SellRoute: SellRouteWithChildren,
   SupportRoute: SupportRoute,
 }
 export const routeTree = rootRouteImport

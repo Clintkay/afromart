@@ -1,28 +1,21 @@
 import { useState } from "react";
-import { useSearch } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { productsOptions, categoriesOptions } from "@/lib/queries";
+import { productsOptions } from "@/lib/queries";
 import { ProductCard } from "./ProductCard";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Search } from "lucide-react";
-import { Link } from "@tanstack/react-router";
 
 export function ProductsPage() {
-  const { categorySlug } = useSearch({ from: "/products" });
   const [searchTerm, setSearchTerm] = useState("");
   const [appliedSearch, setAppliedSearch] = useState("");
 
-  const { data: categories } = useSuspenseQuery(categoriesOptions);
   const { data: products, isLoading } = useSuspenseQuery(
     productsOptions({
-      ...(categorySlug ? { categorySlug } : {}),
       ...(appliedSearch ? { search: appliedSearch } : {}),
     }),
   );
-
-  const activeCategory = categories?.find((c) => c.slug === categorySlug);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,11 +37,9 @@ export function ProductsPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="font-heading text-3xl font-bold">
-        {activeCategory ? activeCategory.name : "All products"}
-      </h1>
+      <h1 className="font-heading text-3xl font-bold">Explore Afro Mart</h1>
       <p className="mt-2 text-muted-foreground">
-        {activeCategory?.description ?? "Explore our curated selection of African goods."}
+        Browse listings as a guest. Sign in is only needed to save, message or order.
       </p>
 
       <div className="mt-8 flex flex-col gap-6 lg:flex-row">
@@ -63,36 +54,7 @@ export function ProductsPage() {
             />
           </form>
 
-          <div className="mt-6">
-            <h2 className="font-heading text-sm font-semibold">Categories</h2>
-            <ul className="mt-3 space-y-1">
-              <li>
-                <Link
-                  to="/products"
-                  className={`block rounded-md px-3 py-2 text-sm transition-colors ${
-                    !categorySlug ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-secondary"
-                  }`}
-                >
-                  All products
-                </Link>
-              </li>
-              {categories?.map((category) => (
-                <li key={category.id}>
-                  <Link
-                    to="/products"
-                    search={{ categorySlug: category.slug }}
-                    className={`block rounded-md px-3 py-2 text-sm transition-colors ${
-                      categorySlug === category.slug
-                        ? "bg-primary text-primary-foreground"
-                        : "text-foreground hover:bg-secondary"
-                    }`}
-                  >
-                    {category.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <p className="mt-4 text-xs leading-5 text-muted-foreground">Search across products, stores and services. Guest access stays open.</p>
         </aside>
 
         <div className="flex-1">
