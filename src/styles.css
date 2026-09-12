@@ -14,8 +14,8 @@
  * - System Light #F8F8F5
  *
  * Typography:
- * - Headings: Space Grotesk
- * - Body: DM Sans
+   * - Headings: Outfit
+   * - Body: Figtree
  */
 
 @theme inline {
@@ -60,8 +60,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --font-heading: "Space Grotesk", sans-serif;
-  --font-body: "DM Sans", sans-serif;
+  --font-heading: "Outfit", sans-serif;
+  --font-body: "Figtree", sans-serif;
 
   /* Brand + expressive palette */
   --color-brand-green: var(--brand-green);
@@ -78,16 +78,16 @@
 :root {
   --radius: 0.625rem;
   /* White theme: pure white canvas, brand colour used only as accent */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.28 0.01 150);
+  --background: oklch(0.98 0.008 125);
+  --foreground: oklch(0.27 0.02 155);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.28 0.01 150);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.28 0.01 150);
-  --primary: oklch(0.35 0.085 155);
+  --primary: oklch(0.39 0.08 155);
   --primary-foreground: oklch(1 0 0);
-  --brand-green: oklch(0.35 0.085 155);
-  --brand-gold: oklch(0.72 0.135 88);
+  --brand-green: oklch(0.39 0.08 155);
+  --brand-gold: oklch(0.72 0.14 88);
   --brand-ink: oklch(0.3 0.01 150);
   --brand-terracotta: oklch(0.6 0.15 45);
   --brand-indigo: oklch(0.45 0.14 265);
@@ -99,14 +99,14 @@
 
   --muted: oklch(0.97 0.004 150);
   --muted-foreground: oklch(0.52 0.015 150);
-  --accent: oklch(0.72 0.135 88);
+  --accent: oklch(0.72 0.14 88);
 
   --accent-foreground: oklch(0.25 0.02 95);
   --destructive: oklch(0.55 0.18 25);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.92 0.006 150);
   --input: oklch(0.92 0.006 150);
-  --ring: oklch(0.35 0.085 155);
+  --ring: oklch(0.39 0.08 155);
   --chart-1: oklch(0.35 0.085 155);
   --chart-2: oklch(0.68 0.14 95);
   --chart-3: oklch(0.55 0.12 75);

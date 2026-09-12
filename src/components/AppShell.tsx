@@ -50,14 +50,15 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="flex items-center gap-3"><ShoppingBag className="h-5 w-5" />Cart</span>
             {totalItems > 0 ? <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[11px] font-bold text-accent-foreground">{totalItems}</span> : null}
           </Link>
-          <Link
-            to={accountTarget}
-            search={user ? undefined : { redirect: "/account" }}
-            className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${pathname === "/account" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
-          >
-            <UserRound className="h-5 w-5" />
-            {user ? "My account" : "Sign in"}
-          </Link>
+          {user ? (
+            <Link to="/account" className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${pathname === "/account" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}>
+              <UserRound className="h-5 w-5" />My account
+            </Link>
+          ) : (
+            <Link to="/auth" search={{ redirect: "/account" }} className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
+              <UserRound className="h-5 w-5" />Sign in
+            </Link>
+          )}
         </nav>
 
         <div className="rounded-lg bg-primary p-4 text-primary-foreground">
@@ -82,7 +83,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Link to="/support"><Headphones className="h-5 w-5" /></Link>
               </Button>
               <Button asChild variant="ghost" size="icon" aria-label="Notifications">
-                <Link to={accountTarget} search={user ? undefined : { redirect: "/account" }}><Bell className="h-5 w-5" /></Link>
+                {user ? <Link to="/account"><Bell className="h-5 w-5" /></Link> : <Link to="/auth" search={{ redirect: "/account" }}><Bell className="h-5 w-5" /></Link>}
               </Button>
             </div>
           </div>
@@ -101,10 +102,16 @@ export function AppShell({ children }: { children: ReactNode }) {
         ].map((item) => {
           const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
           return (
-            <Link key={item.label} to={item.to} search={item.to === "/auth" ? { redirect: "/account" } : undefined} className={`flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>
-              <span className="relative"><item.icon className="h-5 w-5" />{"badge" in item && item.badge ? <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[9px] text-accent-foreground">{item.badge}</span> : null}</span>
-              <span className="truncate">{item.label}</span>
-            </Link>
+            item.to === "/auth" ? (
+              <Link key={item.label} to="/auth" search={{ redirect: "/account" }} className={`flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>
+                <span className="relative"><item.icon className="h-5 w-5" /></span><span className="truncate">{item.label}</span>
+              </Link>
+            ) : (
+              <Link key={item.label} to={item.to} className={`flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>
+                <span className="relative"><item.icon className="h-5 w-5" />{"badge" in item && item.badge ? <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[9px] text-accent-foreground">{item.badge}</span> : null}</span>
+                <span className="truncate">{item.label}</span>
+              </Link>
+            )
           );
         })}
       </nav>

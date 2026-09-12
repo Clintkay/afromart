@@ -1,17 +1,20 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
+import { Plus, ShoppingBag } from "lucide-react";
 import { SafeImage } from "@/components/SafeImage";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
 import type { ProductWithRelations } from "@/lib/products.types";
 import fallbackImage from "@/assets/cat-crafts.jpg";
+import { useCart } from "@/lib/cart-context";
 
 interface ProductCardProps {
   product: ProductWithRelations;
+  compact?: boolean;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, compact = false }: ProductCardProps) {
+  const { addItem } = useCart();
   const imageUrl = product.product_images?.[0]?.url ?? fallbackImage;
   const imageAlt = product.product_images?.[0]?.alt_text ?? product.name;
 
@@ -25,23 +28,33 @@ export function ProductCard({ product }: ProductCardProps) {
           loading="lazy"
         />
       </Link>
-      <CardContent className="flex flex-1 flex-col p-4">
+      <CardContent className={`flex flex-1 flex-col ${compact ? "p-3" : "p-4"}`}>
         <Link to="/products/$slug" params={{ slug: product.slug }}>
           <h3 className="font-heading text-base font-semibold leading-tight text-foreground hover:text-brand-green">
             {product.name}
           </h3>
         </Link>
-        <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{product.description ?? ""}</p>
-        <p className="mt-auto pt-4 font-heading font-bold text-brand-green">{formatPrice(product.price)}</p>
+        {!compact ? <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">{product.description ?? ""}</p> : null}
+        <div className="mt-auto grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 pt-3">
+          <p className="truncate font-heading font-bold text-primary">{formatPrice(product.price)}</p>
+          <Button
+            size="icon"
+            className="h-9 w-9 rounded-full"
+            aria-label={`Add ${product.name} to cart`}
+            onClick={() => addItem({ productId: product.id, slug: product.slug, name: product.name, price: product.price, imageUrl })}
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+        </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0">
+      {!compact ? <CardFooter className="p-4 pt-0">
         <Link to="/products/$slug" params={{ slug: product.slug }} className="w-full">
           <Button variant="outline" className="w-full gap-2">
-            Take a look
-            <ArrowUpRight className="h-4 w-4" />
+            View product
+            <ShoppingBag className="h-4 w-4" />
           </Button>
         </Link>
-      </CardFooter>
+      </CardFooter> : null}
     </Card>
   );
 }
