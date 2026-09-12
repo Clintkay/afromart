@@ -5,13 +5,14 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
 import type { ProductWithRelations } from "@/lib/products.types";
+import fallbackImage from "@/assets/cat-crafts.jpg";
 
 interface ProductCardProps {
   product: ProductWithRelations;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const imageUrl = product.product_images?.[0]?.url ?? "https://placehold.co/400x400?text=Afro+Mart";
+  const imageUrl = product.product_images?.[0]?.url ?? fallbackImage;
   const imageAlt = product.product_images?.[0]?.alt_text ?? product.name;
 
   return (
@@ -25,13 +26,8 @@ export function ProductCard({ product }: ProductCardProps) {
         />
       </Link>
       <CardContent className="flex flex-1 flex-col p-4">
-        {product.categories ? (
-          <span className="text-xs font-semibold uppercase tracking-widest text-brand-terracotta">
-            {product.categories.name}
-          </span>
-        ) : null}
         <Link to="/products/$slug" params={{ slug: product.slug }}>
-          <h3 className="mt-1 font-heading text-base font-semibold leading-tight text-foreground hover:text-brand-green">
+          <h3 className="font-heading text-base font-semibold leading-tight text-foreground hover:text-brand-green">
             {product.name}
           </h3>
         </Link>

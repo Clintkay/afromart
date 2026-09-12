@@ -1,5 +1,3 @@
-import { Link } from "@tanstack/react-router";
-
 function AppleIcon({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
@@ -22,8 +20,8 @@ function GooglePlayIcon({ className = "" }: { className?: string }) {
 export function StoreBadges({ className = "" }: { className?: string }) {
   return (
     <div className={`flex flex-wrap items-center gap-3 ${className}`}>
-      <Link
-        to="/coming-soon"
+      <a
+        href="#app-preview"
         className="flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-green/40 hover:shadow-md"
       >
         <AppleIcon className="h-6 w-6 text-foreground" />
@@ -31,10 +29,10 @@ export function StoreBadges({ className = "" }: { className?: string }) {
           <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Download on the</span>
           <span className="font-heading text-base font-semibold">App Store</span>
         </span>
-      </Link>
+      </a>
 
-      <Link
-        to="/coming-soon"
+      <a
+        href="#app-preview"
         className="flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-green/40 hover:shadow-md"
       >
         <GooglePlayIcon className="h-6 w-6" />
@@ -42,7 +40,7 @@ export function StoreBadges({ className = "" }: { className?: string }) {
           <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Get it on</span>
           <span className="font-heading text-base font-semibold">Google Play</span>
         </span>
-      </Link>
+      </a>
     </div>
   );
 }

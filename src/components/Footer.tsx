@@ -1,14 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react";
+import { Facebook, Globe2, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { StoreBadges } from "@/components/StoreBadges";
-
-const categories = [
-  { slug: "groceries", label: "Food & groceries" },
-  { slug: "beauty", label: "Beauty & wellness" },
-  { slug: "fashion", label: "Fashion & fabric" },
-  { slug: "home", label: "Home & craft" },
-];
 
 export function Footer() {
   return (
@@ -45,16 +38,14 @@ export function Footer() {
                   All products
                 </Link>
               </li>
-              {categories.map((category) => (
-                <li key={category.slug}>
-                  <Link to="/products" search={{ categorySlug: category.slug }} className="hover:text-brand-green">
-                    {category.label}
-                  </Link>
-                </li>
-              ))}
               <li>
-                <Link to="/sell" className="hover:text-brand-green">
-                  Become a seller
+                 <Link to="/guest" className="hover:text-brand-green">
+                   Browse as guest
+                 </Link>
+               </li>
+               <li>
+                 <Link to="/sell/start" className="hover:text-brand-green">
+                   Start selling
                 </Link>
               </li>
             </ul>
@@ -69,8 +60,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/coming-soon" className="hover:text-brand-green">
-                  Get the app
+                 <Link to="/sell" className="hover:text-brand-green">
+                   Seller information
                 </Link>
               </li>
               <li>
@@ -80,6 +71,16 @@ export function Footer() {
               </li>
             </ul>
             <ul className="mt-6 space-y-2 text-sm text-muted-foreground">
+              <li>
+                <label htmlFor="footer-language" className="flex items-center gap-2 text-foreground">
+                  <Globe2 className="h-4 w-4 text-brand-gold" /> Language
+                </label>
+                <select id="footer-language" className="mt-2 w-full rounded-md border bg-background px-3 py-2 text-sm">
+                  <option>English</option><option>Français</option><option>العربية</option><option>Português</option>
+                  <option>Kiswahili</option><option>Hausa</option><option>Yorùbá</option><option>isiZulu</option>
+                  <option>አማርኛ</option><option>Igbo</option>
+                </select>
+              </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-brand-gold" /> help@afromart.app
               </li>

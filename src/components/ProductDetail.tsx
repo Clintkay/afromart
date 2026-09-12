@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Smartphone, Truck } from "lucide-react";
+import fallbackAsset from "@/assets/cat-crafts.jpg";
 
 export function ProductDetail() {
   const { slug } = useParams({ from: "/products/$slug" });
@@ -29,7 +30,7 @@ export function ProductDetail() {
     );
   }
 
-  const fallbackImage = { url: "https://placehold.co/600x600?text=Afro+Mart", alt_text: product.name };
+  const fallbackImage = { url: fallbackAsset, alt_text: product.name };
   const images = product.product_images?.length ? product.product_images : [fallbackImage];
   const selectedImage = images[Math.min(selectedIndex, images.length - 1)] ?? fallbackImage;
 
@@ -62,12 +63,7 @@ export function ProductDetail() {
         </div>
 
         <div>
-          {product.categories ? (
-            <p className="text-sm font-semibold uppercase tracking-widest text-brand-terracotta">
-              {product.categories.name}
-            </p>
-          ) : null}
-          <h1 className="mt-2 font-heading text-3xl font-bold text-foreground sm:text-4xl">{product.name}</h1>
+          <h1 className="font-heading text-3xl font-bold text-foreground sm:text-4xl">{product.name}</h1>
           <p className="mt-4 font-heading text-2xl font-bold text-brand-green">{formatPrice(product.price)}</p>
           {product.compare_at_price ? (
             <p className="text-sm text-muted-foreground line-through">{formatPrice(product.compare_at_price)}</p>
@@ -76,7 +72,7 @@ export function ProductDetail() {
           <p className="mt-6 leading-7 text-muted-foreground">{product.description}</p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to="/coming-soon">
+            <Link to="/auth" search={{ redirect: "/account" }}>
               <Button size="lg" className="gap-2">
                 <Smartphone className="h-4 w-4" />
                 Order in the app
