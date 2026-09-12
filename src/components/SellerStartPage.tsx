@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, ShieldCheck, Store, UserRound } from "lucide-react";
+import { ArrowRight, ShieldCheck, Store, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AppScreen } from "@/components/AppScreen";
 import registrationScreen from "@/assets/app-screens/seller-registration.png.asset.json";
@@ -34,7 +34,7 @@ export function SellerStartPage() {
           ))}
         </div>
         <div className="mt-16 flex flex-col items-center justify-between gap-6 border-y py-8 sm:flex-row"><div className="flex items-center gap-3"><ShieldCheck className="h-8 w-8 text-brand-green" /><div><h2 className="font-heading text-xl font-bold">Ready to build your storefront?</h2><p className="text-sm text-muted-foreground">Start securely and continue inside Afro Mart.</p></div></div><Link to="/auth" search={{ redirect: "/account" }}><Button><Store className="h-4 w-4" /> Start selling</Button></Link></div>
-      </div>
+      </section>
     </div>
   );
 }
