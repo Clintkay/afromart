@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Mail, Loader2 } from "lucide-react";
+import { Logo } from "@/components/Logo";
+import foodImage from "@/assets/cat-food.jpg";
 
 export function AuthPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -57,8 +59,18 @@ export function AuthPage() {
   };
 
   return (
-    <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col justify-center px-4 py-12 sm:px-6 lg:px-8">
-      <div className="rounded-xl border bg-card p-8 shadow-sm">
+    <div className="grid min-h-screen bg-card lg:grid-cols-[1.05fr_.95fr]">
+      <div className="relative hidden overflow-hidden bg-primary lg:block">
+        <img src={foodImage} alt="African market goods" className="h-full w-full object-cover opacity-55" />
+        <div className="absolute inset-0 bg-primary/60" />
+        <div className="absolute inset-x-12 bottom-14 max-w-xl text-primary-foreground">
+          <p className="text-sm font-semibold uppercase text-accent">Connecting African commerce</p>
+          <p className="mt-4 font-heading text-5xl font-bold leading-tight">Your marketplace. Your community.</p>
+        </div>
+      </div>
+      <div className="flex min-h-screen items-center justify-center px-5 py-10 sm:px-10">
+      <div className="w-full max-w-md rounded-lg border bg-card p-7 shadow-sm sm:p-9">
+        <Link to="/" className="mb-8 flex justify-center"><Logo variant="full" className="h-11" /></Link>
         <h1 className="text-center font-heading text-2xl font-bold">
           {mode === "signin" ? "Sign in to your account" : "Create an account"}
         </h1>
@@ -146,7 +158,7 @@ export function AuthPage() {
             &larr; Back to home
           </Link>
         </div>
-      </div>
+      </div></div>
     </div>
   );
 }

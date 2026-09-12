@@ -28,7 +28,7 @@ export function MarketplaceHome() {
 
   if (showWelcome) {
     return (
-      <section className="min-h-[calc(100vh-4rem)] bg-card px-5 py-8 md:min-h-[calc(100vh-5rem)] md:px-10 md:py-12">
+      <section className="min-h-[calc(100vh-4rem)] bg-card px-5 pb-28 pt-8 md:min-h-[calc(100vh-5rem)] md:px-10 md:py-12">
         <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[.85fr_1.15fr]">
           <div className="order-2 lg:order-1">
             <Logo variant="full" className="h-12 sm:h-14" />
