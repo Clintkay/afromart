@@ -39,17 +39,17 @@ export function Header() {
           >
             Support
           </Link>
-          <Link to="/guest" className="hidden md:block">
-            <Button size="sm">Open app preview</Button>
-          </Link>
+          <Link to="/guest" className="hidden md:block"><Button size="sm">Preview the app</Button></Link>
 
-          <button
-            className="rounded-md p-2 text-foreground md:hidden"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
             onClick={() => setMobileMenuOpen((open) => !open)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          </Button>
         </div>
       </div>
 

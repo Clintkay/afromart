@@ -1,6 +1,13 @@
 # AfroMart Build Roadmap
 
 ## Completed This Turn
+1. Replaced invented app previews with the supplied Afro Mart screen exports.
+2. Rebuilt the landing page around app downloads, guest preview, seller onboarding and support.
+3. Updated guest mode to switch between real Home, Categories, Services and Store screens.
+4. Updated seller onboarding to show the supplied registration, business, KYC and approval journey.
+5. Added the supplied images through the project asset flow and retained account-action gates.
+
+## Previously Completed
 1. Fixed broken images with reliable local fallbacks.
 2. Simplified the header: no Home item, no duplicate Get the app action, Support at the far end.
 3. Removed product-category presentation from the landing and guest experience.
