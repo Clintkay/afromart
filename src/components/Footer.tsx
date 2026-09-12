@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Globe2, Instagram, Mail, Twitter } from "lucide-react";
+import { Facebook, Globe2, Instagram, Twitter } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { StoreBadges } from "@/components/StoreBadges";
 
@@ -80,9 +80,6 @@ export function Footer() {
                   <option>Kiswahili</option><option>Hausa</option><option>Yorùbá</option><option>isiZulu</option>
                   <option>አማርኛ</option><option>Igbo</option>
                 </select>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-brand-gold" /> help@afromart.app
               </li>
             </ul>
           </div>

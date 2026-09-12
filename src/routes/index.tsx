@@ -30,8 +30,8 @@ function LandingPage() {
   return (
     <div>
       <section className="overflow-hidden brand-soft">
-        <div className="mx-auto grid min-h-[calc(100vh-4.25rem)] max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[.9fr_1.1fr] lg:px-8 lg:py-16">
-          <div>
+        <div className="mx-auto grid min-h-[calc(100vh-4.25rem)] max-w-7xl items-center gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[.9fr_1.1fr] lg:gap-10 lg:px-8 lg:py-16">
+          <div className="order-2 lg:order-1">
             <span className="text-sm font-bold uppercase text-brand-green">The Afro Mart app</span>
             <h1 className="mt-5 max-w-3xl font-heading text-5xl font-bold leading-[1.02] text-foreground sm:text-6xl lg:text-7xl">
               African commerce. <span className="text-brand-green">One app.</span>
@@ -46,8 +46,8 @@ function LandingPage() {
             </div>
             <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground"><LockKeyhole className="h-4 w-4 text-brand-gold" /> Explore without an account. Account actions stay locked.</div>
           </div>
-          <div id="app-preview" className="relative flex min-h-[560px] items-center justify-center py-4 sm:min-h-[650px]">
-            <AppScreen src={homeScreen.url} alt="Afro Mart mobile app home screen" priority className="relative z-20 w-[250px] sm:w-[292px]" />
+          <div id="app-preview" className="relative order-1 flex min-h-[320px] items-center justify-center py-2 sm:min-h-[560px] lg:order-2 lg:min-h-[650px] lg:py-4">
+            <AppScreen src={homeScreen.url} alt="Afro Mart mobile app home screen" priority className="relative z-20 w-[150px] sm:w-[250px] lg:w-[292px]" />
             <AppScreen src={serviceScreen.url} alt="Afro Mart services screen" className="absolute left-0 top-24 hidden w-[220px] -rotate-6 opacity-90 sm:block lg:left-4" />
             <AppScreen src={messageScreen.url} alt="Afro Mart messages screen" className="absolute bottom-10 right-0 hidden w-[210px] rotate-6 opacity-90 sm:block lg:right-3" />
           </div>
