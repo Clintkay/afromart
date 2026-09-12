@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Globe2, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react";
+import { Facebook, Globe2, Instagram, Twitter } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { StoreBadges } from "@/components/StoreBadges";
 
@@ -31,28 +31,28 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-brand-green">Explore</h3>
+            <h3 className="font-heading text-sm font-bold uppercase text-brand-green">Afro Mart</h3>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li>
-                <Link to="/products" className="hover:text-brand-green">
-                  All products
+                <Link to="/guest" className="hover:text-brand-green">
+                  Preview the app
                 </Link>
               </li>
               <li>
-                 <Link to="/guest" className="hover:text-brand-green">
-                   Browse as guest
+                 <Link to="/sell/start" className="hover:text-brand-green">
+                   Become a seller
                  </Link>
                </li>
                <li>
-                 <Link to="/sell/start" className="hover:text-brand-green">
-                   Start selling
+                 <Link to="/support" className="hover:text-brand-green">
+                   Contact support
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-heading text-sm font-bold uppercase tracking-widest text-brand-green">Help</h3>
+            <h3 className="font-heading text-sm font-bold uppercase text-brand-green">Help</h3>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li>
                 <Link to="/support" className="hover:text-brand-green">
@@ -60,13 +60,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                 <Link to="/sell" className="hover:text-brand-green">
-                   Seller information
+                 <Link to="/sell/start" className="hover:text-brand-green">
+                   Seller onboarding
                 </Link>
               </li>
               <li>
-                <Link to="/products" className="hover:text-brand-green">
-                  Browse as a guest
+                <Link to="/guest" className="hover:text-brand-green">
+                  Guest access
                 </Link>
               </li>
             </ul>
@@ -80,15 +80,6 @@ export function Footer() {
                   <option>Kiswahili</option><option>Hausa</option><option>Yorùbá</option><option>isiZulu</option>
                   <option>አማርኛ</option><option>Igbo</option>
                 </select>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="h-4 w-4 text-brand-gold" /> help@afromart.app
-              </li>
-              <li className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-brand-gold" /> +234 800 000 0000
-              </li>
-              <li className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-brand-gold" /> Lagos • Nairobi • Accra
               </li>
             </ul>
           </div>

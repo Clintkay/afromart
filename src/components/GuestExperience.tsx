@@ -1,116 +1,51 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Bell, Heart, Home, LockKeyhole, MessageCircle, Search, Store, UserRound, Wrench } from "lucide-react";
+import { Grid2X2, Home, LockKeyhole, MessageCircle, Store, UserRound, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Logo } from "@/components/Logo";
-import foodImage from "@/assets/cat-food.jpg";
-import fabricImage from "@/assets/cat-fabric.jpg";
-import craftImage from "@/assets/cat-crafts.jpg";
-import serviceImage from "@/assets/cat-services.jpg";
+import { AppScreen } from "@/components/AppScreen";
+import homeScreen from "@/assets/app-screens/home.png.asset.json";
+import categoriesScreen from "@/assets/app-screens/categories.png.asset.json";
+import servicesScreen from "@/assets/app-screens/services-home.png.asset.json";
+import storeScreen from "@/assets/app-screens/product-detail.png.asset.json";
+import messagesScreen from "@/assets/app-screens/messages-list.png.asset.json";
 
 const tabs = [
-  { id: "discover", label: "Discover", icon: Home },
-  { id: "stores", label: "Stores", icon: Store },
-  { id: "services", label: "Services", icon: Wrench },
+  { id: "discover", label: "Home", icon: Home, screen: homeScreen.url },
+  { id: "categories", label: "Categories", icon: Grid2X2, screen: categoriesScreen.url },
+  { id: "services", label: "Services", icon: Wrench, screen: servicesScreen.url },
+  { id: "stores", label: "Stores", icon: Store, screen: storeScreen.url },
+  { id: "messages", label: "Messages", icon: MessageCircle, screen: messagesScreen.url, gated: true },
 ] as const;
 
-const content = {
-  discover: [
-    { title: "Abeni Foods", subtitle: "Lagos · Pantry essentials", image: foodImage },
-    { title: "Kente House", subtitle: "Accra · Textiles & design", image: fabricImage },
-  ],
-  stores: [
-    { title: "Bolga Makers", subtitle: "Verified craft collective", image: craftImage },
-    { title: "Abeni Foods", subtitle: "Family-run since 1998", image: foodImage },
-  ],
-  services: [
-    { title: "Tailoring near you", subtitle: "Fittings, alterations & custom work", image: serviceImage },
-    { title: "Event catering", subtitle: "Menus for every gathering", image: foodImage },
-  ],
-};
-
 export function GuestExperience() {
-  const [activeTab, setActiveTab] = useState<keyof typeof content>("discover");
+  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]["id"]>("discover");
   const [gateOpen, setGateOpen] = useState(false);
+  const active = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
+
+  const selectTab = (tab: (typeof tabs)[number]) => {
+    if ("gated" in tab && tab.gated) {
+      setGateOpen(true);
+      return;
+    }
+    setActiveTab(tab.id);
+  };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-secondary/50 px-4 py-10 sm:px-6">
-      <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
-        <section>
-          <span className="text-sm font-semibold text-brand-terracotta">Guest mode</span>
-          <h1 className="mt-3 max-w-3xl font-heading text-4xl font-bold text-foreground sm:text-5xl">
-            Experience Afro Mart before you create an account.
-          </h1>
-          <p className="mt-4 max-w-2xl text-muted-foreground">
-            Search, open stores, explore services and view details freely. We only ask you to sign in when you want to
-            save, message or order.
-          </p>
-
-          <div className="mt-10 grid gap-5 sm:grid-cols-2">
-            {content[activeTab].map((item) => (
-              <article key={item.title} className="overflow-hidden rounded-2xl border bg-card shadow-sm">
-                <img src={item.image} alt="" className="aspect-[4/3] w-full object-cover" />
-                <div className="p-5">
-                  <h2 className="font-heading text-lg font-bold">{item.title}</h2>
-                  <p className="mt-1 text-sm text-muted-foreground">{item.subtitle}</p>
-                  <Button variant="outline" className="mt-5 w-full" onClick={() => setGateOpen(true)}>
-                    <Heart className="h-4 w-4" /> Save for later
-                  </Button>
-                </div>
-              </article>
-            ))}
-          </div>
+    <div className="min-h-[calc(100vh-4rem)] brand-soft px-4 py-10 sm:px-6">
+      <div className="mx-auto grid max-w-6xl items-start gap-10 lg:grid-cols-[.8fr_1.2fr]">
+        <section className="lg:sticky lg:top-28">
+          <span className="text-sm font-bold uppercase text-brand-green">Guest preview</span>
+          <h1 className="mt-4 max-w-xl font-heading text-4xl font-bold text-foreground sm:text-5xl">Step inside the real Afro Mart app.</h1>
+          <p className="mt-4 max-w-lg text-lg text-muted-foreground">Choose a screen to explore. You can browse freely; messaging, saving, booking and ordering need an account.</p>
+          <nav className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3" aria-label="Guest app preview screens">
+            {tabs.map((tab) => <Button key={tab.id} variant={activeTab === tab.id ? "default" : "outline"} className="justify-start" onClick={() => selectTab(tab)}><tab.icon className="h-4 w-4" />{tab.label}</Button>)}
+          </nav>
+          <Button variant="ghost" className="mt-5" onClick={() => setGateOpen(true)}><LockKeyhole className="h-4 w-4" /> Try an account action</Button>
         </section>
 
-        <aside className="lg:sticky lg:top-28 lg:self-start">
-          <div className="overflow-hidden rounded-[2.5rem] border-[8px] border-foreground bg-card shadow-xl">
-            <div className="flex items-center justify-between px-5 pb-3 pt-7">
-              <Logo variant="horizontal" className="h-7" />
-              <Bell className="h-5 w-5 text-muted-foreground" />
-            </div>
-            <div className="px-5 pb-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input placeholder="Search Afro Mart" className="bg-secondary pl-9" />
-              </div>
-            </div>
-            <div className="min-h-96 bg-secondary/60 p-5">
-              <p className="text-xs font-semibold uppercase text-brand-green">Explore freely</p>
-              <h2 className="mt-2 font-heading text-2xl font-bold">{tabs.find((tab) => tab.id === activeTab)?.label}</h2>
-              <div className="mt-5 space-y-3">
-                {content[activeTab].map((item) => (
-                  <button
-                    type="button"
-                    key={item.title}
-                    onClick={() => setGateOpen(true)}
-                    className="flex w-full items-center gap-3 rounded-xl border bg-card p-3 text-left"
-                  >
-                    <img src={item.image} alt="" className="h-16 w-16 rounded-lg object-cover" />
-                    <span>
-                      <span className="block text-sm font-bold">{item.title}</span>
-                      <span className="mt-1 block text-xs text-muted-foreground">View details</span>
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </div>
-            <nav className="grid grid-cols-3 border-t bg-card p-2" aria-label="Guest app preview">
-              {tabs.map((tab) => (
-                <button
-                  type="button"
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-lg text-xs font-semibold ${
-                    activeTab === tab.id ? "bg-brand-green/10 text-brand-green" : "text-muted-foreground"
-                  }`}
-                >
-                  <tab.icon className="h-4 w-4" /> {tab.label}
-                </button>
-              ))}
-            </nav>
-          </div>
-        </aside>
+        <section className="flex justify-center" aria-live="polite">
+          <AppScreen src={active.screen} alt={`Afro Mart ${active.label} app screen`} priority className="w-full max-w-[360px]" />
+        </section>
       </div>
 
       {gateOpen ? (
