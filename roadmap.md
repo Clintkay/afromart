@@ -1,12 +1,13 @@
 # AfroMart Build Roadmap
 
 ## In Progress / This Turn
-1. Apply AfroMart brand system (colors, fonts, logo mark) from uploaded assets.
-2. Add image fallbacks so broken Unsplash URLs do not show alt text.
-3. Extend catalog schema for multi-vendor: `stores`, `sellers`, link products to stores.
-4. Add commerce schema: `orders`, `order_items`, `addresses`.
-5. Add buyer screens still missing: checkout, account orders, wishlist, search results, seller storefront.
-6. Update shared chrome (header with search/wishlist, footer) to match brand.
+1. Fix every broken image and remove unreliable remote image fallbacks.
+2. Simplify the header: no Home item, no duplicate Get the app action, Support at the far end.
+3. Remove product-category presentation from the landing and guest experience.
+4. Rework the landing page around the mobile app experience and guest preview.
+5. Replace the coming-soon page with the seller onboarding screens from the approved design reference.
+6. Update the footer language presentation.
+7. Keep guest mode browse-only: no sign-up required, but no purchases or restricted account actions.
 
 ## Upcoming
 - Payment integration (Stripe or Paystack) and order lifecycle.
