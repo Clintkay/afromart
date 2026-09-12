@@ -17,6 +17,7 @@
 7. Kept guest mode browse-only: no sign-up required, but no purchases or restricted account actions.
 
 ## Upcoming
+- Replace the marketing landing page with the real responsive Afro Mart app, connecting the uploaded buyer screens and existing backend.
 - Payment integration (Stripe or Paystack) and order lifecycle.
 - Reviews and ratings.
 - Buyer-seller chat / support.
