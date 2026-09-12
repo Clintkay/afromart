@@ -6,13 +6,15 @@ import { productOptions } from "@/lib/queries";
 import { formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Smartphone, Truck } from "lucide-react";
+import { ShoppingBag, Truck } from "lucide-react";
 import fallbackAsset from "@/assets/cat-crafts.jpg";
+import { useCart } from "@/lib/cart-context";
 
 export function ProductDetail() {
   const { slug } = useParams({ from: "/products/$slug" });
   const { data: product, isLoading } = useSuspenseQuery(productOptions(slug));
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const { addItem } = useCart();
 
   if (isLoading || !product) {
     return (
@@ -72,12 +74,9 @@ export function ProductDetail() {
           <p className="mt-6 leading-7 text-muted-foreground">{product.description}</p>
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to="/auth" search={{ redirect: "/account" }}>
-              <Button size="lg" className="gap-2">
-                <Smartphone className="h-4 w-4" />
-                Order in the app
-              </Button>
-            </Link>
+            <Button size="lg" className="gap-2" onClick={() => addItem({ productId: product.id, slug: product.slug, name: product.name, price: product.price, imageUrl: selectedImage.url })}>
+              <ShoppingBag className="h-4 w-4" />Add to cart
+            </Button>
             <Link to="/products">
               <Button size="lg" variant="outline">
                 Keep browsing

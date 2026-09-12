@@ -29,6 +29,20 @@
       "when": 1788985071836,
       "tag": "0003_add_stores_orders_wishlist",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789230833981,
+      "tag": "0004_expand_user_profiles_for_marketplace",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1789231085839,
+      "tag": "0005_add_secure_marketplace_user_roles",
+      "breakpoints": true
     }
   ]
 }
