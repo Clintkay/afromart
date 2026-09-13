@@ -7,7 +7,7 @@ import { useCart } from "@/lib/cart-context";
 import type { ReactNode } from "react";
 
 const primaryNav = [
-  { to: "/" as const, label: "Home", icon: Home },
+  { to: "/home" as const, label: "Home", icon: Home },
   { to: "/products" as const, label: "Explore", icon: Grid2X2 },
   { to: "/guest" as const, label: "Services", icon: Wrench },
   { to: "/support" as const, label: "Messages", icon: MessageCircle },
@@ -17,7 +17,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { user } = useAuth();
   const { totalItems } = useCart();
-  const isAuth = pathname === "/auth";
+  const isAuth = pathname === "/auth" || pathname === "/";
   const accountTarget = user ? "/account" : "/auth";
 
   if (isAuth) return <>{children}</>;
@@ -25,13 +25,13 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground md:grid md:grid-cols-[17rem_minmax(0,1fr)]">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-68 flex-col border-r bg-card px-6 py-7 md:flex">
-        <Link to="/" aria-label="Afro Mart home" className="inline-flex">
+        <Link to="/home" aria-label="Afro Mart home" className="inline-flex">
           <Logo className="h-12" />
         </Link>
 
         <nav className="mt-10 flex flex-1 flex-col gap-2" aria-label="Main navigation">
           {primaryNav.map((item) => {
-            const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+            const active = pathname.startsWith(item.to);
             return (
               <Link
                 key={item.label}
@@ -73,7 +73,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="min-w-0 md:col-start-2">
         <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur-md">
           <div className="grid h-16 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6 md:h-20 lg:px-10">
-            <Link to="/" className="md:hidden" aria-label="Afro Mart home"><Logo variant="mark" className="h-9" /></Link>
+            <Link to="/home" className="md:hidden" aria-label="Afro Mart home"><Logo variant="mark" className="h-9" /></Link>
             <Link to="/products" search={{}} className="mx-auto flex w-full max-w-2xl items-center gap-3 rounded-full border bg-card px-4 py-2.5 text-sm text-muted-foreground shadow-sm">
               <Search className="h-4 w-4 shrink-0" />
               <span className="truncate">Search goods, stores and services</span>
@@ -94,13 +94,13 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <nav className="fixed inset-x-0 bottom-0 z-50 grid h-18 grid-cols-5 border-t bg-card/95 px-2 pb-[max(.35rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-md md:hidden" aria-label="Mobile navigation">
         {[
-          { to: "/" as const, label: "Home", icon: Home },
+          { to: "/home" as const, label: "Home", icon: Home },
           { to: "/products" as const, label: "Explore", icon: Grid2X2 },
           { to: "/cart" as const, label: "Cart", icon: ShoppingBag, badge: totalItems },
           { to: "/support" as const, label: "Messages", icon: MessageCircle },
           { to: accountTarget, label: "Profile", icon: UserRound },
         ].map((item) => {
-          const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
+          const active = pathname.startsWith(item.to);
           return (
             item.to === "/auth" ? (
               <Link key={item.label} to="/auth" search={{ redirect: "/account" }} className={`flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>

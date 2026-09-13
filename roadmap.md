@@ -10,12 +10,15 @@
 7. Kept guest mode browse-only: no sign-up required, but no purchases or restricted account actions.
 
 ## Completed This Turn
-1. Replaced the marketing landing page with a responsive marketplace welcome and connected home feed.
-2. Added an adaptive desktop sidebar and mobile bottom navigation.
-3. Connected product cards and product detail pages to the working cart.
-4. Added expanded buyer profile fields in the backend.
-5. Added secure buyer, seller, service-provider, delivery-partner and admin roles.
-6. Updated sign-in to match the new full-screen marketplace experience.
+1. Rebuilt the welcome, login, and sign-up entry flow from the supplied onboarding screens.
+2. Added the supplied community artwork and kept the entry flow separate from the marketplace navigation.
+3. Connected onboarding to the live account system and moved the marketplace feed to its own home screen.
+4. Replaced the marketing landing page with a responsive marketplace welcome and connected home feed.
+5. Added an adaptive desktop sidebar and mobile bottom navigation.
+6. Connected product cards and product detail pages to the working cart.
+7. Added expanded buyer profile fields in the backend.
+8. Added secure buyer, seller, service-provider, delivery-partner and admin roles.
+9. Updated sign-in to match the new full-screen marketplace experience.
 
 ## Upcoming
 - Payment integration (Stripe or Paystack) and order lifecycle.
