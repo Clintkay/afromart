@@ -79,7 +79,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                <span className="truncate">Search Afromart</span>
             </Link>
             <div className="flex shrink-0 items-center gap-1">
-              <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label="Support">
+              <Button asChild variant="ghost" size="icon" aria-label="Support">
                 <Link to="/support"><Headphones className="h-5 w-5" /></Link>
               </Button>
               <Button asChild variant="ghost" size="icon" aria-label="Notifications">

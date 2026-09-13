@@ -1,5 +1,14 @@
 # AfroMart Build Roadmap
 
+## Current request — September 13
+- [ ] Diagnose confirmation email/code failures and verify delivery.
+- [ ] Integrate payments for Nigeria after provider approval and credentials.
+- [ ] Add international dialing-code selection and responsive phone fields.
+- [ ] Restore visible Support access on small screens.
+- [ ] Replace inert language controls with translated app content.
+- [ ] Send a welcome email after first Google signup (requires verified sender).
+- [ ] Align remaining screens with uploaded designs and verify small-screen layouts.
+
 ## Previously Completed
 1. Fixed broken images with reliable local fallbacks.
 2. Simplified the header: no Home item, no duplicate Get the app action, Support at the far end.
