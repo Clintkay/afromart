@@ -43,6 +43,13 @@
       "when": 1789231085839,
       "tag": "0005_add_secure_marketplace_user_roles",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789277780414,
+      "tag": "0006_secure_functions_stores_and_roles",
+      "breakpoints": true
     }
   ]
 }
