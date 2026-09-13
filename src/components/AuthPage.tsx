@@ -11,6 +11,8 @@ import { ChevronDown, ChevronLeft, Eye, EyeOff, Globe2, Loader2 } from "lucide-r
 import { Logo } from "@/components/Logo";
 import communityArtwork from "@/assets/onboarding/afromart-community.png.asset.json";
 import { z } from "zod";
+import { parsePhoneNumberFromString, type CountryCode } from "libphonenumber-js";
+import { InternationalPhoneInput } from "@/components/InternationalPhoneInput";
 
 const emailSchema = z.string().trim().email().max(255);
 const passwordSchema = z.string().min(8).max(128);
@@ -21,6 +23,7 @@ export function AuthPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneCountry, setPhoneCountry] = useState<CountryCode>("NG");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -59,11 +62,13 @@ export function AuthPage() {
       const safeEmail = emailSchema.parse(email);
       const safePassword = passwordSchema.parse(password);
       if (mode === "signup") {
+        const parsedPhone = parsePhoneNumberFromString(phone, phoneCountry);
+        if (!parsedPhone?.isValid()) throw new Error("Enter a valid phone number for the selected country.");
         const { data, error } = await supabase.auth.signUp({
           email: safeEmail,
           password: safePassword,
           options: {
-            data: { full_name: fullName.trim().slice(0, 100), phone: phone.trim().slice(0, 30) },
+            data: { full_name: fullName.trim().slice(0, 100), phone: parsedPhone.number },
             emailRedirectTo: `${window.location.origin}/auth?redirect=${encodeURIComponent(redirect)}`,
           },
         });
@@ -109,13 +114,13 @@ export function AuthPage() {
     event.preventDefault();
     setLoading(true);
     const { error } = await supabase.auth.verifyOtp({
-      email,
+      email: email.trim(),
       token: verificationCode.trim(),
       type: verificationPurpose === "signup" ? "signup" : "email",
     });
     setLoading(false);
     if (error) {
-      toast.error(error.message);
+      toast.error(error.code === "otp_expired" ? "This code has expired or is invalid. Request a new email and use only the most recent code or link." : error.message);
       return;
     }
     navigate({ to: redirect });
@@ -201,10 +206,10 @@ export function AuthPage() {
           <form onSubmit={handleVerifyCode} className="mx-auto my-auto w-full max-w-md pb-12">
             <Logo variant="horizontal" className="mb-8 h-8" />
              <h1 className="font-heading text-3xl font-bold">{verificationPurpose === "signup" ? "Confirm your email" : "Secure login check"}</h1>
-             <p className="mt-2 text-sm leading-6 text-muted-foreground">Enter the six-digit code sent by Afromart to <span className="font-semibold text-foreground">{email}</span>, or use the secure link in that email.</p>
+             <p className="mt-2 break-words text-sm leading-6 text-muted-foreground">Check <span className="font-semibold text-foreground">{email}</span> for a confirmation email. Open its secure link, or enter a code if the email includes one. Check spam too, and use only the newest email.</p>
             <Label htmlFor="verification-code" className="mt-8 block">Verification code</Label>
-            <Input id="verification-code" inputMode="numeric" autoComplete="one-time-code" value={verificationCode} onChange={(event) => setVerificationCode(event.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="000000" className="mt-2 h-14 text-center text-2xl tracking-[0.35em]" minLength={6} maxLength={6} required />
-            <Button type="submit" size="lg" className="mt-5 w-full" disabled={loading || verificationCode.length !== 6}>{loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}Verify email</Button>
+            <Input id="verification-code" inputMode="numeric" autoComplete="one-time-code" value={verificationCode} onChange={(event) => setVerificationCode(event.target.value.replace(/\D/g, "").slice(0, 10))} placeholder="Verification code" className="mt-2 h-14 text-center text-xl" minLength={6} maxLength={10} required />
+            <Button type="submit" size="lg" className="mt-5 w-full" disabled={loading || verificationCode.length < 6}>{loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}Verify email</Button>
             <Button type="button" variant="link" className="mt-3 w-full" onClick={handleResendConfirmation} disabled={loading || resendSeconds > 0}>{resendSeconds > 0 ? `Send again in ${resendSeconds}s` : "Send another email"}</Button>
           </form>
         </section>
@@ -259,7 +264,7 @@ export function AuthPage() {
             {mode === "signup" ? (
               <div>
                 <Label htmlFor="phone">Phone Number</Label>
-                <Input id="phone" type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required placeholder="e.g. +234 803 123 4567" className="mt-1.5 h-12" autoComplete="tel" />
+                <InternationalPhoneInput country={phoneCountry} onCountryChange={setPhoneCountry} value={phone} onChange={setPhone} />
               </div>
             ) : null}
             <div>
