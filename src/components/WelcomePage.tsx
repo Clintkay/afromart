@@ -1,9 +1,25 @@
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import communityArtwork from "@/assets/onboarding/afromart-community.png.asset.json";
 
 export function WelcomePage() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setShowSplash(false), 1100);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return (
+      <main className="grid min-h-dvh place-items-center bg-card" aria-label="Afro Mart is loading">
+        <Logo variant="horizontal" className="h-auto w-24 animate-pulse" />
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-dvh bg-card px-6 py-8 sm:px-10 lg:grid lg:grid-cols-[minmax(24rem,31rem)_minmax(0,1fr)] lg:p-0">
       <section className="mx-auto flex min-h-[calc(100dvh-4rem)] w-full max-w-md flex-col lg:min-h-dvh lg:px-12 lg:py-10">
