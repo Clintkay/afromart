@@ -239,12 +239,6 @@ export function AuthPage() {
                 <Label htmlFor="phone">Phone Number</Label>
                 <Input id="phone" type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required placeholder="e.g. +234 803 123 4567" className="mt-1.5 h-12" autoComplete="tel" />
               </div>
-             <input aria-hidden="true" tabIndex={-1} autoComplete="off" className="hidden" name="website" value={website} onChange={(event) => setWebsite(event.target.value)} />
-             <label className="flex min-h-13 cursor-pointer items-center gap-3 rounded-lg border bg-secondary/40 px-4 py-3 text-sm font-medium">
-               <input type="checkbox" checked={humanChecked} onChange={(event) => setHumanChecked(event.target.checked)} className="h-4 w-4 accent-primary" required />
-               <span>I’m human</span>
-               <span className="ml-auto text-xs font-semibold text-muted-foreground">Security check</span>
-             </label>
             ) : null}
             <div>
               <Label htmlFor="password">Password</Label>
@@ -255,6 +249,12 @@ export function AuthPage() {
                 </Button>
               </div>
             </div>
+            <input aria-hidden="true" tabIndex={-1} autoComplete="off" className="hidden" name="website" value={website} onChange={(event) => setWebsite(event.target.value)} />
+            <label className="flex min-h-13 cursor-pointer items-center gap-3 rounded-lg border bg-secondary/40 px-4 py-3 text-sm font-medium">
+              <input type="checkbox" checked={humanChecked} onChange={(event) => setHumanChecked(event.target.checked)} className="h-4 w-4 accent-primary" required />
+              <span>I’m human</span>
+              <span className="ml-auto text-xs font-semibold text-muted-foreground">Security check</span>
+            </label>
             {mode === "signin" ? (
               <div className="flex justify-end">
                 <Button type="button" variant="link" onClick={handleForgotPassword} className="h-auto px-0 text-sm text-primary">Forgot Password?</Button>
