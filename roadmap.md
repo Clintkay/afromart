@@ -1,5 +1,14 @@
 # AfroMart Build Roadmap
 
+## Current request — September 13
+- [ ] Delivery remains unverified: logs show expired/invalid tokens; improved newest-email guidance and accept 6–10 digit codes.
+- [ ] Paystack integration awaits approval and credentials; brief also names Ecobank Pay and MTN MoMo.
+- [x] Add 245 international dialing-code choices and validated responsive signup phone fields.
+- [x] Restore visible Support access on small screens (browser verified).
+- [ ] Partial: French, Portuguese and Swahili account/navigation translations added; remaining content and six launch languages still need translation.
+- [ ] Send a welcome email after first Google signup (requires verified sender).
+- [ ] Align remaining screens with uploaded designs and verify small-screen layouts.
+
 ## Previously Completed
 1. Fixed broken images with reliable local fallbacks.
 2. Simplified the header: no Home item, no duplicate Get the app action, Support at the far end.
