@@ -56,3 +56,18 @@ export const addressesOptions = queryOptions<Tables<"addresses">[]>({
   queryKey: ["addresses"],
   queryFn: () => getAddresses(),
 });
+
+export const notificationsOptions = queryOptions<AppNotification[]>({
+  queryKey: ["notifications"],
+  queryFn: () => getNotifications(),
+});
+
+export const supportTicketsOptions = queryOptions<SupportTicketWithMessages[]>({
+  queryKey: ["support-tickets"],
+  queryFn: () => getSupportTickets(),
+});
+
+export const profileOptions = queryOptions<Profile | null>({
+  queryKey: ["profile"],
+  queryFn: () => getProfile(),
+});
