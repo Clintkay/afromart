@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Bell, Grid2X2, Headphones, Home, MessageCircle, Search, ShoppingBag, Store, UserRound, Wrench } from "lucide-react";
+import { Bell, Grid2X2, Headphones, Home, Package, Search, ShoppingBag, Store, UserRound, Wrench } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
@@ -8,9 +8,9 @@ import type { ReactNode } from "react";
 
 const primaryNav = [
   { to: "/home" as const, label: "Home", icon: Home },
-  { to: "/products" as const, label: "Explore", icon: Grid2X2 },
-  { to: "/guest" as const, label: "Services", icon: Wrench },
-  { to: "/support" as const, label: "Messages", icon: MessageCircle },
+  { to: "/categories" as const, label: "Categories", icon: Grid2X2 },
+  { to: "/services" as const, label: "Services", icon: Wrench },
+  { to: "/account" as const, label: "Orders", icon: Package },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -25,7 +25,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground md:grid md:grid-cols-[17rem_minmax(0,1fr)]">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-68 flex-col border-r bg-card px-6 py-7 md:flex">
-        <Link to="/home" aria-label="Afro Mart home" className="inline-flex">
+        <Link to="/home" aria-label="Afromart home" className="inline-flex">
           <Logo className="h-12" />
         </Link>
 
@@ -62,7 +62,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="rounded-lg bg-primary p-4 text-primary-foreground">
-          <p className="text-xs font-semibold uppercase text-primary-foreground/70">Sell on Afro Mart</p>
+          <p className="text-xs font-semibold uppercase text-primary-foreground/70">Sell on Afromart</p>
           <p className="mt-1 text-sm font-semibold">Grow your business across Africa.</p>
           <Button asChild variant="secondary" size="sm" className="mt-4 w-full">
             <Link to="/sell/start"><Store className="h-4 w-4" />Start selling</Link>
@@ -73,10 +73,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="min-w-0 md:col-start-2">
         <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur-md">
           <div className="grid h-16 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 sm:gap-3 sm:px-6 md:h-20 lg:px-10">
-            <Link to="/home" className="md:hidden" aria-label="Afro Mart home"><Logo variant="mark" className="h-9" /></Link>
+            <Link to="/home" className="md:hidden" aria-label="Afromart home"><Logo variant="mark" className="h-9" /></Link>
             <Link to="/products" search={{}} className="mx-auto flex min-w-0 w-full max-w-2xl items-center gap-2 rounded-full border bg-card px-3 py-2.5 text-sm text-muted-foreground shadow-sm sm:gap-3 sm:px-4">
               <Search className="h-4 w-4 shrink-0" />
-              <span className="truncate">Search Afro Mart</span>
+               <span className="truncate">Search Afromart</span>
             </Link>
             <div className="flex shrink-0 items-center gap-1">
               <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label="Support">
@@ -95,9 +95,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       <nav className="fixed inset-x-0 bottom-0 z-50 grid min-h-16 grid-cols-5 border-t bg-card/95 px-1 pb-[max(.35rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-md md:hidden" aria-label="Mobile navigation">
         {[
           { to: "/home" as const, label: "Home", icon: Home },
-          { to: "/products" as const, label: "Explore", icon: Grid2X2 },
+          { to: "/categories" as const, label: "Categories", icon: Grid2X2 },
           { to: "/cart" as const, label: "Cart", icon: ShoppingBag, badge: totalItems },
-          { to: "/support" as const, label: "Messages", icon: MessageCircle },
+          { to: "/services" as const, label: "Services", icon: Wrench },
           { to: accountTarget, label: "Profile", icon: UserRound },
         ].map((item) => {
           const active = pathname.startsWith(item.to);

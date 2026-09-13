@@ -2,7 +2,7 @@ import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Loader2, User, Package } from "lucide-react";
+import { ChevronRight, Loader2, User, Package } from "lucide-react";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ordersOptions, addressesOptions } from "@/lib/queries";
 import { formatPrice } from "@/lib/utils";
@@ -46,7 +46,8 @@ export function AccountPage() {
             ) : (
               <ul className="mt-3 space-y-3">
                 {orders.map((order) => (
-                  <li key={order.id} className="flex items-center justify-between rounded-lg border p-4">
+                  <li key={order.id}>
+                    <Link to="/orders/$orderId" params={{ orderId: order.id }} className="flex items-center justify-between rounded-lg border p-4 transition hover:border-primary/35 hover:bg-secondary/40">
                     <div className="flex items-center gap-3">
                       <Package className="h-5 w-5 text-muted-foreground" />
                       <div>
@@ -54,12 +55,16 @@ export function AccountPage() {
                         <p className="text-xs text-muted-foreground">{new Date(order.created_at ?? "").toLocaleDateString()}</p>
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="flex items-center gap-3 text-right">
+                      <div>
                       <p className="font-semibold">{formatPrice(order.total)}</p>
                       <Badge variant={order.status === "delivered" ? "default" : "secondary"}>
                         {order.status}
                       </Badge>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
                     </div>
+                    </Link>
                   </li>
                 ))}
               </ul>
