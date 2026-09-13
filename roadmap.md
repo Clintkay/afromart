@@ -24,12 +24,12 @@
 12. Tightened the marketplace, product grid and account screens for small mobile displays.
 
 ## In Progress — Real App Completion
-- [ ] Reduce onboarding branding and standardize the name “Afromart”.
-- [ ] Require email confirmation, robot verification, and two-step email login.
-- [ ] Fix Google return handling through the public sign-in screen.
-- [ ] Build a dedicated category browser with category-specific product results.
-- [ ] Add order history, order detail, delivery progress, and tracking screens.
-- [ ] Add a Fiverr-style services marketplace and service-order journey.
+- [x] Reduce onboarding branding and standardize the name “Afromart”.
+- [x] Require email confirmation, bot screening, and a second email step after password login.
+- [x] Fix Google return handling through the public sign-in screen.
+- [x] Build a dedicated category browser with category-specific product results.
+- [x] Add order history, order detail, delivery progress, and tracking screens.
+- [x] Add a Fiverr-style services marketplace discovery screen.
 
 ## Upcoming
 - Payment integration (Stripe or Paystack).

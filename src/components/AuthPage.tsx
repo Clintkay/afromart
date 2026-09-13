@@ -26,6 +26,7 @@ export function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [awaitingVerification, setAwaitingVerification] = useState(false);
+  const [verificationPurpose, setVerificationPurpose] = useState<"signup" | "login">("signup");
   const [verificationCode, setVerificationCode] = useState("");
   const [humanChecked, setHumanChecked] = useState(false);
   const [website, setWebsite] = useState("");
@@ -71,6 +72,7 @@ export function AuthPage() {
           navigate({ to: redirect });
           return;
         }
+        setVerificationPurpose("signup");
         setAwaitingVerification(true);
         setResendSeconds(60);
         toast.success("We sent a confirmation email to you.");
@@ -79,12 +81,22 @@ export function AuthPage() {
         if (error) throw error;
         if (!data.user.email_confirmed_at) {
           await supabase.auth.signOut();
+          setVerificationPurpose("signup");
           setAwaitingVerification(true);
           setResendSeconds(0);
           toast.error("Confirm your email before signing in.");
           return;
         }
-        navigate({ to: redirect });
+        await supabase.auth.signOut();
+        const { error: otpError } = await supabase.auth.signInWithOtp({
+          email: safeEmail,
+          options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/auth?redirect=${encodeURIComponent(redirect)}` },
+        });
+        if (otpError) throw otpError;
+        setVerificationPurpose("login");
+        setAwaitingVerification(true);
+        setResendSeconds(60);
+        toast.success("We sent a secure login code to your email.");
       }
     } catch (err) {
       toast.error(err instanceof z.ZodError ? "Enter a valid email and a password of at least 8 characters." : err instanceof Error ? err.message : "Authentication failed");
@@ -99,7 +111,7 @@ export function AuthPage() {
     const { error } = await supabase.auth.verifyOtp({
       email,
       token: verificationCode.trim(),
-      type: "signup",
+      type: verificationPurpose === "signup" ? "signup" : "email",
     });
     setLoading(false);
     if (error) {
@@ -112,11 +124,16 @@ export function AuthPage() {
   const handleResendConfirmation = async () => {
     if (resendSeconds > 0) return;
     setLoading(true);
-    const { error } = await supabase.auth.resend({
-      type: "signup",
-      email,
-      options: { emailRedirectTo: `${window.location.origin}/auth?redirect=${encodeURIComponent(redirect)}` },
-    });
+    const { error } = verificationPurpose === "signup"
+      ? await supabase.auth.resend({
+          type: "signup",
+          email,
+          options: { emailRedirectTo: `${window.location.origin}/auth?redirect=${encodeURIComponent(redirect)}` },
+        })
+      : await supabase.auth.signInWithOtp({
+          email,
+          options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/auth?redirect=${encodeURIComponent(redirect)}` },
+        });
     setLoading(false);
     if (error) {
       toast.error(error.message);
@@ -166,6 +183,7 @@ export function AuthPage() {
     setPassword("");
     setAwaitingVerification(false);
     setVerificationCode("");
+    setVerificationPurpose("signup");
     setHumanChecked(false);
   };
 
@@ -182,8 +200,8 @@ export function AuthPage() {
           </Button>
           <form onSubmit={handleVerifyCode} className="mx-auto my-auto w-full max-w-md pb-12">
             <Logo variant="horizontal" className="mb-8 h-8" />
-            <h1 className="font-heading text-3xl font-bold">Check your email</h1>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">Enter the confirmation code sent to <span className="font-semibold text-foreground">{email}</span>, or use the confirmation link in the email.</p>
+             <h1 className="font-heading text-3xl font-bold">{verificationPurpose === "signup" ? "Confirm your email" : "Secure login check"}</h1>
+             <p className="mt-2 text-sm leading-6 text-muted-foreground">Enter the six-digit code sent by Afromart to <span className="font-semibold text-foreground">{email}</span>, or use the secure link in that email.</p>
             <Label htmlFor="verification-code" className="mt-8 block">Verification code</Label>
             <Input id="verification-code" inputMode="numeric" autoComplete="one-time-code" value={verificationCode} onChange={(event) => setVerificationCode(event.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="000000" className="mt-2 h-14 text-center text-2xl tracking-[0.35em]" minLength={6} maxLength={6} required />
             <Button type="submit" size="lg" className="mt-5 w-full" disabled={loading || verificationCode.length !== 6}>{loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}Verify email</Button>
