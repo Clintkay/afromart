@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
@@ -20,8 +20,17 @@ export function AuthPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [awaitingVerification, setAwaitingVerification] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
   const navigate = useNavigate();
   const redirect = typeof search.redirect === "string" ? search.redirect : "/home";
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) navigate({ to: redirect });
+    });
+  }, [navigate, redirect]);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,10 +41,14 @@ export function AuthPage() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: { data: { full_name: fullName, phone } },
+          options: {
+            data: { full_name: fullName, phone },
+            emailRedirectTo: `${window.location.origin}/home`,
+          },
         });
         if (error) throw error;
-        toast.success("Check your email to confirm your account.");
+        setAwaitingVerification(true);
+        toast.success("We sent a confirmation email to you.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -46,6 +59,37 @@ export function AuthPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleVerifyCode = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+    const { error } = await supabase.auth.verifyOtp({
+      email,
+      token: verificationCode.trim(),
+      type: "signup",
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    navigate({ to: redirect });
+  };
+
+  const handleResendConfirmation = async () => {
+    setLoading(true);
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email,
+      options: { emailRedirectTo: `${window.location.origin}/home` },
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("A new confirmation email has been sent.");
   };
 
   const handleForgotPassword = async () => {
@@ -64,11 +108,13 @@ export function AuthPage() {
   };
 
   const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+      redirect_uri: `${window.location.origin}/home`,
     });
 
     if (result.error) {
+      setGoogleLoading(false);
       toast.error(result.error.message);
       return;
     }
@@ -83,7 +129,34 @@ export function AuthPage() {
   const switchMode = (nextMode: "signin" | "signup") => {
     setMode(nextMode);
     setPassword("");
+    setAwaitingVerification(false);
+    setVerificationCode("");
   };
+
+  if (awaitingVerification) {
+    return (
+      <main className="grid min-h-dvh bg-card lg:grid-cols-[minmax(0,1fr)_minmax(28rem,34rem)]">
+        <section className="relative hidden min-h-dvh overflow-hidden bg-primary lg:block">
+          <img src={communityArtwork.url} alt="African makers and merchants" className="absolute inset-0 h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-primary/35" />
+        </section>
+        <section className="flex min-h-dvh flex-col px-5 py-5 sm:px-10 lg:justify-center lg:px-14">
+          <Button variant="ghost" size="icon" className="-ml-3 text-primary" onClick={() => setAwaitingVerification(false)} aria-label="Back to sign up">
+            <ChevronLeft className="h-7 w-7" />
+          </Button>
+          <form onSubmit={handleVerifyCode} className="mx-auto my-auto w-full max-w-md pb-12">
+            <Logo variant="horizontal" className="mb-10 h-11" />
+            <h1 className="font-heading text-3xl font-bold">Check your email</h1>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">Enter the confirmation code sent to <span className="font-semibold text-foreground">{email}</span>, or use the confirmation link in the email.</p>
+            <Label htmlFor="verification-code" className="mt-8 block">Verification code</Label>
+            <Input id="verification-code" inputMode="numeric" autoComplete="one-time-code" value={verificationCode} onChange={(event) => setVerificationCode(event.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="000000" className="mt-2 h-14 text-center text-2xl tracking-[0.35em]" minLength={6} maxLength={6} required />
+            <Button type="submit" size="lg" className="mt-5 w-full" disabled={loading || verificationCode.length !== 6}>{loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}Verify email</Button>
+            <Button type="button" variant="link" className="mt-3 w-full" onClick={handleResendConfirmation} disabled={loading}>Send another email</Button>
+          </form>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="grid min-h-dvh bg-card lg:grid-cols-[minmax(0,1fr)_minmax(28rem,34rem)]">
@@ -97,7 +170,7 @@ export function AuthPage() {
         </div>
       </section>
 
-      <section className="flex min-h-dvh flex-col px-6 pb-8 pt-6 sm:px-10 lg:px-14 lg:py-10">
+      <section className="flex min-h-dvh flex-col px-5 pb-5 pt-4 sm:px-10 sm:pb-8 sm:pt-6 lg:px-14 lg:py-10">
         <div className="flex items-center justify-between">
           <Button asChild variant="ghost" size="icon" className="-ml-3 text-primary" aria-label="Back to welcome">
             <Link to="/"><ChevronLeft className="h-7 w-7" /></Link>
@@ -109,7 +182,7 @@ export function AuthPage() {
           ) : <span />}
         </div>
 
-        <div className="mx-auto mt-9 w-full max-w-md lg:my-auto">
+        <div className="mx-auto mt-5 w-full max-w-md sm:mt-9 lg:my-auto">
           <Link to="/" className="mb-9 hidden justify-center lg:flex"><Logo variant="horizontal" className="h-12" /></Link>
           <h1 className="font-heading text-3xl font-bold text-foreground">
             {mode === "signin" ? "Welcome Back" : "Create Account"}
@@ -118,7 +191,7 @@ export function AuthPage() {
             {mode === "signin" ? "Log in to continue purchasing authentic goods." : "Join AfroMart to shop authentic Pan-African items."}
           </p>
 
-          <form onSubmit={handleEmailSubmit} className="mt-8 space-y-4">
+          <form onSubmit={handleEmailSubmit} className="mt-5 space-y-3 sm:mt-8 sm:space-y-4">
             {mode === "signup" ? (
               <div>
                 <Label htmlFor="full-name">Full Name</Label>
@@ -155,7 +228,8 @@ export function AuthPage() {
             </Button>
           </form>
 
-          <Button variant="outline" size="lg" className="mt-3 h-13 w-full font-bold" onClick={handleGoogleSignIn} type="button">
+          <Button variant="outline" size="lg" className="mt-3 h-13 w-full font-bold" onClick={handleGoogleSignIn} type="button" disabled={googleLoading}>
+            {googleLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
             <svg className="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -168,7 +242,7 @@ export function AuthPage() {
           <div className="my-7 hidden items-center lg:flex"><Separator className="flex-1" /><span className="mx-3 text-xs text-muted-foreground">OR</span><Separator className="flex-1" /></div>
         </div>
 
-        <div className="mt-auto pt-10 text-center text-sm text-muted-foreground">
+        <div className="mt-auto pt-5 text-center text-sm text-muted-foreground sm:pt-10">
           {mode === "signin" ? "Don't have an account?" : "Already have an account?"}{" "}
           <Button type="button" variant="link" onClick={() => switchMode(mode === "signin" ? "signup" : "signin")} className="h-auto px-0 font-bold text-primary">
             {mode === "signin" ? "Sign Up" : "Log In"}

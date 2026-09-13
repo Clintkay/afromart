@@ -19,6 +19,9 @@
 7. Added expanded buyer profile fields in the backend.
 8. Added secure buyer, seller, service-provider, delivery-partner and admin roles.
 9. Updated sign-in to match the new full-screen marketplace experience.
+10. Corrected Google sign-in to return users to the marketplace instead of the welcome screen.
+11. Added email confirmation, code entry and resend states to account creation.
+12. Tightened the marketplace, product grid and account screens for small mobile displays.
 
 ## Upcoming
 - Payment integration (Stripe or Paystack) and order lifecycle.

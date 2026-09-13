@@ -36,13 +36,13 @@ export function ProductsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-3 py-6 sm:px-6 sm:py-12 lg:px-8">
       <h1 className="font-heading text-3xl font-bold">Explore Afro Mart</h1>
       <p className="mt-2 text-muted-foreground">
         Browse listings as a guest. Sign in is only needed to save, message or order.
       </p>
 
-      <div className="mt-8 flex flex-col gap-6 lg:flex-row">
+      <div className="mt-6 flex flex-col gap-5 lg:mt-8 lg:flex-row lg:gap-6">
         <aside className="w-full shrink-0 lg:w-64">
           <form onSubmit={handleSearch} className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -59,9 +59,9 @@ export function ProductsPage() {
 
         <div className="flex-1">
           {products && products.length > 0 ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} compact />
               ))}
             </div>
           ) : (

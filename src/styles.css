@@ -175,6 +175,8 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-body);
+    min-width: 320px;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
