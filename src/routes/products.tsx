@@ -12,9 +12,9 @@ export const Route = createFileRoute("/products")({
   },
   head: () => ({
     meta: [
-      { title: "Shop | Afro Mart" },
+      { title: "Shop | Afromart" },
       { name: "description", content: "Browse authentic African foods, skincare, fashion, and crafts." },
-      { property: "og:title", content: "Shop | Afro Mart" },
+      { property: "og:title", content: "Shop | Afromart" },
       { property: "og:description", content: "Browse authentic African foods, skincare, fashion, and crafts." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

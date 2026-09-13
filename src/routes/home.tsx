@@ -11,10 +11,10 @@ export const Route = createFileRoute("/home")({
     ]);
   },
   head: () => ({ meta: [
-    { title: "Home | Afro Mart" },
-    { name: "description", content: "Explore authentic African goods, services, and independent sellers on Afro Mart." },
-    { property: "og:title", content: "Home | Afro Mart" },
-    { property: "og:description", content: "Explore authentic African goods, services, and independent sellers on Afro Mart." },
+    { title: "Home | Afromart" },
+    { name: "description", content: "Explore authentic African goods, services, and independent sellers on Afromart." },
+    { property: "og:title", content: "Home | Afromart" },
+    { property: "og:description", content: "Explore authentic African goods, services, and independent sellers on Afromart." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),

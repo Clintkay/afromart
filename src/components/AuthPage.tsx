@@ -31,11 +31,15 @@ export function AuthPage() {
   const [website, setWebsite] = useState("");
   const [resendSeconds, setResendSeconds] = useState(0);
   const navigate = useNavigate();
-  const redirect = typeof search.redirect === "string" ? search.redirect : "/home";
+  const redirect = typeof search.redirect === "string" && search.redirect.startsWith("/") ? search.redirect : "/home";
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session?.user.email_confirmed_at) navigate({ to: redirect });
+      if (data.session?.user.email_confirmed_at) {
+        const storedRedirect = window.sessionStorage.getItem("afromart_auth_redirect");
+        window.sessionStorage.removeItem("afromart_auth_redirect");
+        navigate({ to: storedRedirect?.startsWith("/") ? storedRedirect : redirect });
+      }
     });
   }, [navigate, redirect]);
 
@@ -220,7 +224,7 @@ export function AuthPage() {
             {mode === "signin" ? "Welcome Back" : "Create Account"}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {mode === "signin" ? "Log in to continue purchasing authentic goods." : "Join AfroMart to shop authentic Pan-African items."}
+             {mode === "signin" ? "Log in securely to continue." : "Join Afromart to shop, hire professionals and sell across Africa."}
           </p>
 
           <form onSubmit={handleEmailSubmit} className="mt-5 space-y-3 sm:mt-8 sm:space-y-4">
