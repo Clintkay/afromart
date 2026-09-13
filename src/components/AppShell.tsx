@@ -1,5 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Bell, Grid2X2, Headphones, Home, Package, Search, ShoppingBag, Store, UserRound, Wrench } from "lucide-react";
+import { LanguageSelector, useLanguage } from "@/lib/language";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
@@ -14,6 +15,7 @@ const primaryNav = [
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const { t } = useLanguage();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { user } = useAuth();
   const { totalItems } = useCart();
@@ -29,17 +31,18 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Logo className="h-12" />
         </Link>
 
+        <div className="mt-5"><LanguageSelector /></div>
         <nav className="mt-10 flex flex-1 flex-col gap-2" aria-label="Main navigation">
           {primaryNav.map((item) => {
             const active = pathname.startsWith(item.to);
             return (
               <Link
-                key={item.label}
+                key={t(item.label)}
                 to={item.to}
                 className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
               >
                 <item.icon className="h-5 w-5" />
-                {item.label}
+                {t(item.label)}
               </Link>
             );
           })}
@@ -76,7 +79,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Link to="/home" className="md:hidden" aria-label="Afromart home"><Logo variant="mark" className="h-9" /></Link>
             <Link to="/products" search={{}} className="mx-auto flex min-w-0 w-full max-w-2xl items-center gap-2 rounded-full border bg-card px-3 py-2.5 text-sm text-muted-foreground shadow-sm sm:gap-3 sm:px-4">
               <Search className="h-4 w-4 shrink-0" />
-               <span className="truncate">Search Afromart</span>
+               <span className="truncate">{t("Search Afromart")}</span>
             </Link>
             <div className="flex shrink-0 items-center gap-1">
               <Button asChild variant="ghost" size="icon" aria-label="Support">
@@ -103,13 +106,13 @@ export function AppShell({ children }: { children: ReactNode }) {
           const active = pathname.startsWith(item.to);
           return (
             item.to === "/auth" ? (
-              <Link key={item.label} to="/auth" search={{ redirect: "/account" }} className={`flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>
-                <span className="relative"><item.icon className="h-5 w-5" /></span><span className="truncate">{item.label}</span>
+              <Link key={t(item.label)} to="/auth" search={{ redirect: "/account" }} className={`flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>
+                <span className="relative"><item.icon className="h-5 w-5" /></span><span className="truncate">{t(item.label)}</span>
               </Link>
             ) : (
-              <Link key={item.label} to={item.to} className={`flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>
+              <Link key={t(item.label)} to={item.to} className={`flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>
                 <span className="relative"><item.icon className="h-5 w-5" />{"badge" in item && item.badge ? <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[9px] text-accent-foreground">{item.badge}</span> : null}</span>
-                <span className="truncate">{item.label}</span>
+                <span className="truncate">{t(item.label)}</span>
               </Link>
             )
           );

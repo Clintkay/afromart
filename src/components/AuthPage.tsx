@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { ChevronDown, ChevronLeft, Eye, EyeOff, Globe2, Loader2 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import communityArtwork from "@/assets/onboarding/afromart-community.png.asset.json";
+import { LanguageSelector, useLanguage } from "@/lib/language";
 import { z } from "zod";
 import { parsePhoneNumberFromString, type CountryCode } from "libphonenumber-js";
 import { InternationalPhoneInput } from "@/components/InternationalPhoneInput";
@@ -18,6 +19,7 @@ const emailSchema = z.string().trim().email().max(255);
 const passwordSchema = z.string().min(8).max(128);
 
 export function AuthPage() {
+  const { t } = useLanguage();
   const search = useSearch({ from: "/auth" });
   const [mode, setMode] = useState<"signin" | "signup">(search.mode === "signup" ? "signup" : "signin");
   const [fullName, setFullName] = useState("");
@@ -234,41 +236,37 @@ export function AuthPage() {
           <Button asChild variant="ghost" size="icon" className="-ml-3 text-primary" aria-label="Back to welcome">
             <Link to="/"><ChevronLeft className="h-7 w-7" /></Link>
           </Button>
-          {mode === "signup" ? (
-            <Button variant="outline" size="sm" className="rounded-full" type="button">
-              <Globe2 className="h-4 w-4 text-primary" /> English <ChevronDown className="h-4 w-4 text-primary" />
-            </Button>
-          ) : <span />}
+          <LanguageSelector />
         </div>
 
         <div className="mx-auto mt-5 w-full max-w-md sm:mt-9 lg:my-auto">
           <Link to="/" className="mb-8 hidden justify-center lg:flex"><Logo variant="horizontal" className="h-8" /></Link>
           <h1 className="font-heading text-3xl font-bold text-foreground">
-            {mode === "signin" ? "Welcome Back" : "Create Account"}
+            {mode === "signin" ? t("Welcome Back") : t("Create Account")}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-             {mode === "signin" ? "Log in securely to continue." : "Join Afromart to shop, hire professionals and sell across Africa."}
+             {mode === "signin" ? t("Log in securely to continue.") : t("Join Afromart to shop, hire professionals and sell across Africa.")}
           </p>
 
           <form onSubmit={handleEmailSubmit} className="mt-5 space-y-3 sm:mt-8 sm:space-y-4">
             {mode === "signup" ? (
               <div>
-                <Label htmlFor="full-name">Full Name</Label>
+                <Label htmlFor="full-name">{t("Full Name")}</Label>
                 <Input id="full-name" value={fullName} onChange={(event) => setFullName(event.target.value)} required placeholder="e.g. Amina Yusuf" className="mt-1.5 h-12" autoComplete="name" />
               </div>
             ) : null}
              <div>
-               <Label htmlFor="email">Email Address</Label>
+               <Label htmlFor="email">{t("Email Address")}</Label>
                <Input id="email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required placeholder="e.g. amina@domain.com" className="mt-1.5 h-12" autoComplete="email" maxLength={255} />
              </div>
             {mode === "signup" ? (
               <div>
-                <Label htmlFor="phone">Phone Number</Label>
+                <Label htmlFor="phone">{t("Phone Number")}</Label>
                 <InternationalPhoneInput country={phoneCountry} onCountryChange={setPhoneCountry} value={phone} onChange={setPhone} />
               </div>
             ) : null}
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t("Password")}</Label>
               <div className="relative mt-1.5">
                 <Input id="password" type={showPassword ? "text" : "password"} value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} required placeholder={mode === "signin" ? "Enter your password" : "Minimum 8 characters"} className="h-12 pr-12" autoComplete={mode === "signin" ? "current-password" : "new-password"} />
                 <Button type="button" variant="ghost" size="icon" onClick={() => setShowPassword((visible) => !visible)} className="absolute right-1 top-1 h-10 w-10 text-muted-foreground" aria-label={showPassword ? "Hide password" : "Show password"}>
@@ -284,12 +282,12 @@ export function AuthPage() {
             </label>
             {mode === "signin" ? (
               <div className="flex justify-end">
-                <Button type="button" variant="link" onClick={handleForgotPassword} className="h-auto px-0 text-sm text-primary">Forgot Password?</Button>
+                <Button type="button" variant="link" onClick={handleForgotPassword} className="h-auto px-0 text-sm text-primary">{t("Forgot Password?")}</Button>
               </div>
             ) : null}
              <Button type="submit" size="lg" className="mt-3 h-13 w-full text-base font-bold" disabled={loading || !humanChecked}>
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
-              {mode === "signin" ? "Log In" : "Sign up with Email"}
+              {mode === "signin" ? t("Log In") : t("Sign up with Email")}
             </Button>
           </form>
 
@@ -301,16 +299,16 @@ export function AuthPage() {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
             </svg>
-            {mode === "signin" ? "Log in with Google" : "Sign up with Google"}
+            {mode === "signin" ? t("Log in with Google") : t("Sign up with Google")}
           </Button>
 
           <div className="my-7 hidden items-center lg:flex"><Separator className="flex-1" /><span className="mx-3 text-xs text-muted-foreground">OR</span><Separator className="flex-1" /></div>
         </div>
 
         <div className="mt-auto pt-5 text-center text-sm text-muted-foreground sm:pt-10">
-          {mode === "signin" ? "Don't have an account?" : "Already have an account?"}{" "}
+          {mode === "signin" ? t("Don't have an account?") : t("Already have an account?")}{" "}
           <Button type="button" variant="link" onClick={() => switchMode(mode === "signin" ? "signup" : "signin")} className="h-auto px-0 font-bold text-primary">
-            {mode === "signin" ? "Sign Up" : "Log In"}
+            {mode === "signin" ? t("Sign Up") : t("Log In")}
           </Button>
         </div>
       </section>
