@@ -4,6 +4,9 @@ import { getStoreBySlug, getStoreProducts } from "./store.functions";
 import { getOrderById, getOrders } from "./orders.functions";
 import { getWishlistProducts } from "./wishlist.functions";
 import { getAddresses } from "./addresses.functions";
+import { getNotifications, type AppNotification } from "./notifications.functions";
+import { getSupportTickets, type SupportTicketWithMessages } from "./support.functions";
+import { getProfile, type Profile } from "./profile.functions";
 import type { Category, ProductWithRelations, Store } from "./products.types";
 import type { OrderWithItems } from "./orders.functions";
 import type { Tables } from "@/integrations/supabase/types";
@@ -55,4 +58,19 @@ export const wishlistOptions = queryOptions<ProductWithRelations[]>({
 export const addressesOptions = queryOptions<Tables<"addresses">[]>({
   queryKey: ["addresses"],
   queryFn: () => getAddresses(),
+});
+
+export const notificationsOptions = queryOptions<AppNotification[]>({
+  queryKey: ["notifications"],
+  queryFn: () => getNotifications(),
+});
+
+export const supportTicketsOptions = queryOptions<SupportTicketWithMessages[]>({
+  queryKey: ["support-tickets"],
+  queryFn: () => getSupportTickets(),
+});
+
+export const profileOptions = queryOptions<Profile | null>({
+  queryKey: ["profile"],
+  queryFn: () => getProfile(),
 });
