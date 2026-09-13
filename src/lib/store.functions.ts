@@ -8,7 +8,7 @@ export const getStoreBySlug = createServerFn({ method: "GET" })
     const supabase = createPublicSupabaseClient();
     const { data: store, error } = await supabase
       .from("stores")
-      .select("*")
+      .select("id, name, slug, description, logo_url, banner_url, is_verified, rating, created_at, updated_at")
       .eq("slug", data.slug)
       .single();
     if (error) throw error;
@@ -22,7 +22,7 @@ export const getStoreProducts = createServerFn({ method: "GET" })
     const supabase = createPublicSupabaseClient();
     const { data: products, error } = await supabase
       .from("products")
-      .select("*, categories(*), stores(*), product_images(*), product_variants(*)")
+      .select("*, categories(*), stores(id, name, slug, description, logo_url, banner_url, is_verified, rating, created_at, updated_at), product_images(*), product_variants(*)")
       .eq("status", "active")
       .eq("stores.slug", data.storeSlug)
       .order("created_at", { ascending: false });
