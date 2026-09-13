@@ -17,7 +17,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { user } = useAuth();
   const { totalItems } = useCart();
-  const isAuth = pathname === "/auth" || pathname === "/";
+  const isAuth = pathname === "/auth" || pathname === "/reset-password" || pathname === "/";
   const accountTarget = user ? "/account" : "/auth";
 
   if (isAuth) return <>{children}</>;
