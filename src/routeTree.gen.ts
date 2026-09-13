@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as GuestRouteImport } from './routes/guest'
+import { Route as HomeRouteImport } from './routes/home'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as SellRouteImport } from './routes/sell'
 import { Route as SupportRouteImport } from './routes/support'
@@ -51,6 +52,11 @@ const ComingSoonRoute = ComingSoonRouteImport.update({
 const GuestRoute = GuestRouteImport.update({
   id: '/guest',
   path: '/guest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/cart': typeof CartRoute
   '/coming-soon': typeof ComingSoonRoute
   '/guest': typeof GuestRoute
+  '/home': typeof HomeRoute
   '/products': typeof ProductsRouteWithChildren
   '/sell': typeof SellRouteWithChildren
   '/support': typeof SupportRoute
@@ -115,6 +122,7 @@ export interface FileRoutesByTo {
   '/cart': typeof CartRoute
   '/coming-soon': typeof ComingSoonRoute
   '/guest': typeof GuestRoute
+  '/home': typeof HomeRoute
   '/products': typeof ProductsRouteWithChildren
   '/support': typeof SupportRoute
   '/account': typeof AuthenticatedAccountRoute
@@ -131,6 +139,7 @@ export interface FileRoutesById {
   '/cart': typeof CartRoute
   '/coming-soon': typeof ComingSoonRoute
   '/guest': typeof GuestRoute
+  '/home': typeof HomeRoute
   '/products': typeof ProductsRouteWithChildren
   '/sell': typeof SellRouteWithChildren
   '/support': typeof SupportRoute
@@ -148,6 +157,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/coming-soon'
     | '/guest'
+    | '/home'
     | '/products'
     | '/sell'
     | '/support'
@@ -163,6 +173,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/coming-soon'
     | '/guest'
+    | '/home'
     | '/products'
     | '/support'
     | '/account'
@@ -178,6 +189,7 @@ export interface FileRouteTypes {
     | '/cart'
     | '/coming-soon'
     | '/guest'
+    | '/home'
     | '/products'
     | '/sell'
     | '/support'
@@ -195,6 +207,7 @@ export interface RootRouteChildren {
   CartRoute: typeof CartRoute
   ComingSoonRoute: typeof ComingSoonRoute
   GuestRoute: typeof GuestRoute
+  HomeRoute: typeof HomeRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   SellRoute: typeof SellRouteWithChildren
   SupportRoute: typeof SupportRoute
@@ -242,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/guest'
       fullPath: '/guest'
       preLoaderRoute: typeof GuestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -347,6 +367,7 @@ const rootRouteChildren: RootRouteChildren = {
   CartRoute: CartRoute,
   ComingSoonRoute: ComingSoonRoute,
   GuestRoute: GuestRoute,
+  HomeRoute: HomeRoute,
   ProductsRoute: ProductsRouteWithChildren,
   SellRoute: SellRouteWithChildren,
   SupportRoute: SupportRoute,
