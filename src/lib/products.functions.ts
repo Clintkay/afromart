@@ -17,7 +17,7 @@ export const getProducts = createServerFn({ method: "GET" })
 
     let query = supabase
       .from("products")
-      .select("*, categories(*), stores(*), product_images(*), product_variants(*)")
+      .select("*, categories(*), stores(id, name, slug, description, logo_url, banner_url, is_verified, rating, created_at, updated_at), product_images(*), product_variants(*)")
       .eq("status", "active")
       .order("created_at", { ascending: false });
 
@@ -42,7 +42,7 @@ export const getProductBySlug = createServerFn({ method: "GET" })
     const supabase = createPublicSupabaseClient();
     const { data: product, error } = await supabase
       .from("products")
-      .select("*, categories(*), stores(*), product_images(*), product_variants(*)")
+      .select("*, categories(*), stores(id, name, slug, description, logo_url, banner_url, is_verified, rating, created_at, updated_at), product_images(*), product_variants(*)")
       .eq("slug", data.slug)
       .eq("status", "active")
       .single();

@@ -1,7 +1,7 @@
 import type { Tables } from "@/integrations/supabase/types";
 
 export type Category = Tables<"categories">;
-export type Store = Tables<"stores">;
+export type Store = Omit<Tables<"stores">, "owner_id">;
 
 export type ProductWithRelations = Tables<"products"> & {
   categories: { name: string; slug: string } | null;
