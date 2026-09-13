@@ -23,11 +23,19 @@
 11. Added email confirmation, code entry and resend states to account creation.
 12. Tightened the marketplace, product grid and account screens for small mobile displays.
 
+## In Progress — Real App Completion
+- [x] Reduce onboarding branding and standardize the name “Afromart”.
+- [x] Require email confirmation, bot screening, and a second email step after password login.
+- [x] Fix Google return handling through the public sign-in screen.
+- [x] Build a dedicated category browser with category-specific product results.
+- [x] Add order history, order detail, delivery progress, and tracking screens.
+- [x] Add a Fiverr-style services marketplace discovery screen.
+
 ## Upcoming
-- Payment integration (Stripe or Paystack) and order lifecycle.
+- Payment integration (Stripe or Paystack).
 - Reviews and ratings.
-- Buyer-seller chat / support.
-- Seller onboarding and dashboard.
+- Buyer-seller chat and disputes.
+- Seller order and inventory management.
 - Admin moderation tools.
 
 ## Brand + colour pass (done)

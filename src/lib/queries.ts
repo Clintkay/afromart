@@ -1,7 +1,7 @@
 import { queryOptions } from "@tanstack/react-query";
 import { getCategories, getProductBySlug, getProducts } from "./products.functions";
 import { getStoreBySlug, getStoreProducts } from "./store.functions";
-import { getOrders } from "./orders.functions";
+import { getOrderById, getOrders } from "./orders.functions";
 import { getWishlistProducts } from "./wishlist.functions";
 import { getAddresses } from "./addresses.functions";
 import type { Category, ProductWithRelations, Store } from "./products.types";
@@ -40,6 +40,11 @@ export const storeProductsOptions = (slug: string) =>
 export const ordersOptions = queryOptions<OrderWithItems[]>({
   queryKey: ["orders"],
   queryFn: () => getOrders(),
+});
+
+export const orderOptions = (orderId: string) => queryOptions<OrderWithItems | null>({
+  queryKey: ["orders", orderId],
+  queryFn: () => getOrderById({ data: { orderId } }),
 });
 
 export const wishlistOptions = queryOptions<ProductWithRelations[]>({

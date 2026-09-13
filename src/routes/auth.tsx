@@ -6,10 +6,10 @@ export const Route = createFileRoute("/auth")({
   validateSearch: (search: { redirect?: string; mode?: "signin" | "signup" }) => search,
   head: () => ({
     meta: [
-      { title: "Sign In | Afro Mart" },
-      { name: "description", content: "Sign in or create an account at Afro Mart." },
-      { property: "og:title", content: "Sign In | Afro Mart" },
-      { property: "og:description", content: "Sign in or create an account at Afro Mart." },
+      { title: "Sign In | Afromart" },
+      { name: "description", content: "Sign in or create a secure Afromart account." },
+      { property: "og:title", content: "Sign In | Afromart" },
+      { property: "og:description", content: "Sign in or create a secure Afromart account." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],

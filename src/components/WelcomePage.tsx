@@ -15,7 +15,7 @@ export function WelcomePage() {
   if (showSplash) {
     return (
       <main className="grid min-h-dvh place-items-center bg-card" aria-label="Afro Mart is loading">
-        <Logo variant="horizontal" className="h-auto w-24 animate-pulse" />
+        <Logo variant="mark" className="h-14 w-14 animate-pulse" />
       </main>
     );
   }
@@ -24,8 +24,9 @@ export function WelcomePage() {
     <main className="min-h-dvh bg-card px-6 py-8 sm:px-10 lg:grid lg:grid-cols-[minmax(24rem,31rem)_minmax(0,1fr)] lg:p-0">
       <section className="mx-auto flex min-h-[calc(100dvh-4rem)] w-full max-w-md flex-col lg:min-h-dvh lg:px-12 lg:py-10">
         <div className="flex flex-1 flex-col items-center justify-center py-8">
-          <Logo variant="horizontal" className="h-auto w-36 sm:w-44" />
-          <div className="mt-20 w-full overflow-hidden rounded-lg sm:mt-24 lg:hidden">
+          <Logo variant="horizontal" className="h-auto w-24 sm:w-28" />
+          <p className="mt-4 text-center text-sm font-medium text-muted-foreground">Commerce and services, made for Africa.</p>
+          <div className="mt-10 w-full overflow-hidden rounded-lg sm:mt-12 lg:hidden">
             <img
               src={communityArtwork.url}
               alt="African makers holding handcrafted products"

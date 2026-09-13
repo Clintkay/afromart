@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Tables } from "@/integrations/supabase/types";
+import { z } from "zod";
 
 export type OrderWithItems = Tables<"orders"> & {
   order_items: Tables<"order_items">[];
@@ -16,6 +17,20 @@ export const getOrders = createServerFn({ method: "GET" })
       .order("created_at", { ascending: false });
     if (error) throw error;
     return (data ?? []) as OrderWithItems[];
+  });
+
+export const getOrderById = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: { orderId: string }) => z.object({ orderId: z.string().uuid() }).parse(input))
+  .handler(async ({ data, context }) => {
+    const { data: order, error } = await context.supabase
+      .from("orders")
+      .select("*, order_items(*)")
+      .eq("id", data.orderId)
+      .eq("user_id", context.userId)
+      .maybeSingle();
+    if (error) throw error;
+    return order as OrderWithItems | null;
   });
 
 export const createOrder = createServerFn({ method: "POST" })

@@ -10,6 +10,10 @@ import { toast } from "sonner";
 import { ChevronDown, ChevronLeft, Eye, EyeOff, Globe2, Loader2 } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import communityArtwork from "@/assets/onboarding/afromart-community.png.asset.json";
+import { z } from "zod";
+
+const emailSchema = z.string().trim().email().max(255);
+const passwordSchema = z.string().min(8).max(128);
 
 export function AuthPage() {
   const search = useSearch({ from: "/auth" });
@@ -22,40 +26,80 @@ export function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [awaitingVerification, setAwaitingVerification] = useState(false);
+  const [verificationPurpose, setVerificationPurpose] = useState<"signup" | "login">("signup");
   const [verificationCode, setVerificationCode] = useState("");
+  const [humanChecked, setHumanChecked] = useState(false);
+  const [website, setWebsite] = useState("");
+  const [resendSeconds, setResendSeconds] = useState(0);
   const navigate = useNavigate();
-  const redirect = typeof search.redirect === "string" ? search.redirect : "/home";
+  const redirect = typeof search.redirect === "string" && search.redirect.startsWith("/") ? search.redirect : "/home";
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: redirect });
+      if (data.session?.user.email_confirmed_at) {
+        const storedRedirect = window.sessionStorage.getItem("afromart_auth_redirect");
+        window.sessionStorage.removeItem("afromart_auth_redirect");
+        navigate({ to: storedRedirect?.startsWith("/") ? storedRedirect : redirect });
+      }
     });
   }, [navigate, redirect]);
+
+  useEffect(() => {
+    if (resendSeconds <= 0) return;
+    const timer = window.setInterval(() => setResendSeconds((seconds) => Math.max(0, seconds - 1)), 1000);
+    return () => window.clearInterval(timer);
+  }, [resendSeconds]);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      if (website || !humanChecked) throw new Error("Complete the security check to continue.");
+      const safeEmail = emailSchema.parse(email);
+      const safePassword = passwordSchema.parse(password);
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
+        const { data, error } = await supabase.auth.signUp({
+          email: safeEmail,
+          password: safePassword,
           options: {
-            data: { full_name: fullName, phone },
-            emailRedirectTo: `${window.location.origin}/home`,
+            data: { full_name: fullName.trim().slice(0, 100), phone: phone.trim().slice(0, 30) },
+            emailRedirectTo: `${window.location.origin}/auth?redirect=${encodeURIComponent(redirect)}`,
           },
         });
         if (error) throw error;
+        if (data.session?.user.email_confirmed_at) {
+          navigate({ to: redirect });
+          return;
+        }
+        setVerificationPurpose("signup");
         setAwaitingVerification(true);
+        setResendSeconds(60);
         toast.success("We sent a confirmation email to you.");
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email: safeEmail, password: safePassword });
         if (error) throw error;
-        navigate({ to: redirect });
+        if (!data.user.email_confirmed_at) {
+          await supabase.auth.signOut();
+          setVerificationPurpose("signup");
+          setAwaitingVerification(true);
+          setResendSeconds(0);
+          toast.error("Confirm your email before signing in.");
+          return;
+        }
+        await supabase.auth.signOut();
+        const { error: otpError } = await supabase.auth.signInWithOtp({
+          email: safeEmail,
+          options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/auth?redirect=${encodeURIComponent(redirect)}` },
+        });
+        if (otpError) throw otpError;
+        setVerificationPurpose("login");
+        setAwaitingVerification(true);
+        setResendSeconds(60);
+        toast.success("We sent a secure login code to your email.");
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Authentication failed");
+      toast.error(err instanceof z.ZodError ? "Enter a valid email and a password of at least 8 characters." : err instanceof Error ? err.message : "Authentication failed");
     } finally {
       setLoading(false);
     }
@@ -67,7 +111,7 @@ export function AuthPage() {
     const { error } = await supabase.auth.verifyOtp({
       email,
       token: verificationCode.trim(),
-      type: "signup",
+      type: verificationPurpose === "signup" ? "signup" : "email",
     });
     setLoading(false);
     if (error) {
@@ -78,17 +122,24 @@ export function AuthPage() {
   };
 
   const handleResendConfirmation = async () => {
+    if (resendSeconds > 0) return;
     setLoading(true);
-    const { error } = await supabase.auth.resend({
-      type: "signup",
-      email,
-      options: { emailRedirectTo: `${window.location.origin}/home` },
-    });
+    const { error } = verificationPurpose === "signup"
+      ? await supabase.auth.resend({
+          type: "signup",
+          email,
+          options: { emailRedirectTo: `${window.location.origin}/auth?redirect=${encodeURIComponent(redirect)}` },
+        })
+      : await supabase.auth.signInWithOtp({
+          email,
+          options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/auth?redirect=${encodeURIComponent(redirect)}` },
+        });
     setLoading(false);
     if (error) {
       toast.error(error.message);
       return;
     }
+    setResendSeconds(60);
     toast.success("A new confirmation email has been sent.");
   };
 
@@ -98,7 +149,7 @@ export function AuthPage() {
       return;
     }
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth`,
+      redirectTo: `${window.location.origin}/reset-password`,
     });
     if (error) {
       toast.error(error.message);
@@ -109,8 +160,9 @@ export function AuthPage() {
 
   const handleGoogleSignIn = async () => {
     setGoogleLoading(true);
+    window.sessionStorage.setItem("afromart_auth_redirect", redirect.startsWith("/") ? redirect : "/home");
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}/home`,
+      redirect_uri: `${window.location.origin}/auth`,
     });
 
     if (result.error) {
@@ -131,6 +183,8 @@ export function AuthPage() {
     setPassword("");
     setAwaitingVerification(false);
     setVerificationCode("");
+    setVerificationPurpose("signup");
+    setHumanChecked(false);
   };
 
   if (awaitingVerification) {
@@ -145,13 +199,13 @@ export function AuthPage() {
             <ChevronLeft className="h-7 w-7" />
           </Button>
           <form onSubmit={handleVerifyCode} className="mx-auto my-auto w-full max-w-md pb-12">
-            <Logo variant="horizontal" className="mb-10 h-11" />
-            <h1 className="font-heading text-3xl font-bold">Check your email</h1>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">Enter the confirmation code sent to <span className="font-semibold text-foreground">{email}</span>, or use the confirmation link in the email.</p>
+            <Logo variant="horizontal" className="mb-8 h-8" />
+             <h1 className="font-heading text-3xl font-bold">{verificationPurpose === "signup" ? "Confirm your email" : "Secure login check"}</h1>
+             <p className="mt-2 text-sm leading-6 text-muted-foreground">Enter the six-digit code sent by Afromart to <span className="font-semibold text-foreground">{email}</span>, or use the secure link in that email.</p>
             <Label htmlFor="verification-code" className="mt-8 block">Verification code</Label>
             <Input id="verification-code" inputMode="numeric" autoComplete="one-time-code" value={verificationCode} onChange={(event) => setVerificationCode(event.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="000000" className="mt-2 h-14 text-center text-2xl tracking-[0.35em]" minLength={6} maxLength={6} required />
             <Button type="submit" size="lg" className="mt-5 w-full" disabled={loading || verificationCode.length !== 6}>{loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}Verify email</Button>
-            <Button type="button" variant="link" className="mt-3 w-full" onClick={handleResendConfirmation} disabled={loading}>Send another email</Button>
+            <Button type="button" variant="link" className="mt-3 w-full" onClick={handleResendConfirmation} disabled={loading || resendSeconds > 0}>{resendSeconds > 0 ? `Send again in ${resendSeconds}s` : "Send another email"}</Button>
           </form>
         </section>
       </main>
@@ -163,7 +217,7 @@ export function AuthPage() {
       <section className="relative hidden min-h-dvh overflow-hidden bg-primary lg:block">
         <img src={communityArtwork.url} alt="African makers and merchants" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-primary/35" />
-        <div className="absolute left-12 top-10"><Logo className="h-12 brightness-0 invert" /></div>
+        <div className="absolute left-12 top-10"><Logo variant="horizontal" className="h-8 brightness-0 invert" /></div>
         <div className="absolute inset-x-12 bottom-14 max-w-xl text-primary-foreground">
           <p className="text-sm font-semibold uppercase">Connecting African commerce</p>
           <p className="mt-4 font-heading text-5xl font-bold leading-tight">Your marketplace. Your community.</p>
@@ -183,12 +237,12 @@ export function AuthPage() {
         </div>
 
         <div className="mx-auto mt-5 w-full max-w-md sm:mt-9 lg:my-auto">
-          <Link to="/" className="mb-9 hidden justify-center lg:flex"><Logo variant="horizontal" className="h-12" /></Link>
+          <Link to="/" className="mb-8 hidden justify-center lg:flex"><Logo variant="horizontal" className="h-8" /></Link>
           <h1 className="font-heading text-3xl font-bold text-foreground">
             {mode === "signin" ? "Welcome Back" : "Create Account"}
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {mode === "signin" ? "Log in to continue purchasing authentic goods." : "Join AfroMart to shop authentic Pan-African items."}
+             {mode === "signin" ? "Log in securely to continue." : "Join Afromart to shop, hire professionals and sell across Africa."}
           </p>
 
           <form onSubmit={handleEmailSubmit} className="mt-5 space-y-3 sm:mt-8 sm:space-y-4">
@@ -198,10 +252,10 @@ export function AuthPage() {
                 <Input id="full-name" value={fullName} onChange={(event) => setFullName(event.target.value)} required placeholder="e.g. Amina Yusuf" className="mt-1.5 h-12" autoComplete="name" />
               </div>
             ) : null}
-            <div>
-              <Label htmlFor="email">{mode === "signin" ? "Email or Phone Number" : "Email Address"}</Label>
-              <Input id="email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required placeholder={mode === "signin" ? "amina@domain.com" : "e.g. amina@domain.com"} className="mt-1.5 h-12" autoComplete="email" />
-            </div>
+             <div>
+               <Label htmlFor="email">Email Address</Label>
+               <Input id="email" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required placeholder="e.g. amina@domain.com" className="mt-1.5 h-12" autoComplete="email" maxLength={255} />
+             </div>
             {mode === "signup" ? (
               <div>
                 <Label htmlFor="phone">Phone Number</Label>
@@ -217,12 +271,18 @@ export function AuthPage() {
                 </Button>
               </div>
             </div>
+            <input aria-hidden="true" tabIndex={-1} autoComplete="off" className="hidden" name="website" value={website} onChange={(event) => setWebsite(event.target.value)} />
+            <label className="flex min-h-13 cursor-pointer items-center gap-3 rounded-lg border bg-secondary/40 px-4 py-3 text-sm font-medium">
+              <input type="checkbox" checked={humanChecked} onChange={(event) => setHumanChecked(event.target.checked)} className="h-4 w-4 accent-primary" required />
+              <span>I’m human</span>
+              <span className="ml-auto text-xs font-semibold text-muted-foreground">Security check</span>
+            </label>
             {mode === "signin" ? (
               <div className="flex justify-end">
                 <Button type="button" variant="link" onClick={handleForgotPassword} className="h-auto px-0 text-sm text-primary">Forgot Password?</Button>
               </div>
             ) : null}
-            <Button type="submit" size="lg" className="mt-3 h-13 w-full text-base font-bold" disabled={loading}>
+             <Button type="submit" size="lg" className="mt-3 h-13 w-full text-base font-bold" disabled={loading || !humanChecked}>
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
               {mode === "signin" ? "Log In" : "Sign up with Email"}
             </Button>

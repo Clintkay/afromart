@@ -13,17 +13,21 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as GuestRouteImport } from './routes/guest'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as ProductsRouteImport } from './routes/products'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SellRouteImport } from './routes/sell'
+import { Route as ServicesRouteImport } from './routes/services'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as SellIndexRouteImport } from './routes/sell.index'
 import { Route as SellStartRouteImport } from './routes/sell.start'
+import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -42,6 +46,11 @@ const AuthRoute = AuthRouteImport.update({
 const CartRoute = CartRouteImport.update({
   id: '/cart',
   path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesRoute = CategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComingSoonRoute = ComingSoonRouteImport.update({
@@ -64,9 +73,19 @@ const ProductsRoute = ProductsRouteImport.update({
   path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SellRoute = SellRouteImport.update({
   id: '/sell',
   path: '/sell',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SupportRoute = SupportRouteImport.update({
@@ -99,37 +118,51 @@ const SellStartRoute = SellStartRouteImport.update({
   path: '/start',
   getParentRoute: () => SellRoute,
 } as any)
+const AuthenticatedOrdersOrderIdRoute =
+  AuthenticatedOrdersOrderIdRouteImport.update({
+    id: '/orders/$orderId',
+    path: '/orders/$orderId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/categories': typeof CategoriesRoute
   '/coming-soon': typeof ComingSoonRoute
   '/guest': typeof GuestRoute
   '/home': typeof HomeRoute
   '/products': typeof ProductsRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
   '/sell': typeof SellRouteWithChildren
+  '/services': typeof ServicesRoute
   '/support': typeof SupportRoute
   '/account': typeof AuthenticatedAccountRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
   '/sell/': typeof SellIndexRoute
+  '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/categories': typeof CategoriesRoute
   '/coming-soon': typeof ComingSoonRoute
   '/guest': typeof GuestRoute
   '/home': typeof HomeRoute
   '/products': typeof ProductsRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
+  '/services': typeof ServicesRoute
   '/support': typeof SupportRoute
   '/account': typeof AuthenticatedAccountRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
   '/sell': typeof SellIndexRoute
+  '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -137,17 +170,21 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
+  '/categories': typeof CategoriesRoute
   '/coming-soon': typeof ComingSoonRoute
   '/guest': typeof GuestRoute
   '/home': typeof HomeRoute
   '/products': typeof ProductsRouteWithChildren
+  '/reset-password': typeof ResetPasswordRoute
   '/sell': typeof SellRouteWithChildren
+  '/services': typeof ServicesRoute
   '/support': typeof SupportRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
   '/sell/': typeof SellIndexRoute
+  '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -155,49 +192,61 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/cart'
+    | '/categories'
     | '/coming-soon'
     | '/guest'
     | '/home'
     | '/products'
+    | '/reset-password'
     | '/sell'
+    | '/services'
     | '/support'
     | '/account'
     | '/checkout'
     | '/products/$slug'
     | '/sell/start'
     | '/sell/'
+    | '/orders/$orderId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
     | '/cart'
+    | '/categories'
     | '/coming-soon'
     | '/guest'
     | '/home'
     | '/products'
+    | '/reset-password'
+    | '/services'
     | '/support'
     | '/account'
     | '/checkout'
     | '/products/$slug'
     | '/sell/start'
     | '/sell'
+    | '/orders/$orderId'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/cart'
+    | '/categories'
     | '/coming-soon'
     | '/guest'
     | '/home'
     | '/products'
+    | '/reset-password'
     | '/sell'
+    | '/services'
     | '/support'
     | '/_authenticated/account'
     | '/_authenticated/checkout'
     | '/products/$slug'
     | '/sell/start'
     | '/sell/'
+    | '/_authenticated/orders/$orderId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -205,11 +254,14 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
+  CategoriesRoute: typeof CategoriesRoute
   ComingSoonRoute: typeof ComingSoonRoute
   GuestRoute: typeof GuestRoute
   HomeRoute: typeof HomeRoute
   ProductsRoute: typeof ProductsRouteWithChildren
+  ResetPasswordRoute: typeof ResetPasswordRoute
   SellRoute: typeof SellRouteWithChildren
+  ServicesRoute: typeof ServicesRoute
   SupportRoute: typeof SupportRoute
 }
 
@@ -243,6 +295,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/categories': {
+      id: '/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/coming-soon': {
       id: '/coming-soon'
       path: '/coming-soon'
@@ -271,11 +330,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sell': {
       id: '/sell'
       path: '/sell'
       fullPath: '/sell'
       preLoaderRoute: typeof SellRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/support': {
@@ -320,17 +393,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellStartRouteImport
       parentRoute: typeof SellRoute
     }
+    '/_authenticated/orders/$orderId': {
+      id: '/_authenticated/orders/$orderId'
+      path: '/orders/$orderId'
+      fullPath: '/orders/$orderId'
+      preLoaderRoute: typeof AuthenticatedOrdersOrderIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedCheckoutRoute: typeof AuthenticatedCheckoutRoute
+  AuthenticatedOrdersOrderIdRoute: typeof AuthenticatedOrdersOrderIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountRoute: AuthenticatedAccountRoute,
   AuthenticatedCheckoutRoute: AuthenticatedCheckoutRoute,
+  AuthenticatedOrdersOrderIdRoute: AuthenticatedOrdersOrderIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -365,11 +447,14 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
+  CategoriesRoute: CategoriesRoute,
   ComingSoonRoute: ComingSoonRoute,
   GuestRoute: GuestRoute,
   HomeRoute: HomeRoute,
   ProductsRoute: ProductsRouteWithChildren,
+  ResetPasswordRoute: ResetPasswordRoute,
   SellRoute: SellRouteWithChildren,
+  ServicesRoute: ServicesRoute,
   SupportRoute: SupportRoute,
 }
 export const routeTree = rootRouteImport
