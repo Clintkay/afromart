@@ -19,7 +19,7 @@ export function OrderTrackingPage({ order }: { order: OrderWithItems }) {
   const address = order.shipping_address && typeof order.shipping_address === "object" && !Array.isArray(order.shipping_address)
     ? order.shipping_address as Record<string, unknown>
     : {};
-  const destination = [address.address_line1, address.city, address.state, address.country].filter((value): value is string => typeof value === "string" && value.length > 0).join(", ");
+  const destination = [address["address_line1"], address["city"], address["state"], address["country"]].filter((value): value is string => typeof value === "string" && value.length > 0).join(", ");
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10 lg:px-10">
