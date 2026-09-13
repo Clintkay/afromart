@@ -17,6 +17,7 @@ import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as GuestRouteImport } from './routes/guest'
 import { Route as HomeRouteImport } from './routes/home'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SellRouteImport } from './routes/sell'
@@ -66,6 +67,11 @@ const GuestRoute = GuestRouteImport.update({
 const HomeRoute = HomeRouteImport.update({
   id: '/home',
   path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProductsRoute = ProductsRouteImport.update({
@@ -133,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/coming-soon': typeof ComingSoonRoute
   '/guest': typeof GuestRoute
   '/home': typeof HomeRoute
+  '/onboarding': typeof OnboardingRoute
   '/products': typeof ProductsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/sell': typeof SellRouteWithChildren
@@ -153,6 +160,7 @@ export interface FileRoutesByTo {
   '/coming-soon': typeof ComingSoonRoute
   '/guest': typeof GuestRoute
   '/home': typeof HomeRoute
+  '/onboarding': typeof OnboardingRoute
   '/products': typeof ProductsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
@@ -174,6 +182,7 @@ export interface FileRoutesById {
   '/coming-soon': typeof ComingSoonRoute
   '/guest': typeof GuestRoute
   '/home': typeof HomeRoute
+  '/onboarding': typeof OnboardingRoute
   '/products': typeof ProductsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/sell': typeof SellRouteWithChildren
@@ -196,6 +205,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/guest'
     | '/home'
+    | '/onboarding'
     | '/products'
     | '/reset-password'
     | '/sell'
@@ -216,6 +226,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/guest'
     | '/home'
+    | '/onboarding'
     | '/products'
     | '/reset-password'
     | '/services'
@@ -236,6 +247,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/guest'
     | '/home'
+    | '/onboarding'
     | '/products'
     | '/reset-password'
     | '/sell'
@@ -258,6 +270,7 @@ export interface RootRouteChildren {
   ComingSoonRoute: typeof ComingSoonRoute
   GuestRoute: typeof GuestRoute
   HomeRoute: typeof HomeRoute
+  OnboardingRoute: typeof OnboardingRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
   SellRoute: typeof SellRouteWithChildren
@@ -321,6 +334,13 @@ declare module '@tanstack/react-router' {
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/products': {
@@ -451,6 +471,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComingSoonRoute: ComingSoonRoute,
   GuestRoute: GuestRoute,
   HomeRoute: HomeRoute,
+  OnboardingRoute: OnboardingRoute,
   ProductsRoute: ProductsRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
   SellRoute: SellRouteWithChildren,
