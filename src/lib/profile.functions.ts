@@ -30,11 +30,11 @@ export const updateProfileSettings = createServerFn({ method: "POST" })
       .parse(input),
   )
   .handler(async ({ data, context }) => {
-    const update: Record<string, unknown> = { updated_at: new Date().toISOString() };
-    if (data.fullName) update["full_name"] = data.fullName;
-    if (data.phone) update["phone"] = data.phone;
-    if (data.preferredLanguage) update["preferred_language"] = data.preferredLanguage;
-    if (data.theme) update["preferences"] = { theme: data.theme };
+    const update: Partial<Profile> = { updated_at: new Date().toISOString() };
+    if (data.fullName) update.full_name = data.fullName;
+    if (data.phone) update.phone = data.phone;
+    if (data.preferredLanguage) update.preferred_language = data.preferredLanguage;
+    if (data.theme) update.preferences = { theme: data.theme };
 
     const { error } = await context.supabase.from("profiles").update(update).eq("id", context.userId);
     if (error) throw error;
