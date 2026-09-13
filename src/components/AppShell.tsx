@@ -72,14 +72,14 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <div className="min-w-0 md:col-start-2">
         <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur-md">
-          <div className="grid h-16 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 sm:px-6 md:h-20 lg:px-10">
+          <div className="grid h-16 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 sm:gap-3 sm:px-6 md:h-20 lg:px-10">
             <Link to="/home" className="md:hidden" aria-label="Afro Mart home"><Logo variant="mark" className="h-9" /></Link>
-            <Link to="/products" search={{}} className="mx-auto flex w-full max-w-2xl items-center gap-3 rounded-full border bg-card px-4 py-2.5 text-sm text-muted-foreground shadow-sm">
+            <Link to="/products" search={{}} className="mx-auto flex min-w-0 w-full max-w-2xl items-center gap-2 rounded-full border bg-card px-3 py-2.5 text-sm text-muted-foreground shadow-sm sm:gap-3 sm:px-4">
               <Search className="h-4 w-4 shrink-0" />
-              <span className="truncate">Search goods, stores and services</span>
+              <span className="truncate">Search Afro Mart</span>
             </Link>
             <div className="flex shrink-0 items-center gap-1">
-              <Button asChild variant="ghost" size="icon" aria-label="Support">
+              <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label="Support">
                 <Link to="/support"><Headphones className="h-5 w-5" /></Link>
               </Button>
               <Button asChild variant="ghost" size="icon" aria-label="Notifications">
@@ -92,7 +92,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main className="min-h-[calc(100vh-4rem)] pb-24 md:min-h-[calc(100vh-5rem)] md:pb-0">{children}</main>
       </div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-50 grid h-18 grid-cols-5 border-t bg-card/95 px-2 pb-[max(.35rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-md md:hidden" aria-label="Mobile navigation">
+      <nav className="fixed inset-x-0 bottom-0 z-50 grid min-h-16 grid-cols-5 border-t bg-card/95 px-1 pb-[max(.35rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-md md:hidden" aria-label="Mobile navigation">
         {[
           { to: "/home" as const, label: "Home", icon: Home },
           { to: "/products" as const, label: "Explore", icon: Grid2X2 },
