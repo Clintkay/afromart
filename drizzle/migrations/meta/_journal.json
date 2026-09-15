@@ -64,6 +64,13 @@
       "when": 1789454481848,
       "tag": "0008_seller_info_and_buyer_seller_chat",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789454503744,
+      "tag": "0009_allow_service_role_profile_role_change",
+      "breakpoints": true
     }
   ]
 }
