@@ -216,6 +216,54 @@ export type Database = {
         }
         Relationships: []
       }
+      product_conversations: {
+        Row: {
+          buyer_id: string
+          created_at: string
+          id: string
+          last_message_at: string
+          product_id: string | null
+          seller_id: string | null
+          store_id: string
+          subject: string | null
+        }
+        Insert: {
+          buyer_id: string
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          product_id?: string | null
+          seller_id?: string | null
+          store_id: string
+          subject?: string | null
+        }
+        Update: {
+          buyer_id?: string
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          product_id?: string | null
+          seller_id?: string | null
+          store_id?: string
+          subject?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_conversations_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_conversations_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_images: {
         Row: {
           alt_text: string | null
@@ -244,6 +292,38 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_messages: {
+        Row: {
+          body: string
+          conversation_id: string
+          created_at: string
+          id: string
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "product_conversations"
             referencedColumns: ["id"]
           },
         ]
@@ -391,6 +471,9 @@ export type Database = {
       stores: {
         Row: {
           banner_url: string | null
+          business_name: string | null
+          city: string | null
+          country: string | null
           created_at: string | null
           description: string | null
           id: string
@@ -399,11 +482,16 @@ export type Database = {
           name: string
           owner_id: string | null
           rating: number | null
+          response_time: string | null
           slug: string
+          total_sales: number | null
           updated_at: string | null
         }
         Insert: {
           banner_url?: string | null
+          business_name?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -412,11 +500,16 @@ export type Database = {
           name: string
           owner_id?: string | null
           rating?: number | null
+          response_time?: string | null
           slug: string
+          total_sales?: number | null
           updated_at?: string | null
         }
         Update: {
           banner_url?: string | null
+          business_name?: string | null
+          city?: string | null
+          country?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
@@ -425,7 +518,9 @@ export type Database = {
           name?: string
           owner_id?: string | null
           rating?: number | null
+          response_time?: string | null
           slug?: string
+          total_sales?: number | null
           updated_at?: string | null
         }
         Relationships: []

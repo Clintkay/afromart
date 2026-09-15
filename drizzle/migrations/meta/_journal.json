@@ -57,6 +57,13 @@
       "when": 1789280500463,
       "tag": "0007_notifications_and_support",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789454481848,
+      "tag": "0008_seller_info_and_buyer_seller_chat",
+      "breakpoints": true
     }
   ]
 }
