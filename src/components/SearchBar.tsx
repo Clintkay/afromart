@@ -43,7 +43,7 @@ export function SearchBar() {
 
   const products = (results ?? []).slice(0, 6);
 
-  const submit = (event: React.FormEvent) => {
+  const submit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     const value = term.trim();
     if (!value) return;
@@ -129,7 +129,7 @@ export function SearchBar() {
 
           <button
             type="button"
-            onClick={submit as unknown as () => void}
+            onClick={submit}
             onMouseDown={(event) => event.preventDefault()}
             className="mt-1 w-full rounded-lg bg-secondary px-2 py-2 text-sm font-semibold hover:bg-secondary/70"
           >
