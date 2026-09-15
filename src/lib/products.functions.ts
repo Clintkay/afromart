@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import type { Category, ProductWithRelations } from "./products.types";
+import { PRODUCT_SELECT, type Category, type ProductWithRelations } from "./products.types";
 
 export const getCategories = createServerFn({ method: "GET" }).handler(async () => {
   const { createPublicSupabaseClient } = await import("./supabase.server");
@@ -17,7 +17,7 @@ export const getProducts = createServerFn({ method: "GET" })
 
     let query = supabase
       .from("products")
-      .select("*, categories(*), stores(id, name, slug, description, logo_url, banner_url, is_verified, rating, created_at, updated_at), product_images(*), product_variants(*)")
+      .select(PRODUCT_SELECT)
       .eq("status", "active")
       .order("created_at", { ascending: false });
 
@@ -32,7 +32,7 @@ export const getProducts = createServerFn({ method: "GET" })
 
     const { data: products, error } = await query;
     if (error) throw error;
-    return (products ?? []) as ProductWithRelations[];
+    return (products ?? []) as unknown as ProductWithRelations[];
   });
 
 export const getProductBySlug = createServerFn({ method: "GET" })
@@ -42,10 +42,10 @@ export const getProductBySlug = createServerFn({ method: "GET" })
     const supabase = createPublicSupabaseClient();
     const { data: product, error } = await supabase
       .from("products")
-      .select("*, categories(*), stores(id, name, slug, description, logo_url, banner_url, is_verified, rating, created_at, updated_at), product_images(*), product_variants(*)")
+      .select(PRODUCT_SELECT)
       .eq("slug", data.slug)
       .eq("status", "active")
       .single();
     if (error) throw error;
-    return product as ProductWithRelations;
+    return product as unknown as ProductWithRelations;
   });
