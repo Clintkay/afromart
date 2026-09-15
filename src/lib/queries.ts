@@ -7,6 +7,7 @@ import { getAddresses } from "./addresses.functions";
 import { getNotifications, type AppNotification } from "./notifications.functions";
 import { getSupportTickets, type SupportTicketWithMessages } from "./support.functions";
 import { getProfile, type Profile } from "./profile.functions";
+import { getConversation, getConversations, type ChatConversation } from "./chat.functions";
 import type { Category, ProductWithRelations, Store } from "./products.types";
 import type { OrderWithItems } from "./orders.functions";
 import type { Tables } from "@/integrations/supabase/types";
@@ -74,3 +75,14 @@ export const profileOptions = queryOptions<Profile | null>({
   queryKey: ["profile"],
   queryFn: () => getProfile(),
 });
+
+export const conversationsOptions = queryOptions<ChatConversation[]>({
+  queryKey: ["conversations"],
+  queryFn: () => getConversations(),
+});
+
+export const conversationOptions = (conversationId: string) =>
+  queryOptions<ChatConversation | null>({
+    queryKey: ["conversations", conversationId],
+    queryFn: () => getConversation({ data: { conversationId } }),
+  });

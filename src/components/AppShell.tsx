@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Bell, Grid2X2, Headphones, Home, Package, Search, ShoppingBag, Store, UserRound, Wrench } from "lucide-react";
+import { Bell, Grid2X2, Headphones, Home, MessageCircle, Package, ShoppingBag, Store, UserRound, Wrench } from "lucide-react";
 import { LanguageSelector, useLanguage } from "@/lib/language";
+import { SearchBar } from "@/components/SearchBar";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
@@ -11,6 +12,7 @@ const primaryNav = [
   { to: "/home" as const, label: "Home", icon: Home },
   { to: "/categories" as const, label: "Categories", icon: Grid2X2 },
   { to: "/services" as const, label: "Services", icon: Wrench },
+  { to: "/messages" as const, label: "Messages", icon: MessageCircle },
   { to: "/account" as const, label: "Orders", icon: Package },
 ];
 
@@ -77,10 +79,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <header className="sticky top-0 z-30 border-b bg-background/90 backdrop-blur-md">
           <div className="grid h-16 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-2 px-3 sm:gap-3 sm:px-6 md:h-20 lg:px-10">
             <Link to="/home" className="md:hidden" aria-label="Afromart home"><Logo variant="mark" className="h-9" /></Link>
-            <Link to="/products" search={{}} className="mx-auto flex min-w-0 w-full max-w-2xl items-center gap-2 rounded-full border bg-card px-3 py-2.5 text-sm text-muted-foreground shadow-sm sm:gap-3 sm:px-4">
-              <Search className="h-4 w-4 shrink-0" />
-               <span className="truncate">{t("Search Afromart")}</span>
-            </Link>
+            <SearchBar />
             <div className="flex shrink-0 items-center gap-1">
               <Button asChild variant="ghost" size="icon" aria-label="Support">
                 <Link to="/support"><Headphones className="h-5 w-5" /></Link>
