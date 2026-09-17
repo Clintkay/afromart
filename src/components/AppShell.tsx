@@ -6,7 +6,12 @@ import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
 import { useCart } from "@/lib/cart-context";
+import { useEffect } from "react";
 import type { ReactNode } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { notificationsOptions } from "@/lib/queries";
+import { ensureWelcomeNotification } from "@/lib/notifications.functions";
 
 const primaryNav = [
   { to: "/home" as const, label: "Home", icon: Home },
@@ -22,6 +27,25 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { user } = useAuth();
   const { totalItems } = useCart();
+  const ensureWelcome = useServerFn(ensureWelcomeNotification);
+  const { data: notifications, refetch: refetchNotifications } = useQuery({ ...notificationsOptions, enabled: Boolean(user) });
+  const unread = (notifications ?? []).filter((item) => !item.is_read).length;
+
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const result = await ensureWelcome({});
+        if (!cancelled && result?.created) await refetchNotifications();
+      } catch {
+        /* notifications are non-critical */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [user, ensureWelcome, refetchNotifications]);
   const isAuth = pathname === "/auth" || pathname === "/reset-password" || pathname === "/";
   const accountTarget = user ? "/account" : "/auth";
 
@@ -86,7 +110,18 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Link to="/support"><Headphones className="h-5 w-5" /></Link>
               </Button>
               <Button asChild variant="ghost" size="icon" aria-label="Notifications">
-                {user ? <Link to="/notifications"><Bell className="h-5 w-5" /></Link> : <Link to="/auth" search={{ redirect: "/notifications" }}><Bell className="h-5 w-5" /></Link>}
+                {user ? (
+              <Link to="/notifications" aria-label="Inbox" className="relative">
+                <Bell className="h-5 w-5" />
+                {unread > 0 ? (
+                  <span className="absolute -right-1.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-accent-foreground">
+                    {unread > 9 ? "9+" : unread}
+                  </span>
+                ) : null}
+              </Link>
+            ) : (
+              <Link to="/auth" search={{ redirect: "/notifications" }} aria-label="Inbox"><Bell className="h-5 w-5" /></Link>
+            )}
               </Button>
             </div>
           </div>
