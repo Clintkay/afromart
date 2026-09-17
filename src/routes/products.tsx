@@ -1,27 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { productsOptions, categoriesOptions } from "@/lib/queries";
-import { ProductsPage } from "@/components/ProductsPage";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/products")({
-  component: ProductsRoute,
-  validateSearch: (search: { categorySlug?: string; search?: string }) => search,
-  loaderDeps: ({ search: { categorySlug, search } }) => ({ categorySlug, search }),
-  loader: async ({ context, deps }) => {
-    await context.queryClient.ensureQueryData(categoriesOptions);
-    await context.queryClient.ensureQueryData(productsOptions(deps));
-  },
-  head: () => ({
-    meta: [
-      { title: "Shop | Afromart" },
-      { name: "description", content: "Browse authentic African foods, skincare, fashion, and crafts." },
-      { property: "og:title", content: "Shop | Afromart" },
-      { property: "og:description", content: "Browse authentic African foods, skincare, fashion, and crafts." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  component: () => <Outlet />,
 });
-
-function ProductsRoute() {
-  return <ProductsPage />;
-}
