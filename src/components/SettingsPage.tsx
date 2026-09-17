@@ -13,6 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { InternationalPhoneInput } from "@/components/InternationalPhoneInput";
+import { parsePhoneNumberFromString, type CountryCode } from "libphonenumber-js";
 
 const languages = [
   { value: "en", label: "English" },
@@ -32,6 +33,7 @@ export function SettingsPage() {
 
   const [fullName, setFullName] = useState(profile?.full_name ?? "");
   const [savingName, setSavingName] = useState(false);
+  const [country, setCountry] = useState<CountryCode>("NG");
   const [phone, setPhone] = useState(profile?.phone ?? "");
   const [phoneStep, setPhoneStep] = useState<"edit" | "verify">("edit");
   const [code, setCode] = useState("");
@@ -73,8 +75,9 @@ export function SettingsPage() {
   };
 
   const requestPhoneCode = async () => {
-    if (!phone || phone.length < 7) {
-      toast.error("Enter a valid phone number first.");
+    const parsed = parsePhoneNumberFromString(phone, country);
+    if (!parsed?.isValid()) {
+      toast.error("Enter a valid phone number for the selected country.");
       return;
     }
     if (!user?.email) return;
@@ -99,7 +102,8 @@ export function SettingsPage() {
       return;
     }
     try {
-      await save({ data: { phone } });
+      const parsed = parsePhoneNumberFromString(phone, country);
+      await save({ data: { phone: parsed?.number ?? phone } });
       await refresh();
       setPhoneStep("edit");
       setCode("");
@@ -162,7 +166,7 @@ export function SettingsPage() {
           <p className="mt-1 text-xs text-muted-foreground">Changing your number needs a verification code sent to your email.</p>
           {phoneStep === "edit" ? (
             <div className="mt-3 space-y-3">
-              <InternationalPhoneInput value={phone} onChange={setPhone} />
+              <InternationalPhoneInput country={country} onCountryChange={setCountry} value={phone} onChange={setPhone} />
               <Button onClick={requestPhoneCode} disabled={busy} className="w-full sm:w-auto">
                 {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send verification code"}
               </Button>
