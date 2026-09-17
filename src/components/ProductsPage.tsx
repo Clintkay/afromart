@@ -11,7 +11,7 @@ import { formatPrice } from "@/lib/utils";
 type Sort = "newest" | "price-asc" | "price-desc" | "rating";
 
 export function ProductsPage() {
-  const search = useSearch({ from: "/products" });
+  const search = useSearch({ from: "/products/" });
   const navigate = useNavigate();
   const { data: categories } = useSuspenseQuery(categoriesOptions);
   const { data: products } = useSuspenseQuery(
@@ -49,7 +49,7 @@ export function ProductsPage() {
   }, [products, minPrice, maxPrice, verifiedOnly, inStockOnly, sort]);
 
   const setCategory = (slug?: string) =>
-    navigate({ to: "/products", search: { ...(slug ? { categorySlug: slug } : {}), ...(search.search ? { search: search.search } : {}) } });
+    navigate({ to: "/products/", search: { ...(slug ? { categorySlug: slug } : {}), ...(search.search ? { search: search.search } : {}) } });
 
   const clearAll = () => {
     setTerm("");
@@ -58,7 +58,7 @@ export function ProductsPage() {
     setVerifiedOnly(false);
     setInStockOnly(false);
     setSort("newest");
-    navigate({ to: "/products", search: {} });
+    navigate({ to: "/products/", search: {} });
   };
 
   return (
@@ -73,7 +73,7 @@ export function ProductsPage() {
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              navigate({ to: "/products", search: { ...(term.trim() ? { search: term.trim() } : {}), ...(search.categorySlug ? { categorySlug: search.categorySlug } : {}) } });
+              navigate({ to: "/products/", search: { ...(term.trim() ? { search: term.trim() } : {}), ...(search.categorySlug ? { categorySlug: search.categorySlug } : {}) } });
             }}
             className="relative"
           >

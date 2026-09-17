@@ -28,6 +28,7 @@ import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as SellIndexRouteImport } from './routes/sell.index'
 import { Route as SellStartRouteImport } from './routes/sell.start'
@@ -130,6 +131,11 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ProductsIndexRoute = ProductsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ProductsRoute,
+} as any)
 const ProductsSlugRoute = ProductsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -185,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
+  '/products/': typeof ProductsIndexRoute
   '/sell/': typeof SellIndexRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
@@ -199,7 +206,6 @@ export interface FileRoutesByTo {
   '/guest': typeof GuestRoute
   '/home': typeof HomeRoute
   '/onboarding': typeof OnboardingRoute
-  '/products': typeof ProductsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/support': typeof SupportRoute
@@ -209,6 +215,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
+  '/products': typeof ProductsIndexRoute
   '/sell': typeof SellIndexRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
@@ -237,6 +244,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
+  '/products/': typeof ProductsIndexRoute
   '/sell/': typeof SellIndexRoute
   '/_authenticated/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
@@ -265,6 +273,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/products/$slug'
     | '/sell/start'
+    | '/products/'
     | '/sell/'
     | '/messages/$conversationId'
     | '/orders/$orderId'
@@ -279,7 +288,6 @@ export interface FileRouteTypes {
     | '/guest'
     | '/home'
     | '/onboarding'
-    | '/products'
     | '/reset-password'
     | '/services'
     | '/support'
@@ -289,6 +297,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/products/$slug'
     | '/sell/start'
+    | '/products'
     | '/sell'
     | '/messages/$conversationId'
     | '/orders/$orderId'
@@ -316,6 +325,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/products/$slug'
     | '/sell/start'
+    | '/products/'
     | '/sell/'
     | '/_authenticated/messages/$conversationId'
     | '/_authenticated/orders/$orderId'
@@ -474,6 +484,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/products/': {
+      id: '/products/'
+      path: '/'
+      fullPath: '/products/'
+      preLoaderRoute: typeof ProductsIndexRouteImport
+      parentRoute: typeof ProductsRoute
+    }
     '/products/$slug': {
       id: '/products/$slug'
       path: '/$slug'
@@ -558,10 +575,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface ProductsRouteChildren {
   ProductsSlugRoute: typeof ProductsSlugRoute
+  ProductsIndexRoute: typeof ProductsIndexRoute
 }
 
 const ProductsRouteChildren: ProductsRouteChildren = {
   ProductsSlugRoute: ProductsSlugRoute,
+  ProductsIndexRoute: ProductsIndexRoute,
 }
 
 const ProductsRouteWithChildren = ProductsRoute._addFileChildren(
