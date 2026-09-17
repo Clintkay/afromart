@@ -19,13 +19,13 @@ export type ChatConversation = {
   subject: string | null;
   last_message_at: string;
   created_at: string;
-  stores: { name: string; slug: string; business_name: string | null; city: string | null; country: string | null; logo_url: string | null; is_verified: boolean | null } | null;
+  stores: { name: string; slug: string; business_name: string | null; city: string | null; country: string | null; response_time: string | null; logo_url: string | null; is_verified: boolean | null } | null;
   products: { name: string; slug: string; price: number } | null;
   product_messages: ChatMessage[];
 };
 
 const CONVERSATION_SELECT =
-  "*, stores(name, slug, business_name, city, country, logo_url, is_verified), products(name, slug, price), product_messages(*)";
+  "*, stores(name, slug, business_name, city, country, response_time, logo_url, is_verified), products(name, slug, price), product_messages(*)";
 
 export const getConversations = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
