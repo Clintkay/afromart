@@ -1,9 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { ArrowRight, Grid2X2, Search, ShoppingBag, Sparkles, Store, Wrench } from "lucide-react";
+import { ArrowRight, Sparkles, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/ProductCard";
 import { categoriesOptions, productsOptions } from "@/lib/queries";
+import { SafeImage } from "@/components/SafeImage";
+import { categoryImage } from "@/lib/category-images";
 
 export function MarketplaceHome() {
   const { data: products } = useSuspenseQuery(productsOptions({}));
@@ -31,8 +33,8 @@ export function MarketplaceHome() {
         </div>
         <div className="mt-4 flex gap-3 overflow-x-auto pb-2 sm:mt-5">
           {categories.slice(0, 6).map((category, index) => {
-            const Icon = [ShoppingBag, Wrench, Sparkles, Store, Grid2X2, Search][index % 6] ?? Grid2X2;
-            return <Link key={category.id} to="/products" search={{ categorySlug: category.slug }} className="flex min-w-24 shrink-0 flex-col items-center gap-2 text-center text-xs font-semibold"><span className="grid h-16 w-16 place-items-center rounded-full border bg-card text-primary shadow-sm transition-transform hover:-translate-y-1"><Icon className="h-6 w-6" /></span>{category.name}</Link>;
+            const fallback = categoryImage(category.slug, index);
+            return <Link key={category.id} to="/products" search={{ categorySlug: category.slug }} className="flex min-w-24 shrink-0 flex-col items-center gap-2 text-center text-xs font-semibold"><span className="h-16 w-16 overflow-hidden rounded-full border bg-card shadow-sm transition-transform hover:-translate-y-1"><SafeImage src={category.image_url ?? fallback} fallback={fallback} alt={category.name} loading="lazy" className="h-full w-full object-cover" /></span><span className="max-w-24 truncate">{category.name}</span></Link>;
           })}
         </div>
       </section>

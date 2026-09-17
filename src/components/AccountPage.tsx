@@ -94,6 +94,15 @@ export function AccountPage() {
             <Link to="/products">
               <Button variant="outline">Continue shopping</Button>
             </Link>
+            <Link to="/settings">
+              <Button variant="outline">Settings</Button>
+            </Link>
+            <Link to="/notifications">
+              <Button variant="outline">Inbox</Button>
+            </Link>
+            <Link to="/messages">
+              <Button variant="outline">Messages</Button>
+            </Link>
             <Button
               variant="destructive"
               onClick={async () => {

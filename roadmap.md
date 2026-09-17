@@ -53,3 +53,20 @@
 - Icons across nav, features, support topics; category and services imagery
 - New /support page (help topics, FAQ, contact form) linked from header and footer
 - Real marketplace browsing, cart and checkout entry points replace the previous marketing-only website.
+
+## Completed (this pass)
+- Live search box with product + category suggestions (no forced redirect)
+- Category filters: price range, verified sellers, in stock, sorting
+- Product information page with description, variants, stock, seller info card
+- Buyer–seller chat: Messages list + conversation screen
+- Settings: light/dark, language, name, phone change with verification code
+- In-app inbox with welcome message on first sign-in and unread bell badge
+- In-app support with tickets and replies, FAQ, topic picker
+- Category images placed via local asset fallbacks
+- Fixed shop routing so /products/:slug renders the product page
+
+## Still open
+- Paystack payments (awaiting go-ahead + credentials)
+- Branded emails need a domain you own
+- Robot check + two-step login
+- Translations beyond English/French/Portuguese/Swahili

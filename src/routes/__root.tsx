@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LanguageProvider } from "@/lib/language";
+import { ThemeProvider } from "@/lib/theme";
 import { AuthProvider } from "@/lib/auth-context";
 import { CartProvider } from "@/lib/cart-context";
 import { AppShell } from "@/components/AppShell";
@@ -146,12 +147,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LanguageProvider><AuthProvider>
+      <ThemeProvider><LanguageProvider><AuthProvider>
         <CartProvider>
           <AppShell><Outlet /></AppShell>
           <Toaster />
         </CartProvider>
-      </AuthProvider></LanguageProvider>
+      </AuthProvider></LanguageProvider></ThemeProvider>
     </QueryClientProvider>
   );
 }

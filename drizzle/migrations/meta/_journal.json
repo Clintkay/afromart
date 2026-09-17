@@ -71,6 +71,13 @@
       "when": 1789454503744,
       "tag": "0009_allow_service_role_profile_role_change",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789670023881,
+      "tag": "0010_restrict_profile_role_updates",
+      "breakpoints": true
     }
   ]
 }
