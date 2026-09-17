@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Bell, Grid2X2, Headphones, Home, MessageCircle, Package, ShoppingBag, Store, UserRound, Wrench } from "lucide-react";
+import { Bell, Grid2X2, Headphones, Home, MessageCircle, Package, Settings, ShoppingBag, Store, UserRound, Wrench } from "lucide-react";
 import { LanguageSelector, useLanguage } from "@/lib/language";
 import { SearchBar } from "@/components/SearchBar";
 import { Logo } from "@/components/Logo";
@@ -14,6 +14,7 @@ const primaryNav = [
   { to: "/services" as const, label: "Services", icon: Wrench },
   { to: "/messages" as const, label: "Messages", icon: MessageCircle },
   { to: "/account" as const, label: "Orders", icon: Package },
+  { to: "/settings" as const, label: "Settings", icon: Settings },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -85,7 +86,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Link to="/support"><Headphones className="h-5 w-5" /></Link>
               </Button>
               <Button asChild variant="ghost" size="icon" aria-label="Notifications">
-                {user ? <Link to="/account"><Bell className="h-5 w-5" /></Link> : <Link to="/auth" search={{ redirect: "/account" }}><Bell className="h-5 w-5" /></Link>}
+                {user ? <Link to="/notifications"><Bell className="h-5 w-5" /></Link> : <Link to="/auth" search={{ redirect: "/notifications" }}><Bell className="h-5 w-5" /></Link>}
               </Button>
             </div>
           </div>

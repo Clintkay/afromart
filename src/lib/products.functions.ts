@@ -22,7 +22,13 @@ export const getProducts = createServerFn({ method: "GET" })
       .order("created_at", { ascending: false });
 
     if (data.categorySlug) {
-      query = query.eq("categories.slug", data.categorySlug);
+      const { data: category } = await supabase
+        .from("categories")
+        .select("id")
+        .eq("slug", data.categorySlug)
+        .maybeSingle();
+      if (!category) return [] as ProductWithRelations[];
+      query = query.eq("category_id", category.id);
     }
 
     if (data.search) {
