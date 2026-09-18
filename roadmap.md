@@ -41,11 +41,16 @@
 - [x] Add a Fiverr-style services marketplace discovery screen.
 
 ## Upcoming
-- Payment integration (Stripe or Paystack).
-- Reviews and ratings.
-- Buyer-seller chat and disputes.
-- Seller order and inventory management.
-- Admin moderation tools.
+- Payment integration (Paystack — awaiting go-ahead + credentials).
+- Buyer-seller disputes.
+- Seller storefront UI for the order-management backend.
+
+## Backend completion (this pass)
+- Reviews table with public read, owner write, and unique review per buyer per product
+- Automatic product rating/review count and store rating recalculation via private trigger
+- Reviews server functions: list (public), create/update (verified buyers), delete own
+- Seller backend: view orders containing their items, update delivery status, auto-notify the buyer
+- Admin backend: admin-role verification, marketplace overview counts, store verification, product status moderation
 
 ## Brand + colour pass (done)
 - Official Afro Mart logo files in header, footer and favicon
