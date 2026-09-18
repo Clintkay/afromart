@@ -30,13 +30,13 @@ export const saveMyStore = createServerFn({ method: "POST" })
   .inputValidator(
     (input: {
       name: string;
-      businessName?: string;
-      description?: string;
-      city?: string;
-      country?: string;
-      responseTime?: string;
-      logoUrl?: string;
-      bannerUrl?: string;
+      businessName?: string | undefined;
+      description?: string | undefined;
+      city?: string | undefined;
+      country?: string | undefined;
+      responseTime?: string | undefined;
+      logoUrl?: string | undefined;
+      bannerUrl?: string | undefined;
     }) =>
       z
         .object({
@@ -123,14 +123,14 @@ export const saveMyProduct = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator(
     (input: {
-      productId?: string;
+      productId?: string | undefined;
       name: string;
-      description?: string;
+      description?: string | undefined;
       price: number;
       inventoryCount: number;
-      categoryId?: string;
-      status?: string;
-      imageUrl?: string;
+      categoryId?: string | undefined;
+      status?: string | undefined;
+      imageUrl?: string | undefined;
     }) =>
       z
         .object({

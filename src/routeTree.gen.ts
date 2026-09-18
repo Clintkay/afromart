@@ -27,6 +27,7 @@ import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedCheckoutRouteImport } from './routes/_authenticated/checkout'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated/messages'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
+import { Route as AuthenticatedSellerRouteImport } from './routes/_authenticated/seller'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
@@ -126,6 +127,11 @@ const AuthenticatedNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSellerRoute = AuthenticatedSellerRouteImport.update({
+  id: '/seller',
+  path: '/seller',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -188,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/messages': typeof AuthenticatedMessagesRouteWithChildren
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/seller': typeof AuthenticatedSellerRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
@@ -212,6 +219,7 @@ export interface FileRoutesByTo {
   '/account': typeof AuthenticatedAccountRoute
   '/checkout': typeof AuthenticatedCheckoutRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/seller': typeof AuthenticatedSellerRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
@@ -241,6 +249,7 @@ export interface FileRoutesById {
   '/_authenticated/checkout': typeof AuthenticatedCheckoutRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRouteWithChildren
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
+  '/_authenticated/seller': typeof AuthenticatedSellerRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
@@ -270,6 +279,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/messages'
     | '/notifications'
+    | '/seller'
     | '/settings'
     | '/products/$slug'
     | '/sell/start'
@@ -294,6 +304,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/checkout'
     | '/notifications'
+    | '/seller'
     | '/settings'
     | '/products/$slug'
     | '/sell/start'
@@ -322,6 +333,7 @@ export interface FileRouteTypes {
     | '/_authenticated/checkout'
     | '/_authenticated/messages'
     | '/_authenticated/notifications'
+    | '/_authenticated/seller'
     | '/_authenticated/settings'
     | '/products/$slug'
     | '/sell/start'
@@ -477,6 +489,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/seller': {
+      id: '/_authenticated/seller'
+      path: '/seller'
+      fullPath: '/seller'
+      preLoaderRoute: typeof AuthenticatedSellerRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
@@ -557,6 +576,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCheckoutRoute: typeof AuthenticatedCheckoutRoute
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRouteWithChildren
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
+  AuthenticatedSellerRoute: typeof AuthenticatedSellerRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedOrdersOrderIdRoute: typeof AuthenticatedOrdersOrderIdRoute
 }
@@ -566,6 +586,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCheckoutRoute: AuthenticatedCheckoutRoute,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRouteWithChildren,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
+  AuthenticatedSellerRoute: AuthenticatedSellerRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedOrdersOrderIdRoute: AuthenticatedOrdersOrderIdRoute,
 }

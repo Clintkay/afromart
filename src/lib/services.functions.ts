@@ -19,7 +19,7 @@ export const getServiceRequests = createServerFn({ method: "GET" })
 
 export const createServiceRequest = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { serviceTitle: string; category?: string; budget?: number; country?: string; details: string }) =>
+  .inputValidator((input: { serviceTitle: string; category?: string | undefined; budget?: number | undefined; country?: string | undefined; details: string }) =>
     z
       .object({
         serviceTitle: z.string().trim().min(3).max(140),
