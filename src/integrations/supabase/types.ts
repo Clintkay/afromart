@@ -525,6 +525,45 @@ export type Database = {
           },
         ]
       }
+      service_requests: {
+        Row: {
+          budget: number | null
+          category: string | null
+          country: string | null
+          created_at: string
+          details: string
+          id: string
+          service_title: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          budget?: number | null
+          category?: string | null
+          country?: string | null
+          created_at?: string
+          details: string
+          id?: string
+          service_title: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          budget?: number | null
+          category?: string | null
+          country?: string | null
+          created_at?: string
+          details?: string
+          id?: string
+          service_title?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       stores: {
         Row: {
           banner_url: string | null
