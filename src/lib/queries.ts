@@ -8,6 +8,10 @@ import { getNotifications, type AppNotification } from "./notifications.function
 import { getSupportTickets, type SupportTicketWithMessages } from "./support.functions";
 import { getProfile, type Profile } from "./profile.functions";
 import { getConversation, getConversations, type ChatConversation } from "./chat.functions";
+import { getMyRoles } from "./roles.functions";
+import { getMyProducts, getMyStore, getSellerEarnings } from "./seller-store.functions";
+import { getSellerOrders } from "./seller.functions";
+import { getServiceRequests } from "./services.functions";
 import type { Category, ProductWithRelations, Store } from "./products.types";
 import type { OrderWithItems } from "./orders.functions";
 import type { Tables } from "@/integrations/supabase/types";
@@ -79,6 +83,36 @@ export const profileOptions = queryOptions<Profile | null>({
 export const conversationsOptions = queryOptions<ChatConversation[]>({
   queryKey: ["conversations"],
   queryFn: () => getConversations(),
+});
+
+export const myRolesOptions = queryOptions({
+  queryKey: ["my-roles"],
+  queryFn: () => getMyRoles(),
+});
+
+export const myStoreOptions = queryOptions({
+  queryKey: ["my-store"],
+  queryFn: () => getMyStore(),
+});
+
+export const myProductsOptions = queryOptions({
+  queryKey: ["my-products"],
+  queryFn: () => getMyProducts(),
+});
+
+export const sellerEarningsOptions = queryOptions({
+  queryKey: ["seller-earnings"],
+  queryFn: () => getSellerEarnings(),
+});
+
+export const sellerOrdersOptions = queryOptions({
+  queryKey: ["seller-orders"],
+  queryFn: () => getSellerOrders(),
+});
+
+export const serviceRequestsOptions = queryOptions({
+  queryKey: ["service-requests"],
+  queryFn: () => getServiceRequests(),
 });
 
 export const conversationOptions = (conversationId: string) =>

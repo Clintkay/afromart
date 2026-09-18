@@ -75,3 +75,17 @@
 - Branded emails need a domain you own
 - Robot check + two-step login
 - Translations beyond English/French/Portuguese/Swahili
+
+## Update batch (12-area spec)
+- [x] Seller workspace: dashboard, store info, products, earnings, orders with status updates (/seller)
+- [x] Services: search, filters, request form, request history
+- [x] Dark mode as a single On/Off switch with a genuinely dark palette
+- [x] Messages inbox refresh button
+- [x] AI support assistant with escalation to a human ticket
+- [x] Buyer/seller switching from Settings and Start selling (seller role granted automatically)
+- [ ] Profile redesign (buyer + seller)
+- [ ] Country/location selection + delivery info in checkout & orders
+- [ ] Marketplace imagery pass (banners, services, empty states)
+- [ ] Full navigation audit
+- [ ] Payments: waiting on provider credentials (see chat checklist)
+- [ ] Branded verification emails + "Afromart" sender: needs a domain the client owns

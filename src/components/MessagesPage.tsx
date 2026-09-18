@@ -1,18 +1,35 @@
 import { Link } from "@tanstack/react-router";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { BadgeCheck, MessageCircle } from "lucide-react";
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { BadgeCheck, MessageCircle, RefreshCw } from "lucide-react";
 import { conversationsOptions } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 
 export function MessagesPage() {
   const { data: conversations } = useSuspenseQuery(conversationsOptions);
+  const queryClient = useQueryClient();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const refresh = async () => {
+    setRefreshing(true);
+    try {
+      await queryClient.invalidateQueries({ queryKey: conversationsOptions.queryKey });
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-7 sm:px-6 sm:py-10">
-      <header>
+      <header className="flex items-start justify-between gap-3">
+        <div>
         <p className="text-xs font-bold uppercase text-primary">Messages</p>
         <h1 className="mt-2 font-heading text-3xl font-bold">Your seller chats</h1>
         <p className="mt-2 text-sm text-muted-foreground">Ask about stock, delivery times or custom orders before you buy.</p>
+        </div>
+        <Button variant="outline" size="sm" className="mt-1 shrink-0 gap-2" onClick={refresh} disabled={refreshing}>
+          <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />Refresh
+        </Button>
       </header>
 
       {conversations.length === 0 ? (

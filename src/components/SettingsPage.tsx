@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useNavigate } from "@tanstack/react-router";
-import { Bell, Globe, Loader2, Moon, ShieldCheck, Sun, UserRound } from "lucide-react";
+import { Bell, Globe, Loader2, Moon, ShieldCheck, Store, UserRound } from "lucide-react";
 import { toast } from "sonner";
-import { profileOptions } from "@/lib/queries";
+import { myRolesOptions, profileOptions } from "@/lib/queries";
+import { addMyRole } from "@/lib/roles.functions";
+import { Switch } from "@/components/ui/switch";
 import { updateProfileSettings } from "@/lib/profile.functions";
 import { useTheme } from "@/lib/theme";
 import { useLanguage } from "@/lib/language";
@@ -38,6 +40,10 @@ export function SettingsPage() {
   const [phoneStep, setPhoneStep] = useState<"edit" | "verify">("edit");
   const [code, setCode] = useState("");
   const [busy, setBusy] = useState(false);
+  const [switching, setSwitching] = useState(false);
+  const { data: roles } = useQuery(myRolesOptions);
+  const isSeller = (roles ?? []).includes("seller");
+  const becomeSeller = useServerFn(addMyRole);
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: profileOptions.queryKey });
 
@@ -124,14 +130,41 @@ export function SettingsPage() {
       </header>
 
       <section className="mt-7 rounded-xl border bg-card p-5">
-        <h2 className="flex items-center gap-2 font-heading text-lg font-bold"><Sun className="h-5 w-5 text-primary" />Appearance</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Choose a light or dark look for the app.</p>
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          <Button variant={theme === "light" ? "default" : "outline"} className="h-12 gap-2" onClick={() => applyTheme("light")}>
-            <Sun className="h-4 w-4" />Light
-          </Button>
-          <Button variant={theme === "dark" ? "default" : "outline"} className="h-12 gap-2" onClick={() => applyTheme("dark")}>
-            <Moon className="h-4 w-4" />Dark
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <h2 className="flex items-center gap-2 font-heading text-lg font-bold"><Moon className="h-5 w-5 text-primary" />Dark mode</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Turn on a darker interface for low light.</p>
+          </div>
+          <Switch
+            checked={theme === "dark"}
+            onCheckedChange={(next) => applyTheme(next ? "dark" : "light")}
+            aria-label="Dark mode"
+          />
+        </div>
+      </section>
+
+      <section className="mt-5 rounded-xl border bg-card p-5">
+        <h2 className="flex items-center gap-2 font-heading text-lg font-bold"><Store className="h-5 w-5 text-primary" />Buyer or seller</h2>
+        <p className="mt-1 text-sm text-muted-foreground">Switch between shopping and selling without a second account.</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <Button variant="outline" className="h-12 justify-start" onClick={() => navigate({ to: "/home" })}>Shop as buyer</Button>
+          <Button
+            className="h-12 justify-start"
+            disabled={switching}
+            onClick={async () => {
+              setSwitching(true);
+              try {
+                if (!isSeller) await becomeSeller({ data: { role: "seller" } });
+                await queryClient.invalidateQueries({ queryKey: myRolesOptions.queryKey });
+                navigate({ to: "/seller" });
+              } catch {
+                toast.error("Could not open your seller workspace.");
+              } finally {
+                setSwitching(false);
+              }
+            }}
+          >
+            {switching ? <Loader2 className="h-4 w-4 animate-spin" /> : isSeller ? "Open seller dashboard" : "Start selling"}
           </Button>
         </div>
       </section>
