@@ -85,8 +85,7 @@ export const updateSellerOrderStatus = createServerFn({ method: "POST" })
       user_id: order.user_id,
       kind: "order",
       title: `Order ${data.status}`,
-      body: `Your order from ${store.name} is now ${data.status}.`,
-      link: `/orders/${order.id}`,
+      body: `Your order from ${store.name} is now ${data.status}. Open your orders to follow it.`,
     });
 
     return order as Tables<"orders">;
