@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { BadgeCheck, Boxes, Loader2, MapPin, Package, Plus, Store, Wallet } from "lucide-react";
@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { formatPrice } from "@/lib/utils";
 import { myProductsOptions, myStoreOptions, sellerEarningsOptions, sellerOrdersOptions } from "@/lib/queries";
 import { saveMyProduct, saveMyStore } from "@/lib/seller-store.functions";
+import { addMyRole } from "@/lib/roles.functions";
+import { myRolesOptions } from "@/lib/queries";
 import { updateSellerOrderStatus } from "@/lib/seller.functions";
 import sellerHero from "@/assets/seller-hero.jpg";
 
@@ -26,6 +28,15 @@ export function SellerDashboard() {
   const updateStatus = useServerFn(updateSellerOrderStatus);
 
   const [busy, setBusy] = useState(false);
+  const { data: roles } = useQuery(myRolesOptions);
+  const claimSellerRole = useServerFn(addMyRole);
+
+  useEffect(() => {
+    if (!roles || roles.includes("seller")) return;
+    claimSellerRole({ data: { role: "seller" } })
+      .then(() => queryClient.invalidateQueries({ queryKey: myRolesOptions.queryKey }))
+      .catch(() => undefined);
+  }, [roles, claimSellerRole, queryClient]);
   const [storeForm, setStoreForm] = useState({
     name: store?.name ?? "",
     businessName: store?.business_name ?? "",
