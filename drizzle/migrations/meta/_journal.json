@@ -78,6 +78,13 @@
       "when": 1789670023881,
       "tag": "0010_restrict_profile_role_updates",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1789715661096,
+      "tag": "0011_reviews_and_product_ratings",
+      "breakpoints": true
     }
   ]
 }
