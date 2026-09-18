@@ -19,6 +19,7 @@ const primaryNav = [
   { to: "/services" as const, label: "Services", icon: Wrench },
   { to: "/messages" as const, label: "Messages", icon: MessageCircle },
   { to: "/account" as const, label: "Orders", icon: Package },
+  { to: "/seller" as const, label: "Sell", icon: Store },
   { to: "/settings" as const, label: "Settings", icon: Settings },
 ];
 
