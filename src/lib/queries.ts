@@ -81,6 +81,36 @@ export const conversationsOptions = queryOptions<ChatConversation[]>({
   queryFn: () => getConversations(),
 });
 
+export const myRolesOptions = queryOptions({
+  queryKey: ["my-roles"],
+  queryFn: () => getMyRoles(),
+});
+
+export const myStoreOptions = queryOptions({
+  queryKey: ["my-store"],
+  queryFn: () => getMyStore(),
+});
+
+export const myProductsOptions = queryOptions({
+  queryKey: ["my-products"],
+  queryFn: () => getMyProducts(),
+});
+
+export const sellerEarningsOptions = queryOptions({
+  queryKey: ["seller-earnings"],
+  queryFn: () => getSellerEarnings(),
+});
+
+export const sellerOrdersOptions = queryOptions({
+  queryKey: ["seller-orders"],
+  queryFn: () => getSellerOrders(),
+});
+
+export const serviceRequestsOptions = queryOptions({
+  queryKey: ["service-requests"],
+  queryFn: () => getServiceRequests(),
+});
+
 export const conversationOptions = (conversationId: string) =>
   queryOptions<ChatConversation | null>({
     queryKey: ["conversations", conversationId],
