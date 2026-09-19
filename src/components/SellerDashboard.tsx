@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { BadgeCheck, Boxes, Loader2, MapPin, Package, Plus, Store, Wallet } from "lucide-react";
+import { BadgeCheck, Boxes, Loader2, MapPin, Package, Plus, RefreshCw, Store, Wallet } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,21 +11,27 @@ import { myProductsOptions, myStoreOptions, sellerEarningsOptions, sellerOrdersO
 import { saveMyProduct, saveMyStore } from "@/lib/seller-store.functions";
 import { addMyRole } from "@/lib/roles.functions";
 import { myRolesOptions } from "@/lib/queries";
-import { updateSellerOrderStatus } from "@/lib/seller.functions";
+import { updateSellerOrderStatus, updateSellerPaymentStatus } from "@/lib/seller.functions";
 import sellerHero from "@/assets/seller-hero.jpg";
 
 const orderStatuses = ["pending", "processing", "shipped", "delivered", "cancelled"] as const;
+const paymentStatuses = ["pending", "paid", "refunded"] as const;
 
 export function SellerDashboard() {
   const queryClient = useQueryClient();
   const { data: store, isLoading: storeLoading } = useQuery(myStoreOptions);
   const { data: products } = useQuery({ ...myProductsOptions, enabled: Boolean(store) });
   const { data: earnings } = useQuery({ ...sellerEarningsOptions, enabled: Boolean(store) });
-  const { data: sellerOrders } = useQuery({ ...sellerOrdersOptions, enabled: Boolean(store) });
+  const {
+    data: sellerOrders,
+    isFetching: ordersFetching,
+    refetch: refetchOrders,
+  } = useQuery({ ...sellerOrdersOptions, enabled: Boolean(store), refetchInterval: 15000 });
 
   const saveStore = useServerFn(saveMyStore);
   const saveProduct = useServerFn(saveMyProduct);
   const updateStatus = useServerFn(updateSellerOrderStatus);
+  const updatePayment = useServerFn(updateSellerPaymentStatus);
 
   const [busy, setBusy] = useState(false);
   const { data: roles } = useQuery(myRolesOptions);
@@ -102,7 +108,10 @@ export function SellerDashboard() {
     setBusy(true);
     try {
       await updateStatus({ data: { orderId, status } });
-      await queryClient.invalidateQueries({ queryKey: sellerOrdersOptions.queryKey });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: sellerOrdersOptions.queryKey }),
+        queryClient.invalidateQueries({ queryKey: sellerEarningsOptions.queryKey }),
+      ]);
       toast.success(`Order marked ${status}.`);
     } catch {
       toast.error("Could not update the order.");
@@ -110,6 +119,23 @@ export function SellerDashboard() {
       setBusy(false);
     }
   };
+
+  const changePayment = async (orderId: string, paymentStatus: string) => {
+    setBusy(true);
+    try {
+      await updatePayment({ data: { orderId, paymentStatus } });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: sellerOrdersOptions.queryKey }),
+        queryClient.invalidateQueries({ queryKey: sellerEarningsOptions.queryKey }),
+      ]);
+      toast.success(paymentStatus === "paid" ? "Payment confirmed." : `Payment marked ${paymentStatus}.`);
+    } catch {
+      toast.error("Could not update the payment.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
 
   if (storeLoading) {
     return (
@@ -141,11 +167,13 @@ export function SellerDashboard() {
       </header>
 
       {store ? (
-        <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {[
             { label: "Gross sales", value: formatPrice(earnings?.gross ?? 0), icon: Wallet },
+            { label: "Paid to date", value: formatPrice(earnings?.paid ?? 0), icon: Wallet },
+            { label: "Awaiting payment", value: formatPrice(earnings?.awaitingPayment ?? 0), icon: Wallet },
             { label: "Available payout", value: formatPrice(earnings?.available ?? 0), icon: Wallet },
-            { label: "Orders", value: String(earnings?.orders ?? 0), icon: Package },
+            { label: "Orders", value: `${earnings?.orders ?? 0} · ${earnings?.delivered ?? 0} delivered`, icon: Package },
             { label: "Listings", value: String(products?.length ?? 0), icon: Boxes },
           ].map((card) => (
             <article key={card.label} className="rounded-xl border bg-card p-5">
@@ -235,7 +263,14 @@ export function SellerDashboard() {
       </div>
 
       <section className="mt-9">
-        <h2 className="flex items-center gap-2 font-heading text-2xl font-bold"><Package className="h-5 w-5 text-primary" />Orders to fulfil</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="flex items-center gap-2 font-heading text-2xl font-bold"><Package className="h-5 w-5 text-primary" />Orders to fulfil</h2>
+          <Button variant="outline" size="sm" className="gap-1.5" disabled={ordersFetching} onClick={() => { void refetchOrders(); void queryClient.invalidateQueries({ queryKey: sellerEarningsOptions.queryKey }); }}>
+            {ordersFetching ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+            Refresh
+          </Button>
+        </div>
+        <p className="mt-1 text-xs text-muted-foreground">Updates automatically every 15 seconds. Buyers are notified each time you change an order.</p>
         {(sellerOrders?.orders ?? []).length === 0 ? (
           <p className="mt-3 rounded-xl border bg-card p-6 text-sm text-muted-foreground">No orders yet. They appear here as soon as a buyer checks out.</p>
         ) : (
@@ -247,25 +282,49 @@ export function SellerDashboard() {
                     <p className="font-heading font-bold">{order.id.slice(0, 8).toUpperCase()}</p>
                     <p className="text-xs text-muted-foreground">{new Date(order.created_at ?? "").toLocaleString()}</p>
                   </div>
-                  <strong>{formatPrice(order.order_items.reduce((sum, item) => sum + item.total, 0))}</strong>
+                  <div className="text-right">
+                    <strong className="block">{formatPrice(order.order_items.reduce((sum, item) => sum + item.total, 0))}</strong>
+                    <span className={`text-[11px] font-bold uppercase ${order.payment_status === "paid" ? "text-primary" : "text-muted-foreground"}`}>
+                      Payment {order.payment_status}
+                    </span>
+                  </div>
                 </div>
                 <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
                   {order.order_items.map((item) => (
                     <li key={item.id}>{item.quantity} × {item.name}</li>
                   ))}
                 </ul>
-                <div className="mt-3 flex flex-wrap gap-2 border-t pt-3">
-                  {orderStatuses.map((status) => (
-                    <Button
-                      key={status}
-                      size="sm"
-                      variant={order.status === status ? "default" : "outline"}
-                      disabled={busy}
-                      onClick={() => changeStatus(order.id, status)}
-                    >
-                      {status}
-                    </Button>
-                  ))}
+                <div className="mt-3 border-t pt-3">
+                  <p className="text-xs font-semibold uppercase text-muted-foreground">Delivery status</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {orderStatuses.map((status) => (
+                      <Button
+                        key={status}
+                        size="sm"
+                        variant={order.status === status ? "default" : "outline"}
+                        disabled={busy}
+                        onClick={() => changeStatus(order.id, status)}
+                      >
+                        {status}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-3 border-t pt-3">
+                  <p className="text-xs font-semibold uppercase text-muted-foreground">Payment</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {paymentStatuses.map((status) => (
+                      <Button
+                        key={status}
+                        size="sm"
+                        variant={order.payment_status === status ? "default" : "outline"}
+                        disabled={busy}
+                        onClick={() => changePayment(order.id, status)}
+                      >
+                        {status === "paid" ? "Payment received" : status === "refunded" ? "Refunded" : "Awaiting payment"}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
               </li>
             ))}

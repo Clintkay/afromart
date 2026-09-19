@@ -14,6 +14,8 @@ import { LanguageSelector, useLanguage } from "@/lib/language";
 import { z } from "zod";
 import { parsePhoneNumberFromString, type CountryCode } from "libphonenumber-js";
 import { InternationalPhoneInput } from "@/components/InternationalPhoneInput";
+import { HumanCheck, humanCheckEnabled } from "@/components/HumanCheck";
+import { verifyHumanCheck } from "@/lib/turnstile.functions";
 
 const emailSchema = z.string().trim().email().max(255);
 const passwordSchema = z.string().min(8).max(128);
@@ -34,6 +36,7 @@ export function AuthPage() {
   const [verificationPurpose, setVerificationPurpose] = useState<"signup" | "login">("signup");
   const [verificationCode, setVerificationCode] = useState("");
   const [humanChecked, setHumanChecked] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [website, setWebsite] = useState("");
   const [resendSeconds, setResendSeconds] = useState(0);
   const navigate = useNavigate();
@@ -60,7 +63,14 @@ export function AuthPage() {
     setLoading(true);
 
     try {
-      if (website || !humanChecked) throw new Error("Complete the security check to continue.");
+      if (website) throw new Error("Complete the security check to continue.");
+      if (humanCheckEnabled) {
+        if (!turnstileToken) throw new Error("Complete the security check to continue.");
+        const check = await verifyHumanCheck({ data: { token: turnstileToken } });
+        if (!check.ok) throw new Error("Security check failed. Please try again.");
+      } else if (!humanChecked) {
+        throw new Error("Complete the security check to continue.");
+      }
       const safeEmail = emailSchema.parse(email);
       const safePassword = passwordSchema.parse(password);
       if (mode === "signup") {
@@ -275,17 +285,21 @@ export function AuthPage() {
               </div>
             </div>
             <input aria-hidden="true" tabIndex={-1} autoComplete="off" className="hidden" name="website" value={website} onChange={(event) => setWebsite(event.target.value)} />
-            <label className="flex min-h-13 cursor-pointer items-center gap-3 rounded-lg border bg-secondary/40 px-4 py-3 text-sm font-medium">
-              <input type="checkbox" checked={humanChecked} onChange={(event) => setHumanChecked(event.target.checked)} className="h-4 w-4 accent-primary" required />
-              <span>I’m human</span>
-              <span className="ml-auto text-xs font-semibold text-muted-foreground">Security check</span>
-            </label>
+            {humanCheckEnabled ? (
+              <HumanCheck onToken={setTurnstileToken} />
+            ) : (
+              <label className="flex min-h-13 cursor-pointer items-center gap-3 rounded-lg border bg-secondary/40 px-4 py-3 text-sm font-medium">
+                <input type="checkbox" checked={humanChecked} onChange={(event) => setHumanChecked(event.target.checked)} className="h-4 w-4 accent-primary" required />
+                <span>I’m human</span>
+                <span className="ml-auto text-xs font-semibold text-muted-foreground">Security check</span>
+              </label>
+            )}
             {mode === "signin" ? (
               <div className="flex justify-end">
                 <Button type="button" variant="link" onClick={handleForgotPassword} className="h-auto px-0 text-sm text-primary">{t("Forgot Password?")}</Button>
               </div>
             ) : null}
-             <Button type="submit" size="lg" className="mt-3 h-13 w-full text-base font-bold" disabled={loading || !humanChecked}>
+             <Button type="submit" size="lg" className="mt-3 h-13 w-full text-base font-bold" disabled={loading || (humanCheckEnabled ? !turnstileToken : !humanChecked)}>
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
               {mode === "signin" ? t("Log In") : t("Sign up with Email")}
             </Button>

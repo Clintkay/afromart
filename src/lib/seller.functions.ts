@@ -90,3 +90,49 @@ export const updateSellerOrderStatus = createServerFn({ method: "POST" })
 
     return order as Tables<"orders">;
   });
+
+const PAYMENT_STATUSES = ["pending", "paid", "refunded"] as const;
+
+/** Sellers confirm money received (until the live payment provider is connected). */
+export const updateSellerPaymentStatus = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: { orderId: string; paymentStatus: string }) =>
+    z.object({ orderId: z.string().uuid(), paymentStatus: z.enum(PAYMENT_STATUSES) }).parse(input),
+  )
+  .handler(async ({ data, context }) => {
+    const store = await getOwnedStore(context.supabase, context.userId);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: match, error: matchError } = await supabaseAdmin
+      .from("order_items")
+      .select("id")
+      .eq("order_id", data.orderId)
+      .eq("store_id", store.id)
+      .limit(1);
+    if (matchError) throw matchError;
+    if (!match || match.length === 0) throw new Error("This order does not belong to your store.");
+
+    const { data: order, error } = await supabaseAdmin
+      .from("orders")
+      .update({ payment_status: data.paymentStatus, updated_at: new Date().toISOString() })
+      .eq("id", data.orderId)
+      .select()
+      .single();
+    if (error) throw error;
+
+    const body =
+      data.paymentStatus === "paid"
+        ? `${store.name} confirmed your payment. Your order is being prepared.`
+        : data.paymentStatus === "refunded"
+          ? `${store.name} refunded your order. The money returns to your payment method.`
+          : `${store.name} is still waiting for your payment.`;
+
+    await supabaseAdmin.from("notifications").insert({
+      user_id: order.user_id,
+      kind: "order",
+      title: `Payment ${data.paymentStatus}`,
+      body,
+    });
+
+    return order as Tables<"orders">;
+  });

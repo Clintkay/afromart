@@ -60,10 +60,23 @@ export const createOrder = createServerFn({ method: "POST" })
       .single();
     if (error) throw error;
 
+    // Always resolve the selling store from the product itself, so seller
+    // dashboards and payouts work even if the client did not send a store id.
+    const productIds = [...new Set(data.items.map((item) => item.productId).filter(Boolean))];
+    const storeByProduct = new Map<string, string | null>();
+    if (productIds.length > 0) {
+      const { data: rows, error: productsError } = await context.supabase
+        .from("products")
+        .select("id, store_id")
+        .in("id", productIds);
+      if (productsError) throw productsError;
+      for (const row of rows ?? []) storeByProduct.set(row.id, row.store_id ?? null);
+    }
+
     const orderItems = data.items.map((item) => ({
       order_id: order.id,
       product_id: item.productId,
-      store_id: item.storeId ?? null,
+      store_id: storeByProduct.get(item.productId) ?? item.storeId ?? null,
       name: item.name,
       price: item.price,
       quantity: item.quantity,
@@ -72,6 +85,22 @@ export const createOrder = createServerFn({ method: "POST" })
 
     const { error: itemsError } = await context.supabase.from("order_items").insert(orderItems);
     if (itemsError) throw itemsError;
+
+    // Notify each seller that a new order arrived.
+    const storeIds = [...new Set(orderItems.map((item) => item.store_id).filter(Boolean))] as string[];
+    if (storeIds.length > 0) {
+      const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+      const { data: stores } = await supabaseAdmin.from("stores").select("id, name, owner_id").in("id", storeIds);
+      const notifications = (stores ?? [])
+        .filter((store) => store.owner_id)
+        .map((store) => ({
+          user_id: store.owner_id as string,
+          kind: "order",
+          title: "New order received",
+          body: `${store.name} has a new Afromart order. Open your seller dashboard to confirm payment and delivery.`,
+        }));
+      if (notifications.length > 0) await supabaseAdmin.from("notifications").insert(notifications);
+    }
 
     return order as Tables<"orders">;
   });

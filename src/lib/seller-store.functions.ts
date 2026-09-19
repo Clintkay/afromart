@@ -199,7 +199,7 @@ export const getSellerEarnings = createServerFn({ method: "GET" })
       .eq("owner_id", context.userId)
       .maybeSingle();
     if (storeError) throw storeError;
-    if (!store) return { gross: 0, orders: 0, units: 0, available: 0 };
+    if (!store) return { gross: 0, paid: 0, awaitingPayment: 0, orders: 0, units: 0, available: 0, delivered: 0 };
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: items, error } = await supabaseAdmin
@@ -209,11 +209,31 @@ export const getSellerEarnings = createServerFn({ method: "GET" })
     if (error) throw error;
 
     const rows = items ?? [];
+    const orderIds = [...new Set(rows.map((row) => row.order_id))];
+
+    let paidIds = new Set<string>();
+    let deliveredCount = 0;
+    if (orderIds.length > 0) {
+      const { data: orders, error: ordersError } = await supabaseAdmin
+        .from("orders")
+        .select("id, payment_status, status")
+        .in("id", orderIds);
+      if (ordersError) throw ordersError;
+      paidIds = new Set((orders ?? []).filter((order) => order.payment_status === "paid").map((order) => order.id));
+      deliveredCount = (orders ?? []).filter((order) => order.status === "delivered").length;
+    }
+
     const gross = rows.reduce((sum, row) => sum + (row.total ?? 0), 0);
+    const paid = rows.filter((row) => paidIds.has(row.order_id)).reduce((sum, row) => sum + (row.total ?? 0), 0);
+
     return {
       gross,
-      orders: new Set(rows.map((row) => row.order_id)).size,
+      paid,
+      awaitingPayment: gross - paid,
+      orders: orderIds.length,
       units: rows.reduce((sum, row) => sum + (row.quantity ?? 0), 0),
-      available: Math.round(gross * 0.9),
+      /** Afromart holds a 10% marketplace fee; the rest is payable to the seller. */
+      available: Math.round(paid * 0.9),
+      delivered: deliveredCount,
     };
   });
