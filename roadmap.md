@@ -118,3 +118,8 @@
 - [x] Seller dashboard: live refresh, payment status controls, paid/awaiting/available payout + delivered counts (verified end to end)
 - [ ] Cloudflare Turnstile human-verification on signup/login (needs site key + secret key from the client's Cloudflare account)
 - [x] Stripe publishable key recorded (VITE_STRIPE_PUBLISHABLE_KEY); checkout uses Stripe-hosted payment page so no card fields in the app
+
+## Onboarding (done 2026-09-19)
+- 4-step walkthrough with real app screens, swipe gestures, tappable dots, skip/login links
+- Standalone full-screen: app header/bottom nav no longer wrap /onboarding
+- Typecheck clean, verified on phone-sized preview
