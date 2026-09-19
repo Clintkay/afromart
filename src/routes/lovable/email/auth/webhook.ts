@@ -9,7 +9,7 @@ import { EmailChangeEmail } from '@/lib/email-templates/email-change'
 import { ReauthenticationEmail } from '@/lib/email-templates/reauthentication'
 
 // Configuration
-const SITE_NAME = "Helper App"
+const SITE_NAME = "Afromart"
 const SENDER_DOMAIN = "notify.afrmart.com"
 const ROOT_DOMAIN = "afrmart.com"
 const FROM_DOMAIN = "afrmart.com"
