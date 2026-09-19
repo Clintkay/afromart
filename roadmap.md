@@ -117,3 +117,4 @@
 - [x] order_items.store_id now resolved from the product, so seller dashboards see every order (existing rows backfilled)
 - [x] Seller dashboard: live refresh, payment status controls, paid/awaiting/available payout + delivered counts (verified end to end)
 - [ ] Cloudflare Turnstile human-verification on signup/login (needs site key + secret key from the client's Cloudflare account)
+- [x] Stripe publishable key recorded (VITE_STRIPE_PUBLISHABLE_KEY); checkout uses Stripe-hosted payment page so no card fields in the app
