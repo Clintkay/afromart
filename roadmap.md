@@ -97,3 +97,11 @@
 - [x] Country selection at checkout with location-aware delivery cost and ETA
 - [ ] Payments (Paystack) pending client credentials
 - [ ] Branded email sending pending own domain
+
+## Messaging (done)
+- [x] Buyer-seller chat: inbox with refresh + auto-refresh, conversation view, send messages
+- [x] Conversations now linked to the store owner so sellers see and can reply
+- [x] New message creates an in-app notification for the other participant
+
+## Email sender
+- [ ] Send signup verification / password reset from Afromart (needs a domain the user owns; Gmail address cannot be a sender domain)
