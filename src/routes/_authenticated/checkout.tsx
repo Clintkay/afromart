@@ -90,8 +90,21 @@ function CheckoutPage() {
       });
 
       clearCart();
-      toast.success("Order placed successfully!");
-      navigate({ to: "/account" });
+
+      if (payWithCard) {
+        try {
+          const { url } = await createOrderCheckoutSession({
+            data: { orderId: order.id, origin: window.location.origin },
+          });
+          window.location.href = url;
+          return;
+        } catch {
+          toast.error("Order saved, but card payment could not start. You can pay on delivery instead.");
+        }
+      } else {
+        toast.success("Order placed. Pay on delivery.");
+      }
+      navigate({ to: "/orders/$orderId", params: { orderId: order.id } });
     } catch (err) {
       toast.error("Could not place order. Please try again.");
       console.error(err);
