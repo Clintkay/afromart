@@ -2,14 +2,13 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Bot, CreditCard, LifeBuoy, Loader2, MessagesSquare, Package, Send, ShieldAlert, Sparkles, Store } from "lucide-react";
+import { CreditCard, LifeBuoy, Loader2, MessagesSquare, Package, Send, ShieldAlert, Store } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supportTicketsOptions } from "@/lib/queries";
 import { createSupportTicket, replyToSupportTicket } from "@/lib/support.functions";
-import { askSupportAssistant, type AssistantTurn } from "@/lib/assistant.functions";
 import { useAuth } from "@/lib/auth-context";
 import supportHero from "@/assets/support-hero.jpg";
 
@@ -42,38 +41,6 @@ export function SupportPage() {
   const [busy, setBusy] = useState(false);
   const [openTicket, setOpenTicket] = useState<string | null>(null);
   const [replyBody, setReplyBody] = useState("");
-  const ask = useServerFn(askSupportAssistant);
-  const [chat, setChat] = useState<AssistantTurn[]>([]);
-  const [question, setQuestion] = useState("");
-  const [thinking, setThinking] = useState(false);
-  const [needsAgent, setNeedsAgent] = useState(false);
-
-  const askAssistant = async (event: React.FormEvent) => {
-    event.preventDefault();
-    const text = question.trim();
-    if (text.length < 2) return;
-    setQuestion("");
-    setChat((current) => [...current, { role: "user", content: text }]);
-    setThinking(true);
-    try {
-      const result = await ask({ data: { history: chat.slice(-8), question: text } });
-      setChat((current) => [...current, { role: "assistant", content: result.answer }]);
-      setNeedsAgent(result.escalate);
-    } catch {
-      setChat((current) => [...current, { role: "assistant", content: "I could not answer just now. Send a support request below and an agent will help." }]);
-      setNeedsAgent(true);
-    } finally {
-      setThinking(false);
-    }
-  };
-
-  const escalate = () => {
-    const lastQuestion = [...chat].reverse().find((turn) => turn.role === "user")?.content ?? "";
-    setSubject(lastQuestion.slice(0, 80) || "Help needed");
-    setMessage(lastQuestion);
-    document.getElementById("support-subject")?.scrollIntoView({ behavior: "smooth", block: "center" });
-  };
-
   const refresh = () => queryClient.invalidateQueries({ queryKey: supportTicketsOptions.queryKey });
 
   const submit = async (event: React.FormEvent) => {
@@ -137,45 +104,10 @@ export function SupportPage() {
         ))}
       </section>
 
-      <section className="mt-8 rounded-2xl border bg-card p-5 sm:p-7">
-        <h2 className="flex items-center gap-2 font-heading text-2xl font-bold">
-          <Sparkles className="h-5 w-5 text-primary" />Afromart assistant
-        </h2>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Ask about orders, delivery, refunds, payments or your account. An agent takes over when needed.
-        </p>
-
-        <div className="mt-4 space-y-3">
-          {chat.length === 0 ? (
-            <div className="rounded-xl bg-secondary/50 p-4 text-sm text-muted-foreground">
-              Try “Where is my order?”, “How do refunds work?” or “How do I get paid as a seller?”
-            </div>
-          ) : (
-            chat.map((turn, index) => (
-              <div
-                key={`${turn.role}-${index}`}
-                className={`rounded-xl px-4 py-3 text-sm leading-6 ${turn.role === "user" ? "ml-auto max-w-[85%] bg-primary/10" : "mr-auto max-w-[90%] bg-secondary"}`}
-              >
-                {turn.role === "assistant" ? (
-                  <span className="mb-1 flex items-center gap-1.5 text-[11px] font-bold uppercase text-primary"><Bot className="h-3.5 w-3.5" />Assistant</span>
-                ) : null}
-                <p className="whitespace-pre-wrap">{turn.content}</p>
-              </div>
-            ))
-          )}
-          {thinking ? (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" />Thinking…</div>
-          ) : null}
-        </div>
-
-        <form onSubmit={askAssistant} className="mt-4 grid grid-cols-[minmax(0,1fr)_auto] gap-2">
-          <Input value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Ask a question" aria-label="Ask the Afromart assistant" />
-          <Button type="submit" disabled={thinking || question.trim().length < 2}>Ask</Button>
-        </form>
-
-        {needsAgent && user ? (
-          <Button variant="outline" className="mt-3" onClick={escalate}>Talk to a human agent</Button>
-        ) : null}
+      <section className="mt-8 border-y py-6">
+        <h2 className="font-heading text-2xl font-bold">Afromart AI assistant</h2>
+        <p className="mt-2 text-sm text-muted-foreground">Help with your orders, deliveries, account and selling.</p>
+        <Button asChild className="mt-4"><Link to="/support-chat">Chat with Afromart</Link></Button>
       </section>
 
       <div className="mt-9 grid gap-8 lg:grid-cols-2">
