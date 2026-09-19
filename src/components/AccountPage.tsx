@@ -56,10 +56,7 @@ export function AccountPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 pb-10 pt-5 sm:px-6 sm:pt-8">
       <section className="overflow-hidden rounded-2xl border bg-card">
-        <div
-          className="h-28 bg-cover bg-center sm:h-36"
-          style={{ backgroundImage: `linear-gradient(to right, rgba(23,77,54,.85), rgba(23,77,54,.35)), url(${storeBanner.url})` }}
-        />
+        <div className="h-24 bg-gradient-to-r from-primary via-primary/85 to-accent/70 sm:h-32" />
         <div className="-mt-10 flex flex-col gap-4 px-5 pb-5 sm:-mt-12 sm:flex-row sm:items-end sm:justify-between sm:px-7 sm:pb-6">
           <div className="flex items-end gap-4">
             <div className="flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-card bg-primary font-heading text-2xl font-bold text-primary-foreground sm:h-24 sm:w-24">
