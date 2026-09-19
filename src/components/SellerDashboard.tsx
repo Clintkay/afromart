@@ -15,6 +15,7 @@ import { updateSellerOrderStatus } from "@/lib/seller.functions";
 import sellerHero from "@/assets/seller-hero.jpg";
 
 const orderStatuses = ["pending", "processing", "shipped", "delivered", "cancelled"] as const;
+const paymentStatuses = ["pending", "paid", "refunded"] as const;
 
 export function SellerDashboard() {
   const queryClient = useQueryClient();
