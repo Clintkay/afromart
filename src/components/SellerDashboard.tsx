@@ -52,7 +52,7 @@ export function SellerDashboard() {
     country: store?.country ?? "Nigeria",
     responseTime: store?.response_time ?? "within 2 hours",
   });
-  const [productForm, setProductForm] = useState({ name: "", description: "", price: "", inventory: "" });
+  const [productForm, setProductForm] = useState({ name: "", description: "", price: "", inventory: "", imageUrl: "" });
 
   const submitStore = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -93,9 +93,10 @@ export function SellerDashboard() {
           description: productForm.description.trim() || undefined,
           price,
           inventoryCount: inventory,
+          ...(productForm.imageUrl.trim() ? { imageUrl: productForm.imageUrl.trim() } : {}),
         },
       });
-      setProductForm({ name: "", description: "", price: "", inventory: "" });
+      setProductForm({ name: "", description: "", price: "", inventory: "", imageUrl: "" });
       await queryClient.invalidateQueries({ queryKey: myProductsOptions.queryKey });
       toast.success("Product published.");
     } catch {

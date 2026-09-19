@@ -1,3 +1,5 @@
+import { Link } from "@tanstack/react-router";
+
 function AppleIcon({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className={className} fill="currentColor">
