@@ -1,6 +1,7 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { OrderTrackingPage } from "@/components/OrderTrackingPage";
 import { orderOptions } from "@/lib/queries";
+import { useQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_authenticated/orders/$orderId")({
   loader: async ({ context, params }) => {
@@ -20,6 +21,8 @@ export const Route = createFileRoute("/_authenticated/orders/$orderId")({
 });
 
 function OrderRoute() {
-  const order = Route.useLoaderData();
+  const initialOrder = Route.useLoaderData();
+  const { data } = useQuery({ ...orderOptions(initialOrder.id), initialData: initialOrder, refetchInterval: 10000 });
+  const order = data ?? initialOrder;
   return <OrderTrackingPage order={order} />;
 }

@@ -23,21 +23,26 @@ const CART_STORAGE_KEY = "afromart-cart";
 const CartContext = createContext<CartContextValue | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === "undefined") return [];
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
     try {
       const raw = localStorage.getItem(CART_STORAGE_KEY);
-      return raw ? (JSON.parse(raw) as CartItem[]) : [];
+      const saved = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(saved)) setItems(saved.filter((item) => item && typeof item.productId === "string" && Number.isFinite(item.price) && Number.isInteger(item.quantity) && item.quantity > 0));
     } catch {
-      return [];
+      setItems([]);
     }
-  });
+    setLoaded(true);
+  }, []);
 
   useEffect(() => {
-    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
-  }, [items]);
+    if (!loaded) return;
+    try { localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items)); } catch { /* Keep the cart usable when storage is unavailable. */ }
+  }, [items, loaded]);
 
   const addItem = (item: Omit<CartItem, "quantity">, quantity = 1) => {
+    if (!Number.isInteger(quantity) || quantity < 1) return;
     setItems((prev) => {
       const existing = prev.find((i) => i.productId === item.productId);
       if (existing) {
@@ -50,6 +55,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
+    if (!Number.isInteger(quantity)) return;
     if (quantity <= 0) {
       removeItem(productId);
       return;

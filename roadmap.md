@@ -147,3 +147,12 @@
 - [x] Use the ten approved MVP languages and practical African-market messaging without unsupported statistics
 - [x] Verify desktop, tablet, and mobile layouts, imagery, navigation, metadata, and all CTAs
 - [x] Review linked project message and supplied desktop/mobile screenshots
+
+## Current marketplace and verification request
+- [x] Connect landing app CTAs directly to the buying marketplace.
+- [x] Fix checkout address selection, trusted totals, payment retry, and payment confirmation checks.
+- [x] Add web seller verification entry with private credential upload and approval status.
+- [x] Add ownership policies for credential storage; confirmed all four policies and closed the security finding.
+- [x] Browser-check browsing, add-to-cart, persisted cart reload, mobile layouts, signed-in seller and messages pages; no runtime errors. Added five-second conversation refresh.
+- [ ] Full document submission/review test needs an unverified test business; the supplied signed-in account already has a verified store.
+- [ ] Live payment confirmation requires configured Stripe credentials/webhook and a payment-provider test.

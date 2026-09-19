@@ -18,7 +18,7 @@ export function StoreVerification({
   const get = useServerFn(getVerifications),
     submit = useServerFn(submitVerification),
     review = useServerFn(reviewVerification);
-  const query = useQuery({ queryKey: ["store-verifications"], queryFn: () => get() });
+  const query = useQuery({ queryKey: ["store-verifications", storeId], queryFn: () => get(), refetchInterval: 15000 });
   const [file, setFile] = useState<File | null>(null),
     [kind, setKind] = useState("Business registration"),
     [busy, setBusy] = useState(false),
@@ -107,7 +107,7 @@ export function StoreVerification({
       )}
       {query.isError && <p role="alert">Could not load verification requests.</p>}
       <ul className="mt-4 divide-y">
-        {query.data?.rows.map((row) => (
+        {query.data?.rows.filter(row => !storeId || row.store_id === storeId).map((row) => (
           <li key={row.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
             <div>
               <p className="font-medium">

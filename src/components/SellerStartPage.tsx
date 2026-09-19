@@ -3,6 +3,7 @@ import { useAuth } from "@/lib/auth-context";
 import { ArrowRight, ShieldCheck, Store, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AppScreen } from "@/components/AppScreen";
+import { SellerVerificationEntry } from "@/components/SellerVerificationEntry";
 import registrationScreen from "@/assets/app-screens/seller-registration.png.asset.json";
 import businessScreen from "@/assets/app-screens/business-onboarding.png.asset.json";
 import kycScreen from "@/assets/app-screens/kyc-upload.png.asset.json";
@@ -24,10 +25,11 @@ export function SellerStartPage() {
     <div className="min-h-[calc(100vh-4rem)] bg-background">
       <section className="brand-soft px-4 py-14 text-center sm:px-6">
         <span className="text-sm font-bold uppercase text-brand-green">Sell on Afromart</span>
-        <h1 className="mx-auto mt-4 max-w-3xl font-heading text-4xl font-bold sm:text-6xl">Your seller journey, exactly as it appears in the app.</h1>
+        <h1 className="mx-auto mt-4 max-w-3xl font-heading text-4xl font-bold sm:text-6xl">Build a trusted Afromart storefront.</h1>
         <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground">Create your account, verify your business and prepare your storefront from your phone.</p>
         <Link {...startHref} className="mt-8 inline-block"><Button size="lg"><UserRound className="h-4 w-4" /> Create seller account <ArrowRight className="h-4 w-4" /></Button></Link>
       </section>
+      <SellerVerificationEntry />
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, index) => (

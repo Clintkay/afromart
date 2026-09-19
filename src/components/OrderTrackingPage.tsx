@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
 import type { OrderWithItems } from "@/lib/orders.functions";
+import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { createOrderCheckoutSession } from "@/lib/payments.functions";
+import { toast } from "sonner";
 
 const stages = [
   { key: "pending", title: "Order confirmed", note: "Your order was received.", icon: Check },
@@ -15,6 +19,17 @@ const stages = [
 const stageIndex: Record<string, number> = { pending: 0, confirmed: 0, processing: 1, shipped: 2, out_for_delivery: 2, delivered: 3 };
 
 export function OrderTrackingPage({ order }: { order: OrderWithItems }) {
+  const checkout = useServerFn(createOrderCheckoutSession);
+  const [paying, setPaying] = useState(false);
+  async function pay() {
+    setPaying(true);
+    try {
+      const result = await checkout({ data: { orderId: order.id, origin: window.location.origin } });
+      window.location.assign(result.url);
+    } catch {
+      toast.error("Payment could not start. Your order is saved; please try again or contact support.");
+    } finally { setPaying(false); }
+  }
   const activeIndex = stageIndex[order.status] ?? 0;
   const address = order.shipping_address && typeof order.shipping_address === "object" && !Array.isArray(order.shipping_address)
     ? order.shipping_address as Record<string, unknown>
@@ -29,6 +44,10 @@ export function OrderTrackingPage({ order }: { order: OrderWithItems }) {
         <Badge className="capitalize">{order.status.replaceAll("_", " ")}</Badge>
       </div>
 
+      <div className="mt-5 flex flex-wrap items-center gap-3 border-y py-4">
+        <p className="text-sm font-semibold capitalize">Payment: {order.payment_status}</p>
+        {order.payment_status === "pending" && order.status !== "cancelled" && <Button disabled={paying} onClick={pay}>{paying ? "Opening payment…" : "Pay securely by card"}</Button>}
+      </div>
       <div className="mt-7 grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <section className="rounded-lg border bg-card p-5 sm:p-7">
           <h2 className="font-heading text-xl font-bold">Delivery progress</h2>

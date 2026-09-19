@@ -32,24 +32,30 @@ export const Route = createFileRoute("/api/public/webhooks/stripe")({
           return new Response("Invalid signature", { status: 401 });
         }
 
-        if (event.type !== "checkout.session.completed") return new Response("ok");
+        if (event.type !== "checkout.session.completed" && event.type !== "checkout.session.async_payment_succeeded") return new Response("ok");
 
         const session = event.data.object as import("stripe").Stripe.Checkout.Session;
         const orderId = session.metadata?.["order_id"] ?? session.client_reference_id;
+        if (session.payment_status !== "paid") return new Response("ok");
         if (!orderId) return new Response("ok");
 
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const { data: order } = await supabaseAdmin
           .from("orders")
-          .select("id, user_id, total")
+          .select("id, user_id, total, payment_status")
           .eq("id", orderId)
           .maybeSingle();
         if (!order) return new Response("ok");
 
-        await supabaseAdmin
+        if (session.currency !== "ngn" || session.amount_total !== order.total || session.metadata?.["user_id"] !== order.user_id) return new Response("Payment mismatch", { status: 400 });
+        if (order.payment_status === "paid") return new Response("ok");
+
+        const { data: updated, error: updateError } = await supabaseAdmin
           .from("orders")
           .update({ payment_status: "paid", status: "processing", updated_at: new Date().toISOString() })
-          .eq("id", order.id);
+          .eq("id", order.id).eq("payment_status", "pending").select("id");
+        if (updateError) return new Response("Could not confirm payment", { status: 500 });
+        if (!updated?.length) return new Response("ok");
 
         await supabaseAdmin.from("notifications").insert({
           user_id: order.user_id,

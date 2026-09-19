@@ -74,7 +74,7 @@ export function Header() {
             ))}
             <div className="mt-2 border-t pt-4"><LanguageSelector /></div>
             <Link to={user ? "/account" : "/auth"} {...(!user ? { search: { redirect: "/seller" } } : {})} className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>{user ? "Business account" : "Log in"}</Link>
-            <Button asChild className="mt-1"><Link to="/download" onClick={() => setMobileMenuOpen(false)}>Download App</Link></Button>
+            <Button asChild className="mt-1"><Link to="/home" onClick={() => setMobileMenuOpen(false)}>Download App</Link></Button>
           </nav>
         </div>
       )}

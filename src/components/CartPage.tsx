@@ -8,8 +8,6 @@ import { Trash2, Minus, Plus, ShoppingBag } from "lucide-react";
 
 export function CartPage() {
   const { items, updateQuantity, removeItem, subtotal, totalItems } = useCart();
-  const shipping = subtotal > 5000 ? 0 : 500;
-  const total = subtotal + shipping;
 
   if (items.length === 0) {
     return (
@@ -43,14 +41,14 @@ export function CartPage() {
                   className="h-24 w-24 rounded-lg object-cover"
                 />
               </Link>
-              <div className="flex flex-1 flex-col justify-between">
+              <div className="flex min-w-0 flex-1 flex-col justify-between">
                 <div>
                   <Link to="/products/$slug" params={{ slug: item.slug }}>
                     <h3 className="font-heading font-semibold text-foreground hover:text-primary">{item.name}</h3>
                   </Link>
                   <p className="text-sm text-muted-foreground">{formatPrice(item.price)}</p>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center justify-between gap-2">
                   <div className="flex items-center rounded-md border">
                     <button
                       className="p-2 hover:bg-secondary"
@@ -99,11 +97,11 @@ export function CartPage() {
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Shipping</span>
-              <span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span>
+              <span>Calculated at checkout</span>
             </div>
             <div className="flex justify-between border-t pt-2 text-base font-semibold">
-              <span>Total</span>
-              <span>{formatPrice(total)}</span>
+              <span>Items total</span>
+              <span>{formatPrice(subtotal)}</span>
             </div>
           </div>
           <Link to="/checkout" className="mt-6 block w-full">
@@ -112,7 +110,7 @@ export function CartPage() {
             </Button>
           </Link>
           <p className="mt-3 text-center text-xs text-muted-foreground">
-            Payment collection will be connected next.
+            Pay securely by card. Delivery is calculated for your selected address.
           </p>
         </div>
       </div>

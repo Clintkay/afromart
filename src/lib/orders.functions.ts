@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import type { Tables } from "@/integrations/supabase/types";
 import { z } from "zod";
+import { countryOptions, deliveryQuote } from "@/lib/delivery";
 
 export type OrderWithItems = Tables<"orders"> & {
   order_items: Tables<"order_items">[];
@@ -42,47 +43,33 @@ export const createOrder = createServerFn({ method: "POST" })
       total: number;
       shippingAddress: Tables<"orders">["shipping_address"];
       items: { productId: string; name: string; price: number; quantity: number; storeId?: string | null }[];
-    }) => input,
+    }) => z.object({
+      shippingAddress: z.object({ full_name: z.string().trim().min(2), address_line1: z.string().trim().min(3), address_line2: z.string().nullable().optional(), city: z.string().trim().min(2), state: z.string().nullable().optional(), country: z.string().min(2), phone: z.string().nullable().optional() }),
+      items: z.array(z.object({ productId: z.string().uuid(), quantity: z.number().int().min(1).max(999) })).min(1).max(100),
+    }).parse(input),
   )
   .handler(async ({ data, context }) => {
-    const { data: order, error } = await context.supabase
-      .from("orders")
-      .insert({
-        user_id: context.userId,
-        subtotal: data.subtotal,
-        shipping_cost: data.shippingCost,
-        total: data.total,
-        shipping_address: data.shippingAddress,
-        status: "pending",
-        payment_status: "pending",
-      })
-      .select()
-      .single();
+    const quantities = new Map<string, number>();
+    for (const item of data.items) quantities.set(item.productId, (quantities.get(item.productId) ?? 0) + item.quantity);
+    const { data: products, error: productsError } = await context.supabase.from("products")
+      .select("id, name, price, store_id, inventory_count, status").in("id", [...quantities.keys()]);
+    if (productsError) throw productsError;
+    if (!products || products.length !== quantities.size) throw new Error("Some products are no longer available.");
+    const lines = products.map(product => {
+      const quantity = quantities.get(product.id) ?? 0;
+      if (product.status !== "active" || quantity > (product.inventory_count ?? 0)) throw new Error(`${product.name} is unavailable in that quantity.`);
+      return { product_id: product.id, store_id: product.store_id, name: product.name, price: product.price, quantity, total: product.price * quantity };
+    });
+    const subtotal = lines.reduce((sum, line) => sum + line.total, 0);
+    const country = countryOptions.find(c => c.name === data.shippingAddress.country);
+    if (!country) throw new Error("Choose a valid delivery country.");
+    const shipping = deliveryQuote(country.code, subtotal).cost;
+    const { data: order, error } = await context.supabase.from("orders").insert({
+      user_id: context.userId, subtotal, shipping_cost: shipping, total: subtotal + shipping,
+      shipping_address: data.shippingAddress, status: "pending", payment_status: "pending",
+    }).select().single();
     if (error) throw error;
-
-    // Always resolve the selling store from the product itself, so seller
-    // dashboards and payouts work even if the client did not send a store id.
-    const productIds = [...new Set(data.items.map((item) => item.productId).filter(Boolean))];
-    const storeByProduct = new Map<string, string | null>();
-    if (productIds.length > 0) {
-      const { data: rows, error: productsError } = await context.supabase
-        .from("products")
-        .select("id, store_id")
-        .in("id", productIds);
-      if (productsError) throw productsError;
-      for (const row of rows ?? []) storeByProduct.set(row.id, row.store_id ?? null);
-    }
-
-    const orderItems = data.items.map((item) => ({
-      order_id: order.id,
-      product_id: item.productId,
-      store_id: storeByProduct.get(item.productId) ?? item.storeId ?? null,
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity,
-      total: item.price * item.quantity,
-    }));
-
+    const orderItems = lines.map(line => ({ ...line, order_id: order.id }));
     const { error: itemsError } = await context.supabase.from("order_items").insert(orderItems);
     if (itemsError) throw itemsError;
 

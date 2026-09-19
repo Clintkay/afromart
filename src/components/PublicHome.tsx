@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StoreBadges } from "@/components/StoreBadges";
+import { SellerVerificationEntry } from "@/components/SellerVerificationEntry";
 import communityImage from "@/assets/onboarding/afromart-community.png.asset.json";
 import storeImage from "@/assets/marketplace/store-banner.jpg.asset.json";
 import tailoringImage from "@/assets/marketplace/svc-tailoring.jpg.asset.json";
@@ -73,7 +74,7 @@ export function PublicHome() {
             <h1 className="mt-4 max-w-xl font-heading text-4xl font-bold leading-[1.05] text-primary sm:text-6xl">Everything Africa.<br />One Marketplace.</h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">Afromart connects people with African products, services, businesses and opportunities through one trusted mobile marketplace.</p>
             <div className="mt-7 flex flex-col gap-3 min-[420px]:flex-row">
-              <Button asChild size="lg"><Link to="/download"><Smartphone className="h-4 w-4" />Download the App</Link></Button>
+              <Button asChild size="lg"><Link to="/home"><Smartphone className="h-4 w-4" />Download the App</Link></Button>
               <Button asChild size="lg" variant="outline"><Link to="/business"><Store className="h-4 w-4" />Become a Seller</Link></Button>
             </div>
             <p className="mt-5 text-xs font-semibold text-muted-foreground">Discover locally · connect across borders · grow with confidence</p>
@@ -138,6 +139,7 @@ export function PublicHome() {
         </div>
       </section>
 
+      <SellerVerificationEntry />
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs font-bold uppercase text-accent">Services marketplace</p>

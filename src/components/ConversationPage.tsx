@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 export function ConversationPage() {
   const { conversationId } = useParams({ from: "/_authenticated/messages/$conversationId" });
-  const { data: conversation } = useSuspenseQuery(conversationOptions(conversationId));
+  const { data: conversation } = useSuspenseQuery({ ...conversationOptions(conversationId), refetchInterval: 5000 });
   const { user } = useAuth();
   const send = useServerFn(sendChatMessage);
   const queryClient = useQueryClient();
