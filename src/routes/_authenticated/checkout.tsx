@@ -62,7 +62,7 @@ function CheckoutPage() {
     try {
       let address = addresses.find((a) => a.is_default) ?? addresses[0];
       if (showForm || !address) {
-        address = await createAddress({ data: { ...form, is_default: true } });
+        address = await createAddress({ data: { ...form, country: countryNameOf(countryCode), is_default: true } });
       }
 
       await createOrder({
