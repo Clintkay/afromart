@@ -11,7 +11,7 @@ import { myProductsOptions, myStoreOptions, sellerEarningsOptions, sellerOrdersO
 import { saveMyProduct, saveMyStore } from "@/lib/seller-store.functions";
 import { addMyRole } from "@/lib/roles.functions";
 import { myRolesOptions } from "@/lib/queries";
-import { updateSellerOrderStatus } from "@/lib/seller.functions";
+import { updateSellerOrderStatus, updateSellerPaymentStatus } from "@/lib/seller.functions";
 import sellerHero from "@/assets/seller-hero.jpg";
 
 const orderStatuses = ["pending", "processing", "shipped", "delivered", "cancelled"] as const;
@@ -243,7 +243,7 @@ export function SellerDashboard() {
       <section className="mt-9">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="flex items-center gap-2 font-heading text-2xl font-bold"><Package className="h-5 w-5 text-primary" />Orders to fulfil</h2>
-          <Button variant="outline" size="sm" className="gap-1.5" disabled={ordersFetching} onClick={refreshOrders}>
+          <Button variant="outline" size="sm" className="gap-1.5" disabled={ordersFetching} onClick={() => { void refetchOrders(); void queryClient.invalidateQueries({ queryKey: sellerEarningsOptions.queryKey }); }}>
             {ordersFetching ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
             Refresh
           </Button>
