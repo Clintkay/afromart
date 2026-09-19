@@ -133,3 +133,11 @@
 - [x] Added private seller document submission and admin review controls in Seller workspace; approval changes store verification. Product page status verified in browser.
 - [ ] End-to-end document upload/review verification remains pending.
 - [ ] Enable bank transfer after merchant payment configuration is supplied.
+## Public website completion
+- [ ] Audit proposal requirements against current routes and working flows
+- [ ] Rebuild public landing page from supplied visual reference
+- [ ] Complete public shop, storefront, services, account, cart, and app CTAs
+- [ ] Complete seller store setup, listing management, and public storefront links
+- [ ] Verify navigation, responsive layouts, images, and major journeys
+
+- [ ] Review linked project message and fold any missing requirement into the implementation
