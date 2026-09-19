@@ -1,0 +1,8 @@
+CREATE TABLE public.store_verifications (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), store_id uuid NOT NULL REFERENCES public.stores(id), user_id uuid NOT NULL DEFAULT auth.uid(), document_path text NOT NULL, document_type text NOT NULL, status text NOT NULL DEFAULT 'pending', review_note text, created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT, INSERT ON public.store_verifications TO authenticated;
+GRANT ALL ON public.store_verifications TO service_role;
+ALTER TABLE public.store_verifications ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Read own verification" ON public.store_verifications FOR SELECT TO authenticated USING(user_id=auth.uid());
+CREATE POLICY "Submit own verification" ON public.store_verifications FOR INSERT TO authenticated WITH CHECK(user_id=auth.uid() AND status='pending' AND review_note IS NULL AND EXISTS(SELECT 1 FROM public.stores s WHERE s.id=store_id AND s.owner_id=auth.uid()));
+CREATE OR REPLACE FUNCTION private.guard_store_verification() RETURNS trigger LANGUAGE plpgsql SET search_path=public AS $$ BEGIN IF current_user IN ('anon','authenticated') THEN IF TG_OP='INSERT' AND NEW.is_verified IS TRUE THEN RAISE EXCEPTION 'Verification requires administrator approval'; ELSIF TG_OP='UPDATE' AND NEW.is_verified IS DISTINCT FROM OLD.is_verified THEN RAISE EXCEPTION 'Verification requires administrator approval'; END IF; END IF; RETURN NEW; END; $$;
+CREATE TRIGGER guard_store_verification BEFORE INSERT OR UPDATE ON public.stores FOR EACH ROW EXECUTE FUNCTION private.guard_store_verification();

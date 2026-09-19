@@ -127,3 +127,9 @@
 ## AI support assistant — current request
 - [x] Replace legacy assistant with streaming AI, private saved chats, and human escalation. Live API returned 200 and both messages persisted.
 - [ ] Verify separate conversations, restoration, human handoff and mobile layout — blocked by preview dependency loading/timeouts. Targeted lint passes; full-project lint has pre-existing failures.
+
+## Card/transfer and store verification
+- [x] Removed delivery payment. Card remains enabled; transfer disabled pending merchant bank/provider configuration.
+- [x] Added private seller document submission and admin review controls in Seller workspace; approval changes store verification. Product page status verified in browser.
+- [ ] End-to-end document upload/review verification remains pending.
+- [ ] Enable bank transfer after merchant payment configuration is supplied.

@@ -1,3 +1,4 @@
+import { StoreVerification } from "@/components/StoreVerification";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -155,7 +156,8 @@ export function SellerDashboard() {
             {store?.name ?? "Set up your store"}
             {store?.is_verified ? <BadgeCheck className="h-6 w-6 text-primary" /> : null}
           </h1>
-          {store ? (
+          <StoreVerification {...(store ? {storeId:store.id,verified:store.is_verified} : {})} />
+      {store ? (
             <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4" />
               {[store.city, store.country].filter(Boolean).join(", ") || "Location not set"}

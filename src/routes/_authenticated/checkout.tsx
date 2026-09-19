@@ -18,8 +18,12 @@ export const Route = createFileRoute("/_authenticated/checkout")({
   component: CheckoutPage,
   head: () => ({
     meta: [
-      { title: "Checkout | Afro Mart" },
-      { name: "description", content: "Complete your Afro Mart order." },
+      { title: "Checkout | Afromart" },
+      { name: "description", content: "Complete your Afromart order with secure payment." },
+      { property: "og:title", content: "Checkout | Afromart" },
+      { property: "og:description", content: "Review delivery and payment for your order." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
 });
@@ -31,7 +35,7 @@ function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(addresses.length === 0);
   const [countryCode, setCountryCode] = useState("NG");
-  const [payWithCard, setPayWithCard] = useState(true);
+  const payWithCard = true;
   const [form, setForm] = useState({
     full_name: "",
     address_line1: "",
@@ -101,10 +105,10 @@ function CheckoutPage() {
           window.location.href = url;
           return;
         } catch {
-          toast.error("Order saved, but card payment could not start. You can pay on delivery instead.");
+          toast.error("Order saved as unpaid. Card payment could not start; please contact support.");
         }
       } else {
-        toast.success("Order placed. Pay on delivery.");
+        toast.info("Payment is required before delivery.");
       }
       navigate({ to: "/orders/$orderId", params: { orderId: order.id } });
     } catch (err) {
@@ -211,7 +215,7 @@ function CheckoutPage() {
             <p className="text-sm font-medium">Payment method</p>
             {[
               { value: true, label: "Pay by card now", hint: "Secure card payment" },
-              { value: false, label: "Pay on delivery", hint: "Settle with the seller on arrival" },
+              { value: false, label: "Bank transfer", hint: "Not available yet — bank payment setup required" },
             ].map((option) => (
               <label
                 key={String(option.value)}
@@ -222,7 +226,8 @@ function CheckoutPage() {
                   name="payment-method"
                   className="mt-1 accent-[var(--primary)]"
                   checked={payWithCard === option.value}
-                  onChange={() => setPayWithCard(option.value)}
+                  disabled={!option.value}
+                  readOnly
                 />
                 <span>
                   <span className="block font-medium">{option.label}</span>
