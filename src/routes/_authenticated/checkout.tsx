@@ -5,6 +5,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { addressesOptions } from "@/lib/queries";
 import { useCart } from "@/lib/cart-context";
 import { createOrder } from "@/lib/orders.functions";
+import { createOrderCheckoutSession } from "@/lib/payments.functions";
 import { createAddress } from "@/lib/addresses.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
