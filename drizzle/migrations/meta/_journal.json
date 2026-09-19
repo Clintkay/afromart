@@ -92,6 +92,13 @@
       "when": 1789761489079,
       "tag": "0012_seller_workspace_and_service_requests",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1789808016809,
+      "tag": "0013_chat_seller_link_and_notifications",
+      "breakpoints": true
     }
   ]
 }
