@@ -53,6 +53,10 @@ export function SellerDashboard() {
     responseTime: store?.response_time ?? "within 2 hours",
   });
   const [productForm, setProductForm] = useState({ name: "", description: "", price: "", inventory: "", imageUrl: "" });
+  useEffect(() => {
+    if (!store) return;
+    setStoreForm({ name: store.name, businessName: store.business_name ?? "", description: store.description ?? "", city: store.city ?? "", country: store.country ?? "Nigeria", responseTime: store.response_time ?? "within 2 hours" });
+  }, [store]);
 
   const submitStore = async (event: React.FormEvent) => {
     event.preventDefault();

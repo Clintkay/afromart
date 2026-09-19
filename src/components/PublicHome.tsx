@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StoreBadges } from "@/components/StoreBadges";
+import { SellerVerificationEntry } from "@/components/SellerVerificationEntry";
 import communityImage from "@/assets/onboarding/afromart-community.png.asset.json";
 import storeImage from "@/assets/marketplace/store-banner.jpg.asset.json";
 import tailoringImage from "@/assets/marketplace/svc-tailoring.jpg.asset.json";
@@ -138,6 +139,7 @@ export function PublicHome() {
         </div>
       </section>
 
+      <SellerVerificationEntry />
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs font-bold uppercase text-accent">Services marketplace</p>
