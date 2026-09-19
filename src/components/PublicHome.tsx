@@ -14,6 +14,7 @@ import {
   Smartphone,
   Star,
   Store,
+  UserPlus,
   Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -27,7 +28,6 @@ import cateringImage from "@/assets/marketplace/svc-catering.jpg.asset.json";
 import homeScreen from "@/assets/app-screens/home.png.asset.json";
 import servicesScreen from "@/assets/app-screens/services-home.png.asset.json";
 import messagesScreen from "@/assets/app-screens/messages-list.png.asset.json";
-import fashionImage from "@/assets/marketplace/cat-fashion.jpg.asset.json";
 import craftsImage from "@/assets/marketplace/handwoven-basket.jpg.asset.json";
 import sellerSetupScreen from "@/assets/app-screens/storefront-setup.png.asset.json";
 
