@@ -155,7 +155,7 @@ export function ServicesPage() {
               return (
                 <article key={service.id} className="flex flex-col overflow-hidden rounded-lg border bg-card">
                   <SafeImage
-                    src={service.image_url}
+                    src={service.image_url ?? undefined}
                     fallback={serviceFallback}
                     alt={`${service.title} by ${provider}`}
                     className="aspect-[16/9] w-full object-cover"
