@@ -125,5 +125,5 @@
 - Typecheck clean, verified on phone-sized preview
 
 ## AI support assistant — current request
-- [ ] Replace legacy assistant with streaming AI, private saved chats, and human escalation.
-- [ ] Verify separate conversations, restoration, errors and mobile layout.
+- [x] Replace legacy assistant with streaming AI, private saved chats, and human escalation. Live API returned 200 and both messages persisted.
+- [ ] Verify separate conversations, restoration, human handoff and mobile layout — blocked by preview dependency loading/timeouts. Targeted lint passes; full-project lint has pre-existing failures.
