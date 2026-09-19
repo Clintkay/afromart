@@ -22,11 +22,16 @@ export function SellerDashboard() {
   const { data: store, isLoading: storeLoading } = useQuery(myStoreOptions);
   const { data: products } = useQuery({ ...myProductsOptions, enabled: Boolean(store) });
   const { data: earnings } = useQuery({ ...sellerEarningsOptions, enabled: Boolean(store) });
-  const { data: sellerOrders } = useQuery({ ...sellerOrdersOptions, enabled: Boolean(store) });
+  const {
+    data: sellerOrders,
+    isFetching: ordersFetching,
+    refetch: refetchOrders,
+  } = useQuery({ ...sellerOrdersOptions, enabled: Boolean(store), refetchInterval: 15000 });
 
   const saveStore = useServerFn(saveMyStore);
   const saveProduct = useServerFn(saveMyProduct);
   const updateStatus = useServerFn(updateSellerOrderStatus);
+  const updatePayment = useServerFn(updateSellerPaymentStatus);
 
   const [busy, setBusy] = useState(false);
   const { data: roles } = useQuery(myRolesOptions);
