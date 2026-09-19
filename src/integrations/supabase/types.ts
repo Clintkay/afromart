@@ -525,6 +525,71 @@ export type Database = {
           },
         ]
       }
+      service_listings: {
+        Row: {
+          category: string
+          city: string | null
+          country: string
+          created_at: string
+          delivery_days: number
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean
+          orders_count: number
+          price_from: number
+          rating: number
+          slug: string
+          store_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          city?: string | null
+          country?: string
+          created_at?: string
+          delivery_days?: number
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          orders_count?: number
+          price_from?: number
+          rating?: number
+          slug: string
+          store_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          city?: string | null
+          country?: string
+          created_at?: string
+          delivery_days?: number
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          orders_count?: number
+          price_from?: number
+          rating?: number
+          slug?: string
+          store_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_listings_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_requests: {
         Row: {
           budget: number | null

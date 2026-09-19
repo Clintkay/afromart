@@ -5,9 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatPrice(cents: number) {
-  return new Intl.NumberFormat("en-US", {
+/** Formats a kobo amount as Nigerian naira, e.g. 450000 -> ₦4,500. */
+export function formatPrice(kobo: number) {
+  return new Intl.NumberFormat("en-NG", {
     style: "currency",
-    currency: "USD",
-  }).format(cents / 100);
+    currency: "NGN",
+    maximumFractionDigits: 0,
+  }).format(kobo / 100);
 }

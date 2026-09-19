@@ -105,3 +105,10 @@
 
 ## Email sender
 - [ ] Send signup verification / password reset from Afromart (needs a domain the user owns; Gmail address cannot be a sender domain)
+
+## Nigerian marketplace catalogue (done)
+- [x] 7 seller stores with business name, city, reply time and verification (Lagos, Kano, Aba, Ikeja, Jos, Enugu)
+- [x] 16 products with real photos, naira prices, stock and seller info
+- [x] 2 extra categories: Electronics & Gadgets, Farm Produce (with cover images)
+- [x] service_listings catalogue: 6 bookable services (tailoring, dispatch, haulage, catering, repairs) with chat + request flow
+- [x] Prices now formatted in Nigerian naira everywhere
