@@ -29,6 +29,8 @@ import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedSellerRouteImport } from './routes/_authenticated/seller'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedSupportChatRouteImport } from './routes/_authenticated/support-chat'
+import { Route as ApiSupportChatRouteImport } from './routes/api/support-chat'
 import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as SellIndexRouteImport } from './routes/sell.index'
@@ -36,6 +38,8 @@ import { Route as SellStartRouteImport } from './routes/sell.start'
 import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated/messages.index'
 import { Route as AuthenticatedMessagesConversationIdRouteImport } from './routes/_authenticated/messages.$conversationId'
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
+import { Route as AuthenticatedSupportChatIndexRouteImport } from './routes/_authenticated/support-chat.index'
+import { Route as AuthenticatedSupportChatThreadIdRouteImport } from './routes/_authenticated/support-chat.$threadId'
 import { Route as ApiPublicWebhooksStripeRouteImport } from './routes/api/public/webhooks/stripe'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
@@ -140,6 +144,17 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSupportChatRoute =
+  AuthenticatedSupportChatRouteImport.update({
+    id: '/support-chat',
+    path: '/support-chat',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const ApiSupportChatRoute = ApiSupportChatRouteImport.update({
+  id: '/api/support-chat',
+  path: '/api/support-chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductsIndexRoute = ProductsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -178,6 +193,18 @@ const AuthenticatedOrdersOrderIdRoute =
     path: '/orders/$orderId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSupportChatIndexRoute =
+  AuthenticatedSupportChatIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedSupportChatRoute,
+  } as any)
+const AuthenticatedSupportChatThreadIdRoute =
+  AuthenticatedSupportChatThreadIdRouteImport.update({
+    id: '/$threadId',
+    path: '/$threadId',
+    getParentRoute: () => AuthenticatedSupportChatRoute,
+  } as any)
 const ApiPublicWebhooksStripeRoute = ApiPublicWebhooksStripeRouteImport.update({
   id: '/api/public/webhooks/stripe',
   path: '/api/public/webhooks/stripe',
@@ -214,13 +241,17 @@ export interface FileRoutesByFullPath {
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/seller': typeof AuthenticatedSellerRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/support-chat': typeof AuthenticatedSupportChatRouteWithChildren
+  '/api/support-chat': typeof ApiSupportChatRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
   '/products/': typeof ProductsIndexRoute
   '/sell/': typeof SellIndexRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
+  '/support-chat/$threadId': typeof AuthenticatedSupportChatThreadIdRoute
   '/messages/': typeof AuthenticatedMessagesIndexRoute
+  '/support-chat/': typeof AuthenticatedSupportChatIndexRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -242,13 +273,16 @@ export interface FileRoutesByTo {
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/seller': typeof AuthenticatedSellerRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/api/support-chat': typeof ApiSupportChatRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
   '/products': typeof ProductsIndexRoute
   '/sell': typeof SellIndexRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
+  '/support-chat/$threadId': typeof AuthenticatedSupportChatThreadIdRoute
   '/messages': typeof AuthenticatedMessagesIndexRoute
+  '/support-chat': typeof AuthenticatedSupportChatIndexRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -275,13 +309,17 @@ export interface FileRoutesById {
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/seller': typeof AuthenticatedSellerRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/support-chat': typeof AuthenticatedSupportChatRouteWithChildren
+  '/api/support-chat': typeof ApiSupportChatRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
   '/products/': typeof ProductsIndexRoute
   '/sell/': typeof SellIndexRoute
   '/_authenticated/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
   '/_authenticated/orders/$orderId': typeof AuthenticatedOrdersOrderIdRoute
+  '/_authenticated/support-chat/$threadId': typeof AuthenticatedSupportChatThreadIdRoute
   '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
+  '/_authenticated/support-chat/': typeof AuthenticatedSupportChatIndexRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -308,13 +346,17 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/seller'
     | '/settings'
+    | '/support-chat'
+    | '/api/support-chat'
     | '/products/$slug'
     | '/sell/start'
     | '/products/'
     | '/sell/'
     | '/messages/$conversationId'
     | '/orders/$orderId'
+    | '/support-chat/$threadId'
     | '/messages/'
+    | '/support-chat/'
     | '/api/public/webhooks/stripe'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -336,13 +378,16 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/seller'
     | '/settings'
+    | '/api/support-chat'
     | '/products/$slug'
     | '/sell/start'
     | '/products'
     | '/sell'
     | '/messages/$conversationId'
     | '/orders/$orderId'
+    | '/support-chat/$threadId'
     | '/messages'
+    | '/support-chat'
     | '/api/public/webhooks/stripe'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -368,13 +413,17 @@ export interface FileRouteTypes {
     | '/_authenticated/notifications'
     | '/_authenticated/seller'
     | '/_authenticated/settings'
+    | '/_authenticated/support-chat'
+    | '/api/support-chat'
     | '/products/$slug'
     | '/sell/start'
     | '/products/'
     | '/sell/'
     | '/_authenticated/messages/$conversationId'
     | '/_authenticated/orders/$orderId'
+    | '/_authenticated/support-chat/$threadId'
     | '/_authenticated/messages/'
+    | '/_authenticated/support-chat/'
     | '/api/public/webhooks/stripe'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -395,6 +444,7 @@ export interface RootRouteChildren {
   SellRoute: typeof SellRouteWithChildren
   ServicesRoute: typeof ServicesRoute
   SupportRoute: typeof SupportRoute
+  ApiSupportChatRoute: typeof ApiSupportChatRoute
   ApiPublicWebhooksStripeRoute: typeof ApiPublicWebhooksStripeRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -542,6 +592,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/support-chat': {
+      id: '/_authenticated/support-chat'
+      path: '/support-chat'
+      fullPath: '/support-chat'
+      preLoaderRoute: typeof AuthenticatedSupportChatRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/support-chat': {
+      id: '/api/support-chat'
+      path: '/api/support-chat'
+      fullPath: '/api/support-chat'
+      preLoaderRoute: typeof ApiSupportChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/products/': {
       id: '/products/'
       path: '/'
@@ -591,6 +655,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOrdersOrderIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/support-chat/': {
+      id: '/_authenticated/support-chat/'
+      path: '/'
+      fullPath: '/support-chat/'
+      preLoaderRoute: typeof AuthenticatedSupportChatIndexRouteImport
+      parentRoute: typeof AuthenticatedSupportChatRoute
+    }
+    '/_authenticated/support-chat/$threadId': {
+      id: '/_authenticated/support-chat/$threadId'
+      path: '/$threadId'
+      fullPath: '/support-chat/$threadId'
+      preLoaderRoute: typeof AuthenticatedSupportChatThreadIdRouteImport
+      parentRoute: typeof AuthenticatedSupportChatRoute
+    }
     '/api/public/webhooks/stripe': {
       id: '/api/public/webhooks/stripe'
       path: '/api/public/webhooks/stripe'
@@ -631,6 +709,23 @@ const AuthenticatedMessagesRouteWithChildren =
     AuthenticatedMessagesRouteChildren,
   )
 
+interface AuthenticatedSupportChatRouteChildren {
+  AuthenticatedSupportChatThreadIdRoute: typeof AuthenticatedSupportChatThreadIdRoute
+  AuthenticatedSupportChatIndexRoute: typeof AuthenticatedSupportChatIndexRoute
+}
+
+const AuthenticatedSupportChatRouteChildren: AuthenticatedSupportChatRouteChildren =
+  {
+    AuthenticatedSupportChatThreadIdRoute:
+      AuthenticatedSupportChatThreadIdRoute,
+    AuthenticatedSupportChatIndexRoute: AuthenticatedSupportChatIndexRoute,
+  }
+
+const AuthenticatedSupportChatRouteWithChildren =
+  AuthenticatedSupportChatRoute._addFileChildren(
+    AuthenticatedSupportChatRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
   AuthenticatedCheckoutRoute: typeof AuthenticatedCheckoutRoute
@@ -638,6 +733,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedSellerRoute: typeof AuthenticatedSellerRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedSupportChatRoute: typeof AuthenticatedSupportChatRouteWithChildren
   AuthenticatedOrdersOrderIdRoute: typeof AuthenticatedOrdersOrderIdRoute
 }
 
@@ -648,6 +744,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedSellerRoute: AuthenticatedSellerRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedSupportChatRoute: AuthenticatedSupportChatRouteWithChildren,
   AuthenticatedOrdersOrderIdRoute: AuthenticatedOrdersOrderIdRoute,
 }
 
@@ -695,6 +792,7 @@ const rootRouteChildren: RootRouteChildren = {
   SellRoute: SellRouteWithChildren,
   ServicesRoute: ServicesRoute,
   SupportRoute: SupportRoute,
+  ApiSupportChatRoute: ApiSupportChatRoute,
   ApiPublicWebhooksStripeRoute: ApiPublicWebhooksStripeRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
