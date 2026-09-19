@@ -145,5 +145,5 @@
 - [x] Keep seller authentication, store creation, product/service listing management, verification, and account settings
 - [x] Direct product, service, seller interaction, booking, payment, and buying to the Afromart mobile app
 - [x] Use the ten approved MVP languages and practical African-market messaging without unsupported statistics
-- [ ] Verify desktop, tablet, and mobile layouts, imagery, navigation, metadata, and all CTAs
+- [x] Verify desktop, tablet, and mobile layouts, imagery, navigation, metadata, and all CTAs
 - [x] Review linked project message and supplied desktop/mobile screenshots
