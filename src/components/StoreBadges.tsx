@@ -17,34 +17,34 @@ function GooglePlayIcon({ className = "" }: { className?: string }) {
   );
 }
 
-export function StoreBadges({ className = "" }: { className?: string }) {
-  return (
-    <div className={`flex flex-wrap items-center gap-3 ${className}`}>
-      <a
-        href="#"
-        onClick={(event) => event.preventDefault()}
-        aria-label="Afromart App Store link coming when the app launches"
-        className="flex items-center gap-3 rounded-md border border-border bg-card px-5 py-3 text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-green/40 hover:shadow-md"
-      >
-        <AppleIcon className="h-6 w-6 text-foreground" />
-        <span className="flex flex-col leading-tight">
-          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Download on the</span>
-          <span className="font-heading text-base font-semibold">App Store</span>
-        </span>
-      </a>
+const badgeClass =
+  "flex items-center gap-3 rounded-md border border-border bg-card px-5 py-3 text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-green/40 hover:shadow-md";
 
-      <a
-        href="#"
-        onClick={(event) => event.preventDefault()}
-        aria-label="Afromart Google Play link coming when the app launches"
-        className="flex items-center gap-3 rounded-md border border-border bg-card px-5 py-3 text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-green/40 hover:shadow-md"
-      >
-        <GooglePlayIcon className="h-6 w-6" />
-        <span className="flex flex-col leading-tight">
-          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Get it on</span>
-          <span className="font-heading text-base font-semibold">Google Play</span>
-        </span>
-      </a>
+export function StoreBadges({ className = "", note = true }: { className?: string; note?: boolean }) {
+  return (
+    <div className={className}>
+      <div className="flex flex-wrap items-center gap-3">
+        <Link to="/home" aria-label="Open the Afromart marketplace in your browser" className={badgeClass}>
+          <AppleIcon className="h-6 w-6 text-foreground" />
+          <span className="flex flex-col leading-tight">
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Download on the</span>
+            <span className="font-heading text-base font-semibold">App Store</span>
+          </span>
+        </Link>
+
+        <Link to="/home" aria-label="Open the Afromart marketplace in your browser" className={badgeClass}>
+          <GooglePlayIcon className="h-6 w-6" />
+          <span className="flex flex-col leading-tight">
+            <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Get it on</span>
+            <span className="font-heading text-base font-semibold">Google Play</span>
+          </span>
+        </Link>
+      </div>
+      {note ? (
+        <p className="mt-3 text-xs font-semibold opacity-80">
+          The mobile apps are on the way — these open the Afromart marketplace in your browser for now.
+        </p>
+      ) : null}
     </div>
   );
 }
