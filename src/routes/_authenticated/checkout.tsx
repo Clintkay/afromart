@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { formatPrice } from "@/lib/utils";
+import { countryOptions, countryNameOf, deliveryQuote } from "@/lib/delivery";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/checkout")({
@@ -28,17 +29,22 @@ function CheckoutPage() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(addresses.length === 0);
+  const [countryCode, setCountryCode] = useState("NG");
   const [form, setForm] = useState({
     full_name: "",
     address_line1: "",
     address_line2: "",
     city: "",
     state: "",
-    country: "Nigeria",
     phone: "",
   });
 
-  const shipping = subtotal > 5000 ? 0 : 500;
+  const selectedAddress = addresses.find((a) => a.is_default) ?? addresses[0];
+  const activeCountry = showForm || !selectedAddress
+    ? countryCode
+    : countryOptions.find((c) => c.name === selectedAddress.country)?.code ?? countryCode;
+  const delivery = deliveryQuote(activeCountry, subtotal);
+  const shipping = delivery.cost;
   const total = subtotal + shipping;
 
   if (items.length === 0) {
@@ -56,7 +62,7 @@ function CheckoutPage() {
     try {
       let address = addresses.find((a) => a.is_default) ?? addresses[0];
       if (showForm || !address) {
-        address = await createAddress({ data: { ...form, is_default: true } });
+        address = await createAddress({ data: { ...form, country: countryNameOf(countryCode), is_default: true } });
       }
 
       await createOrder({
@@ -147,7 +153,16 @@ function CheckoutPage() {
                 </div>
                 <div>
                   <Label htmlFor="country">Country</Label>
-                  <Input id="country" value={form.country} onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))} />
+                  <select
+                    id="country"
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                    className="mt-1.5 h-10 w-full rounded-md border border-input bg-background px-2 text-sm"
+                  >
+                    {countryOptions.map((c) => (
+                      <option key={c.code} value={c.code}>{c.name}</option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone</Label>
@@ -165,8 +180,11 @@ function CheckoutPage() {
               <span className="text-muted-foreground">Subtotal</span>
               <span>{formatPrice(subtotal)}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Shipping</span>
+            <div className="flex justify-between gap-3">
+              <span className="text-muted-foreground">
+                {delivery.label}
+                <span className="block text-xs">To {countryNameOf(activeCountry)} · {delivery.eta}</span>
+              </span>
               <span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span>
             </div>
             <div className="flex justify-between border-t pt-2 text-base font-semibold">

@@ -89,3 +89,11 @@
 - [ ] Full navigation audit
 - [ ] Payments: waiting on provider credentials (see chat checklist)
 - [ ] Branded verification emails + "Afromart" sender: needs a domain the client owns
+
+## Marketplace visuals, profile, delivery (done)
+- [x] Real product photos for all 8 products and 4 category banners
+- [x] Store banner image for stores without one
+- [x] Redesigned buyer/seller profile page (stats, quick links, orders, addresses)
+- [x] Country selection at checkout with location-aware delivery cost and ETA
+- [ ] Payments (Paystack) pending client credentials
+- [ ] Branded email sending pending own domain
