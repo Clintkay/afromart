@@ -207,11 +207,35 @@ function CheckoutPage() {
               <span>{formatPrice(total)}</span>
             </div>
           </div>
+          <div className="mt-5 space-y-2">
+            <p className="text-sm font-medium">Payment method</p>
+            {[
+              { value: true, label: "Pay by card now", hint: "Secure card payment" },
+              { value: false, label: "Pay on delivery", hint: "Settle with the seller on arrival" },
+            ].map((option) => (
+              <label
+                key={String(option.value)}
+                className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 text-sm ${payWithCard === option.value ? "border-primary bg-secondary/50" : ""}`}
+              >
+                <input
+                  type="radio"
+                  name="payment-method"
+                  className="mt-1 accent-[var(--primary)]"
+                  checked={payWithCard === option.value}
+                  onChange={() => setPayWithCard(option.value)}
+                />
+                <span>
+                  <span className="block font-medium">{option.label}</span>
+                  <span className="block text-xs text-muted-foreground">{option.hint}</span>
+                </span>
+              </label>
+            ))}
+          </div>
           <Button className="mt-6 w-full" size="lg" disabled={isSubmitting} onClick={handleSubmit}>
-            {isSubmitting ? "Placing order..." : "Place order"}
+            {isSubmitting ? "Placing order..." : payWithCard ? "Pay now" : "Place order"}
           </Button>
           <p className="mt-3 text-center text-xs text-muted-foreground">
-            Payment collection will be connected next.
+            Card payments are processed securely; Afromart never stores your card details.
           </p>
         </div>
       </div>
