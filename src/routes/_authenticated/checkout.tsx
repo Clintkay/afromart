@@ -180,8 +180,11 @@ function CheckoutPage() {
               <span className="text-muted-foreground">Subtotal</span>
               <span>{formatPrice(subtotal)}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-muted-foreground">Shipping</span>
+            <div className="flex justify-between gap-3">
+              <span className="text-muted-foreground">
+                {delivery.label}
+                <span className="block text-xs">To {countryNameOf(activeCountry)} · {delivery.eta}</span>
+              </span>
               <span>{shipping === 0 ? "Free" : formatPrice(shipping)}</span>
             </div>
             <div className="flex justify-between border-t pt-2 text-base font-semibold">
