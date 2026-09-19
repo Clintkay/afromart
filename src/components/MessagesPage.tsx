@@ -3,10 +3,12 @@ import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BadgeCheck, MessageCircle, RefreshCw } from "lucide-react";
 import { conversationsOptions } from "@/lib/queries";
+import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 
 export function MessagesPage() {
   const { data: conversations } = useSuspenseQuery(conversationsOptions);
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
 
