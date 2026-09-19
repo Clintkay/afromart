@@ -19,13 +19,14 @@ export const getProfile = createServerFn({ method: "GET" })
 
 export const updateProfileSettings = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { fullName?: string; phone?: string; preferredLanguage?: string; theme?: string }) =>
+  .inputValidator((input: { fullName?: string; phone?: string; preferredLanguage?: string; theme?: string; avatarUrl?: string }) =>
     z
       .object({
         fullName: z.string().trim().min(1).max(100).optional(),
         phone: z.string().trim().min(6).max(24).optional(),
         preferredLanguage: z.string().trim().min(2).max(10).optional(),
         theme: z.enum(["light", "dark"]).optional(),
+        avatarUrl: z.string().trim().max(500).startsWith("/api/public/media/").optional(),
       })
       .parse(input),
   )
@@ -35,6 +36,7 @@ export const updateProfileSettings = createServerFn({ method: "POST" })
     if (data.phone) update.phone = data.phone;
     if (data.preferredLanguage) update.preferred_language = data.preferredLanguage;
     if (data.theme) update.preferences = { theme: data.theme };
+    if (data.avatarUrl) update.avatar_url = data.avatarUrl;
 
     const { error } = await context.supabase.from("profiles").update(update).eq("id", context.userId);
     if (error) throw error;

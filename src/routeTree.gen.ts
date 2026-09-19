@@ -45,6 +45,7 @@ import { Route as AuthenticatedMessagesConversationIdRouteImport } from './route
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
 import { Route as AuthenticatedSupportChatIndexRouteImport } from './routes/_authenticated/support-chat.index'
 import { Route as AuthenticatedSupportChatThreadIdRouteImport } from './routes/_authenticated/support-chat.$threadId'
+import { Route as ApiPublicMediaObjectRouteImport } from './routes/api/public/media.$object'
 import { Route as ApiPublicWebhooksStripeRouteImport } from './routes/api/public/webhooks/stripe'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
@@ -235,6 +236,11 @@ const AuthenticatedSupportChatThreadIdRoute =
     path: '/$threadId',
     getParentRoute: () => AuthenticatedSupportChatRoute,
   } as any)
+const ApiPublicMediaObjectRoute = ApiPublicMediaObjectRouteImport.update({
+  id: '/api/public/media/$object',
+  path: '/api/public/media/$object',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicWebhooksStripeRoute = ApiPublicWebhooksStripeRouteImport.update({
   id: '/api/public/webhooks/stripe',
   path: '/api/public/webhooks/stripe',
@@ -287,6 +293,7 @@ export interface FileRoutesByFullPath {
   '/support-chat/$threadId': typeof AuthenticatedSupportChatThreadIdRoute
   '/messages/': typeof AuthenticatedMessagesIndexRoute
   '/support-chat/': typeof AuthenticatedSupportChatIndexRoute
+  '/api/public/media/$object': typeof ApiPublicMediaObjectRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -323,6 +330,7 @@ export interface FileRoutesByTo {
   '/support-chat/$threadId': typeof AuthenticatedSupportChatThreadIdRoute
   '/messages': typeof AuthenticatedMessagesIndexRoute
   '/support-chat': typeof AuthenticatedSupportChatIndexRoute
+  '/api/public/media/$object': typeof ApiPublicMediaObjectRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -365,6 +373,7 @@ export interface FileRoutesById {
   '/_authenticated/support-chat/$threadId': typeof AuthenticatedSupportChatThreadIdRoute
   '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
   '/_authenticated/support-chat/': typeof AuthenticatedSupportChatIndexRoute
+  '/api/public/media/$object': typeof ApiPublicMediaObjectRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -407,6 +416,7 @@ export interface FileRouteTypes {
     | '/support-chat/$threadId'
     | '/messages/'
     | '/support-chat/'
+    | '/api/public/media/$object'
     | '/api/public/webhooks/stripe'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -443,6 +453,7 @@ export interface FileRouteTypes {
     | '/support-chat/$threadId'
     | '/messages'
     | '/support-chat'
+    | '/api/public/media/$object'
     | '/api/public/webhooks/stripe'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -484,6 +495,7 @@ export interface FileRouteTypes {
     | '/_authenticated/support-chat/$threadId'
     | '/_authenticated/messages/'
     | '/_authenticated/support-chat/'
+    | '/api/public/media/$object'
     | '/api/public/webhooks/stripe'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -510,6 +522,7 @@ export interface RootRouteChildren {
   SupportRoute: typeof SupportRoute
   ApiSupportChatRoute: typeof ApiSupportChatRoute
   StoresSlugRoute: typeof StoresSlugRoute
+  ApiPublicMediaObjectRoute: typeof ApiPublicMediaObjectRoute
   ApiPublicWebhooksStripeRoute: typeof ApiPublicWebhooksStripeRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -769,6 +782,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSupportChatThreadIdRouteImport
       parentRoute: typeof AuthenticatedSupportChatRoute
     }
+    '/api/public/media/$object': {
+      id: '/api/public/media/$object'
+      path: '/api/public/media/$object'
+      fullPath: '/api/public/media/$object'
+      preLoaderRoute: typeof ApiPublicMediaObjectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/webhooks/stripe': {
       id: '/api/public/webhooks/stripe'
       path: '/api/public/webhooks/stripe'
@@ -898,6 +918,7 @@ const rootRouteChildren: RootRouteChildren = {
   SupportRoute: SupportRoute,
   ApiSupportChatRoute: ApiSupportChatRoute,
   StoresSlugRoute: StoresSlugRoute,
+  ApiPublicMediaObjectRoute: ApiPublicMediaObjectRoute,
   ApiPublicWebhooksStripeRoute: ApiPublicWebhooksStripeRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,

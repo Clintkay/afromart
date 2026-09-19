@@ -127,6 +127,13 @@
       "when": 1789832967909,
       "tag": "0017_seller_credentials_owner_access",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1789839726715,
+      "tag": "0018_marketplace_media_owner_access",
+      "breakpoints": true
     }
   ]
 }

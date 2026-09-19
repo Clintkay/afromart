@@ -141,7 +141,10 @@ export const saveMyProduct = createServerFn({ method: "POST" })
           inventoryCount: z.number().int().nonnegative(),
           categoryId: z.string().uuid().optional(),
           status: z.enum(["active", "draft"]).optional(),
-          imageUrl: z.string().trim().url().max(500).optional(),
+          imageUrl: z.string().trim().max(500).refine(
+            (value) => value.startsWith("/api/public/media/") || z.string().url().safeParse(value).success,
+            "Choose an uploaded image or enter a valid image link.",
+          ).optional(),
         })
         .parse(input),
   )
