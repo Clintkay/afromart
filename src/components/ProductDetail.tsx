@@ -146,6 +146,8 @@ export function ProductDetail() {
               <span className="truncate">{sellerLabel(store)}</span>
               {store?.is_verified ? <BadgeCheck className="h-4 w-4 shrink-0 text-primary" aria-label="Verified seller" /> : null}
             </p>
+            <p className="mt-2 text-sm font-medium">{store?.is_verified ? "Verified store" : "Not verified by Afromart"}</p>
+            {store?.description && <p className="mt-2 text-sm text-muted-foreground">{store.description}</p>}
             <dl className="mt-3 grid gap-2 text-sm text-muted-foreground sm:grid-cols-2">
               {location ? (
                 <div className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0" /><span className="truncate">{location}</span></div>
