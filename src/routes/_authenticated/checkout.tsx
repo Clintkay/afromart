@@ -100,8 +100,7 @@ function CheckoutPage() {
           });
           window.location.href = url;
           return;
-        } catch (payErr) {
-          console.error("card payment failed", payErr);
+        } catch {
           toast.error("Order saved, but card payment could not start. You can pay on delivery instead.");
         }
       } else {
