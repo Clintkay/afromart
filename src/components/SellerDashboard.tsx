@@ -235,7 +235,14 @@ export function SellerDashboard() {
       </div>
 
       <section className="mt-9">
-        <h2 className="flex items-center gap-2 font-heading text-2xl font-bold"><Package className="h-5 w-5 text-primary" />Orders to fulfil</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="flex items-center gap-2 font-heading text-2xl font-bold"><Package className="h-5 w-5 text-primary" />Orders to fulfil</h2>
+          <Button variant="outline" size="sm" className="gap-1.5" disabled={ordersFetching} onClick={refreshOrders}>
+            {ordersFetching ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+            Refresh
+          </Button>
+        </div>
+        <p className="mt-1 text-xs text-muted-foreground">Updates automatically every 15 seconds. Buyers are notified each time you change an order.</p>
         {(sellerOrders?.orders ?? []).length === 0 ? (
           <p className="mt-3 rounded-xl border bg-card p-6 text-sm text-muted-foreground">No orders yet. They appear here as soon as a buyer checks out.</p>
         ) : (
@@ -247,25 +254,49 @@ export function SellerDashboard() {
                     <p className="font-heading font-bold">{order.id.slice(0, 8).toUpperCase()}</p>
                     <p className="text-xs text-muted-foreground">{new Date(order.created_at ?? "").toLocaleString()}</p>
                   </div>
-                  <strong>{formatPrice(order.order_items.reduce((sum, item) => sum + item.total, 0))}</strong>
+                  <div className="text-right">
+                    <strong className="block">{formatPrice(order.order_items.reduce((sum, item) => sum + item.total, 0))}</strong>
+                    <span className={`text-[11px] font-bold uppercase ${order.payment_status === "paid" ? "text-primary" : "text-muted-foreground"}`}>
+                      Payment {order.payment_status}
+                    </span>
+                  </div>
                 </div>
                 <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
                   {order.order_items.map((item) => (
                     <li key={item.id}>{item.quantity} × {item.name}</li>
                   ))}
                 </ul>
-                <div className="mt-3 flex flex-wrap gap-2 border-t pt-3">
-                  {orderStatuses.map((status) => (
-                    <Button
-                      key={status}
-                      size="sm"
-                      variant={order.status === status ? "default" : "outline"}
-                      disabled={busy}
-                      onClick={() => changeStatus(order.id, status)}
-                    >
-                      {status}
-                    </Button>
-                  ))}
+                <div className="mt-3 border-t pt-3">
+                  <p className="text-xs font-semibold uppercase text-muted-foreground">Delivery status</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {orderStatuses.map((status) => (
+                      <Button
+                        key={status}
+                        size="sm"
+                        variant={order.status === status ? "default" : "outline"}
+                        disabled={busy}
+                        onClick={() => changeStatus(order.id, status)}
+                      >
+                        {status}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-3 border-t pt-3">
+                  <p className="text-xs font-semibold uppercase text-muted-foreground">Payment</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {paymentStatuses.map((status) => (
+                      <Button
+                        key={status}
+                        size="sm"
+                        variant={order.payment_status === status ? "default" : "outline"}
+                        disabled={busy}
+                        onClick={() => changePayment(order.id, status)}
+                      >
+                        {status === "paid" ? "Payment received" : status === "refunded" ? "Refunded" : "Awaiting payment"}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
               </li>
             ))}
