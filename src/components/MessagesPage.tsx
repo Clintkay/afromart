@@ -47,6 +47,10 @@ export function MessagesPage() {
             const messages = [...(conversation.product_messages ?? [])].sort((a, b) => a.created_at.localeCompare(b.created_at));
             const last = messages[messages.length - 1];
             const store = conversation.stores;
+            const iAmSeller = !!user?.id && conversation.seller_id === user.id && conversation.buyer_id !== user.id;
+            const title = iAmSeller
+              ? conversation.subject || "Buyer enquiry"
+              : store?.business_name || store?.name || "Afromart seller";
             return (
               <li key={conversation.id}>
                 <Link
