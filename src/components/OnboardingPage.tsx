@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
@@ -25,7 +25,7 @@ const slides = [
     image: servicesScreen.url,
     alt: "Afromart services marketplace",
     title: "Hire trusted professionals",
-    body: "Designers, developers, photographers and more — book services the same way you shop.",
+    body: "Tailors, dispatch riders, caterers and more — book services the same way you shop.",
   },
   {
     image: messagesScreen.url,
@@ -35,48 +35,76 @@ const slides = [
   },
 ] as const;
 
+const SWIPE_THRESHOLD = 40;
+
 export function OnboardingPage() {
   const [index, setIndex] = useState(0);
   const navigate = useNavigate();
+  const touchStartX = useRef<number | null>(null);
   const slide = slides[index]!;
   const isLast = index === slides.length - 1;
 
   const finish = () => navigate({ to: "/auth", search: { redirect: "/home", mode: "signup" } });
+  const next = () => (isLast ? finish() : setIndex((value) => Math.min(value + 1, slides.length - 1)));
+  const back = () => setIndex((value) => Math.max(value - 1, 0));
+
+  const onTouchEnd = (event: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const delta = event.changedTouches[0]!.clientX - touchStartX.current;
+    touchStartX.current = null;
+    if (Math.abs(delta) < SWIPE_THRESHOLD) return;
+    if (delta < 0) next();
+    else back();
+  };
 
   return (
     <main className="flex min-h-dvh flex-col bg-card px-5 pb-6 pt-4 sm:px-10 lg:px-16">
       <div className="flex items-center justify-between">
         {index > 0 ? (
-          <Button variant="ghost" size="icon" className="-ml-3 text-primary" onClick={() => setIndex(index - 1)} aria-label="Previous step">
+          <Button variant="ghost" size="icon" className="-ml-3 text-primary" onClick={back} aria-label="Previous step">
             <ChevronLeft className="h-7 w-7" />
           </Button>
         ) : (
-          <Logo variant="horizontal" className="h-7" />
+          <Logo variant="horizontal" className="h-6" />
         )}
         <Button variant="link" className="font-semibold text-muted-foreground" onClick={finish}>
           Skip
         </Button>
       </div>
 
-      <div className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center py-6 lg:max-w-lg">
-        <div className="w-full overflow-hidden rounded-2xl border bg-secondary/40 p-4">
-          <img src={slide.image} alt={slide.alt} className="mx-auto max-h-[46dvh] w-auto rounded-xl object-contain" />
+      <div
+        className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center py-5 lg:max-w-lg"
+        onTouchStart={(event) => {
+          touchStartX.current = event.touches[0]!.clientX;
+        }}
+        onTouchEnd={onTouchEnd}
+      >
+        <div key={slide.title} className="w-full overflow-hidden rounded-3xl border bg-secondary/40 p-3 shadow-sm sm:p-4">
+          <img
+            src={slide.image}
+            alt={slide.alt}
+            className="mx-auto max-h-[52dvh] w-auto rounded-2xl object-contain"
+            draggable={false}
+          />
         </div>
-        <h1 className="mt-7 text-center font-heading text-2xl font-bold sm:text-3xl">{slide.title}</h1>
+        <h1 className="mt-6 text-center font-heading text-2xl font-bold sm:text-3xl">{slide.title}</h1>
         <p className="mt-3 max-w-sm text-center text-sm leading-6 text-muted-foreground">{slide.body}</p>
 
-        <div className="mt-6 flex items-center gap-2" aria-hidden="true">
+        <div className="mt-6 flex items-center gap-2">
           {slides.map((item, position) => (
-            <span
+            <button
               key={item.title}
-              className={`h-2 rounded-full transition-all ${position === index ? "w-6 bg-primary" : "w-2 bg-border"}`}
+              type="button"
+              aria-label={`Go to step ${position + 1}`}
+              onClick={() => setIndex(position)}
+              className={`h-2 rounded-full transition-all ${position === index ? "w-6 bg-primary" : "w-2 bg-border hover:bg-muted-foreground/40"}`}
             />
           ))}
         </div>
       </div>
 
       <div className="mx-auto w-full max-w-md">
-        <Button size="lg" className="h-13 w-full text-base font-bold" onClick={() => (isLast ? finish() : setIndex(index + 1))}>
+        <Button size="lg" className="h-13 w-full text-base font-bold" onClick={next}>
           {isLast ? "Create your account" : "Continue"}
         </Button>
         <p className="mt-4 text-center text-sm text-muted-foreground">

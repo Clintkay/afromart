@@ -47,7 +47,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       cancelled = true;
     };
   }, [user, ensureWelcome, refetchNotifications]);
-  const isAuth = pathname === "/auth" || pathname === "/reset-password" || pathname === "/";
+  const isAuth = pathname === "/auth" || pathname === "/reset-password" || pathname === "/" || pathname === "/onboarding";
   const accountTarget = user ? "/account" : "/auth";
 
   if (isAuth) return <>{children}</>;
