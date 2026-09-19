@@ -3,10 +3,12 @@ import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BadgeCheck, MessageCircle, RefreshCw } from "lucide-react";
 import { conversationsOptions } from "@/lib/queries";
+import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 
 export function MessagesPage() {
   const { data: conversations } = useSuspenseQuery(conversationsOptions);
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
 
@@ -24,7 +26,7 @@ export function MessagesPage() {
       <header className="flex items-start justify-between gap-3">
         <div>
         <p className="text-xs font-bold uppercase text-primary">Messages</p>
-        <h1 className="mt-2 font-heading text-3xl font-bold">Your seller chats</h1>
+        <h1 className="mt-2 font-heading text-3xl font-bold">Your chats</h1>
         <p className="mt-2 text-sm text-muted-foreground">Ask about stock, delivery times or custom orders before you buy.</p>
         </div>
         <Button variant="outline" size="sm" className="mt-1 shrink-0 gap-2" onClick={refresh} disabled={refreshing}>
@@ -45,6 +47,10 @@ export function MessagesPage() {
             const messages = [...(conversation.product_messages ?? [])].sort((a, b) => a.created_at.localeCompare(b.created_at));
             const last = messages[messages.length - 1];
             const store = conversation.stores;
+            const iAmSeller = !!user?.id && conversation.seller_id === user.id && conversation.buyer_id !== user.id;
+            const title = iAmSeller
+              ? conversation.subject || "Buyer enquiry"
+              : store?.business_name || store?.name || "Afromart seller";
             return (
               <li key={conversation.id}>
                 <Link
@@ -54,8 +60,8 @@ export function MessagesPage() {
                 >
                   <div className="flex items-center justify-between gap-3">
                     <p className="flex min-w-0 items-center gap-1.5 font-heading font-bold">
-                      <span className="truncate">{store?.business_name || store?.name || "Afromart seller"}</span>
-                      {store?.is_verified ? <BadgeCheck className="h-4 w-4 shrink-0 text-primary" /> : null}
+                      <span className="truncate">{title}</span>
+                      {!iAmSeller && store?.is_verified ? <BadgeCheck className="h-4 w-4 shrink-0 text-primary" /> : null}
                     </p>
                     <span className="shrink-0 text-xs text-muted-foreground">
                       {new Date(conversation.last_message_at).toLocaleDateString()}
