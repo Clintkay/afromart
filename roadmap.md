@@ -112,3 +112,4 @@
 - [x] 2 extra categories: Electronics & Gadgets, Farm Produce (with cover images)
 - [x] service_listings catalogue: 6 bookable services (tailoring, dispatch, haulage, catering, repairs) with chat + request flow
 - [x] Prices now formatted in Nigerian naira everywhere
+- [ ] Stripe card payments using the client-provided STRIPE_LIVE_API_KEY (checkout session + webhook marking orders paid)
