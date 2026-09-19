@@ -52,7 +52,7 @@ export function SellerDashboard() {
     country: store?.country ?? "Nigeria",
     responseTime: store?.response_time ?? "within 2 hours",
   });
-  const [productForm, setProductForm] = useState({ name: "", description: "", price: "", inventory: "" });
+  const [productForm, setProductForm] = useState({ name: "", description: "", price: "", inventory: "", imageUrl: "" });
 
   const submitStore = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -93,9 +93,10 @@ export function SellerDashboard() {
           description: productForm.description.trim() || undefined,
           price,
           inventoryCount: inventory,
+          ...(productForm.imageUrl.trim() ? { imageUrl: productForm.imageUrl.trim() } : {}),
         },
       });
-      setProductForm({ name: "", description: "", price: "", inventory: "" });
+      setProductForm({ name: "", description: "", price: "", inventory: "", imageUrl: "" });
       await queryClient.invalidateQueries({ queryKey: myProductsOptions.queryKey });
       toast.success("Product published.");
     } catch {
@@ -243,6 +244,11 @@ export function SellerDashboard() {
             <div>
               <label htmlFor="product-about" className="text-sm font-semibold">Description</label>
               <Textarea id="product-about" rows={3} disabled={!store} value={productForm.description} onChange={(event) => setProductForm({ ...productForm, description: event.target.value })} className="mt-1.5" placeholder="Materials, sizes, delivery time" />
+            </div>
+            <div>
+              <label htmlFor="product-image" className="text-sm font-semibold">Product photo link</label>
+              <Input id="product-image" type="url" disabled={!store} value={productForm.imageUrl} onChange={(event) => setProductForm({ ...productForm, imageUrl: event.target.value })} className="mt-1.5" placeholder="https://..." />
+              <p className="mt-1 text-xs text-muted-foreground">Paste a link to a clear photo of the product.</p>
             </div>
             <Button type="submit" disabled={busy || !store} className="w-full">Publish product</Button>
             {!store ? <p className="text-xs text-muted-foreground">Create your store first to add products.</p> : null}

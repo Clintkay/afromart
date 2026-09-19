@@ -42,7 +42,10 @@ export function Header() {
         <div className="flex items-center gap-1 sm:gap-2">
           <div className="hidden items-center gap-1 xl:flex"><Globe2 className="h-4 w-4 text-muted-foreground"/><LanguageSelector /></div>
           <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label={user ? "Business account" : "Log in"}><Link to={user ? "/account" : "/auth"} {...(!user ? { search: { redirect: "/seller" } } : {})}><UserRound className="h-5 w-5"/></Link></Button>
-          <Button asChild size="sm" className="hidden sm:inline-flex"><Link to="/download">Download App</Link></Button>
+          {!user ? (
+            <Button asChild size="sm" variant="outline" className="hidden md:inline-flex"><Link to="/auth" search={{ redirect: "/seller" }}>Join Afromart</Link></Button>
+          ) : null}
+          <Button asChild size="sm" className="hidden sm:inline-flex"><Link to="/home">Browse marketplace</Link></Button>
 
           <Button
             variant="ghost"

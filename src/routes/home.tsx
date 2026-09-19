@@ -1,12 +1,13 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { MarketplaceHome } from "@/components/MarketplaceHome";
 
 export const Route = createFileRoute("/home")({
-  beforeLoad: () => { throw redirect({ to: "/", replace: true }); },
+  component: MarketplaceHome,
   head: () => ({ meta: [
-    { title: "Home | Afromart" },
-    { name: "description", content: "Discover the Afromart ecosystem and download the mobile marketplace app." },
-    { property: "og:title", content: "Home | Afromart" },
-    { property: "og:description", content: "Discover the Afromart ecosystem and download the mobile marketplace app." },
+    { title: "Afromart Web App | Browse the Marketplace" },
+    { name: "description", content: "Browse African products, services and sellers in the Afromart web app while the mobile app launches." },
+    { property: "og:title", content: "Afromart Web App | Browse the Marketplace" },
+    { property: "og:description", content: "Browse African products, services and sellers in the Afromart web app." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),

@@ -14,6 +14,7 @@ import {
   Smartphone,
   Star,
   Store,
+  UserPlus,
   Wrench,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -27,6 +28,8 @@ import cateringImage from "@/assets/marketplace/svc-catering.jpg.asset.json";
 import homeScreen from "@/assets/app-screens/home.png.asset.json";
 import servicesScreen from "@/assets/app-screens/services-home.png.asset.json";
 import messagesScreen from "@/assets/app-screens/messages-list.png.asset.json";
+import craftsImage from "@/assets/marketplace/handwoven-basket.jpg.asset.json";
+import sellerSetupScreen from "@/assets/app-screens/storefront-setup.png.asset.json";
 
 const possibilities = [
   { icon: Search, title: "Discover products", body: "Explore goods from independent sellers and established African businesses in the mobile app." },
@@ -39,7 +42,7 @@ const services = [
   { title: "Tailoring", body: "Bespoke clothing and alterations", image: tailoringImage.url },
   { title: "Logistics", body: "Local and interstate delivery", image: logisticsImage.url },
   { title: "Repairs", body: "Device and household repairs", image: repairsImage.url },
-  { title: "Freelance services", body: "Creative and business support", image: cateringImage.url },
+  { title: "Catering", body: "Event and everyday food service", image: cateringImage.url },
 ];
 
 const trust = [
@@ -96,6 +99,45 @@ export function PublicHome() {
         </div>
       </section>
 
+      <section id="join" className="border-y bg-brand-cream">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+          <p className="text-xs font-bold uppercase text-brand-gold">Join Afromart</p>
+          <h2 className="mt-2 font-heading text-3xl font-bold sm:text-4xl">Create your account here, in minutes.</h2>
+          <p className="mt-4 max-w-2xl leading-7 text-muted-foreground">Set up your Afromart account and your seller storefront right here on the web — no app required. Everything you create stays in sync with the Afromart marketplace.</p>
+          <div className="mt-8 grid gap-4 lg:grid-cols-3">
+            <article className="rounded-lg border bg-card p-6">
+              <span className="grid h-10 w-10 place-items-center rounded-md bg-primary/10 text-primary"><UserPlus className="h-5 w-5" /></span>
+              <h3 className="mt-4 font-heading text-lg font-bold">1. Create your free account</h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">Sign up with your email or Google, confirm your code and you are in.</p>
+              <Button asChild className="mt-5 w-full"><Link to="/auth" search={{ redirect: "/seller" }}>Create account</Link></Button>
+            </article>
+            <article className="rounded-lg border bg-card p-6">
+              <span className="grid h-10 w-10 place-items-center rounded-md bg-primary/10 text-primary"><Store className="h-5 w-5" /></span>
+              <h3 className="mt-4 font-heading text-lg font-bold">2. Set up your store profile</h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">Add your business name, location, reply time and your story, then request verification.</p>
+              <Button asChild variant="outline" className="mt-5 w-full"><Link to="/sell/start">Set up my store</Link></Button>
+            </article>
+            <article className="rounded-lg border bg-card p-6">
+              <span className="grid h-10 w-10 place-items-center rounded-md bg-primary/10 text-primary"><BriefcaseBusiness className="h-5 w-5" /></span>
+              <h3 className="mt-4 font-heading text-lg font-bold">3. List products and services</h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">Add products with photos, prices and stock, then manage orders and earnings from your dashboard.</p>
+              <Button asChild variant="outline" className="mt-5 w-full"><Link to="/seller">Open seller dashboard</Link></Button>
+            </article>
+          </div>
+          <div className="mt-8 grid items-center gap-8 rounded-lg border bg-card p-6 lg:grid-cols-[minmax(0,1fr)_auto]">
+            <div>
+              <h3 className="font-heading text-xl font-bold">Prefer to look around first?</h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">Browse the Afromart marketplace in your browser while the mobile apps are being released.</p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Button asChild><Link to="/home">Browse the marketplace</Link></Button>
+                <Button asChild variant="outline"><Link to="/guest">Look around as a guest</Link></Button>
+              </div>
+            </div>
+            <img src={sellerSetupScreen.url} alt="Afromart store setup screen" className="mx-auto w-40 rounded-xl shadow-lg" />
+          </div>
+        </div>
+      </section>
+
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs font-bold uppercase text-accent">Services marketplace</p>
@@ -131,7 +173,7 @@ export function PublicHome() {
 
       <section className="bg-brand-cream">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-20">
-          <img src={communityImage.url} alt="African entrepreneurs collaborating in a local market" className="aspect-[1.35/1] w-full rounded-lg object-cover" />
+          <img src={craftsImage.url} alt="Handwoven African crafts from local makers" className="aspect-[1.35/1] w-full rounded-lg object-cover" />
           <div><p className="text-xs font-bold uppercase text-brand-gold">Local discovery, regional reach</p><h2 className="mt-2 font-heading text-3xl font-bold sm:text-4xl">Commerce that speaks your language.</h2><p className="mt-4 leading-7 text-muted-foreground">Afromart is designed for practical discovery and communication across African markets, with ten launch languages supporting a more inclusive experience.</p><div className="mt-6 flex flex-wrap gap-2">{languages.map((language) => <span key={language} className="rounded-full border bg-card px-3 py-1.5 text-xs font-semibold">{language}</span>)}</div></div>
         </div>
       </section>
