@@ -164,11 +164,13 @@ export function SellerDashboard() {
       </header>
 
       {store ? (
-        <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {[
             { label: "Gross sales", value: formatPrice(earnings?.gross ?? 0), icon: Wallet },
+            { label: "Paid to date", value: formatPrice(earnings?.paid ?? 0), icon: Wallet },
+            { label: "Awaiting payment", value: formatPrice(earnings?.awaitingPayment ?? 0), icon: Wallet },
             { label: "Available payout", value: formatPrice(earnings?.available ?? 0), icon: Wallet },
-            { label: "Orders", value: String(earnings?.orders ?? 0), icon: Package },
+            { label: "Orders", value: `${earnings?.orders ?? 0} · ${earnings?.delivered ?? 0} delivered`, icon: Package },
             { label: "Listings", value: String(products?.length ?? 0), icon: Boxes },
           ].map((card) => (
             <article key={card.label} className="rounded-xl border bg-card p-5">
