@@ -65,7 +65,7 @@ function CheckoutPage() {
         address = await createAddress({ data: { ...form, country: countryNameOf(countryCode), is_default: true } });
       }
 
-      await createOrder({
+      const order = await createOrder({
         data: {
           subtotal,
           shippingCost: shipping,
