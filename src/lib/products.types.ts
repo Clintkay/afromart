@@ -8,6 +8,7 @@ export type ProductSeller = {
   name: string;
   slug: string;
   business_name: string | null;
+  description: Tables<"stores">["description"];
   city: string | null;
   country: string | null;
   response_time: string | null;
