@@ -139,3 +139,5 @@
 - [ ] Complete public shop, storefront, services, account, cart, and app CTAs
 - [ ] Complete seller store setup, listing management, and public storefront links
 - [ ] Verify navigation, responsive layouts, images, and major journeys
+
+- [ ] Review linked project message and fold any missing requirement into the implementation
