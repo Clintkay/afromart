@@ -23,7 +23,7 @@ export function deliveryQuote(countryCode: string, subtotal: number): DeliveryQu
       : { cost: 500, label: "Local delivery", eta: "2–4 business days" };
   }
   if (AFRICA.has(countryCode)) {
-    return { cost: 3500, label: "Regional Africa delivery", eta: "5–9 business days" };
+    return { cost: 1500, label: "Regional Africa delivery", eta: "5–9 business days" };
   }
-  return { cost: 7500, label: "International delivery", eta: "8–16 business days" };
+  return { cost: 3500, label: "International delivery", eta: "8–16 business days" };
 }
