@@ -108,7 +108,10 @@ export function SellerDashboard() {
     setBusy(true);
     try {
       await updateStatus({ data: { orderId, status } });
-      await queryClient.invalidateQueries({ queryKey: sellerOrdersOptions.queryKey });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: sellerOrdersOptions.queryKey }),
+        queryClient.invalidateQueries({ queryKey: sellerEarningsOptions.queryKey }),
+      ]);
       toast.success(`Order marked ${status}.`);
     } catch {
       toast.error("Could not update the order.");
