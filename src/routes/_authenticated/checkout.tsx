@@ -29,17 +29,22 @@ function CheckoutPage() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(addresses.length === 0);
+  const [countryCode, setCountryCode] = useState("NG");
   const [form, setForm] = useState({
     full_name: "",
     address_line1: "",
     address_line2: "",
     city: "",
     state: "",
-    country: "Nigeria",
     phone: "",
   });
 
-  const shipping = subtotal > 5000 ? 0 : 500;
+  const selectedAddress = addresses.find((a) => a.is_default) ?? addresses[0];
+  const activeCountry = showForm || !selectedAddress
+    ? countryCode
+    : countryOptions.find((c) => c.name === selectedAddress.country)?.code ?? countryCode;
+  const delivery = deliveryQuote(activeCountry, subtotal);
+  const shipping = delivery.cost;
   const total = subtotal + shipping;
 
   if (items.length === 0) {
