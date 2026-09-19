@@ -164,7 +164,7 @@ export function ProductDetail() {
             </dl>
             {store?.slug ? (
               <Button asChild variant="outline" size="sm" className="mt-4">
-                <Link to="/products" search={{ search: sellerLabel(store) }}>Visit store listings</Link>
+                <Link to="/stores/$slug" params={{ slug: store.slug }}>View business profile</Link>
               </Button>
             ) : null}
           </section>

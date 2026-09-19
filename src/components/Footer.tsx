@@ -43,9 +43,8 @@ export function Footer() {
               <li><Link to="/services" className="hover:text-primary-foreground">Services</Link></li>
             </ul>
             <div className="mt-6 text-sm text-primary-foreground/70">
-              <li>
-                <p className="mb-2 flex items-center gap-2"><Globe2 className="h-4 w-4 text-accent"/>Language</p><LanguageSelector />
-              </div>
+              <p className="mb-2 flex items-center gap-2"><Globe2 className="h-4 w-4 text-accent"/>Language</p><LanguageSelector />
+            </div>
           </div>
         </div>
 

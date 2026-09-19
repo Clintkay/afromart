@@ -15,5 +15,5 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 export const useLanguage = () => useContext(LanguageContext);
 export function LanguageSelector() {
  const { language, setLanguage } = useLanguage();
- return <select aria-label="Language" value={language} onChange={(e) => setLanguage(e.target.value)} className="h-9 max-w-36 rounded-md border border-input bg-background px-2 text-sm text-foreground"><option value="en">English</option><option value="fr">Français</option><option value="pt">Português</option><option value="sw">Kiswahili</option></select>;
+ return <select aria-label="Language" value={language} onChange={(e) => setLanguage(e.target.value)} className="h-9 max-w-40 rounded-md border border-input bg-background px-2 text-sm text-foreground"><option value="en">English</option><option value="fr">Français</option><option value="ar">العربية</option><option value="pt">Português</option><option value="sw">Kiswahili</option><option value="ha">Hausa</option><option value="yo">Yorùbá</option><option value="zu">isiZulu</option><option value="am">አማርኛ</option><option value="ig">Igbo</option></select>;
 }
