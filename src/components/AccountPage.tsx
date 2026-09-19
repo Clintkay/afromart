@@ -18,7 +18,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { ordersOptions, addressesOptions, profileOptions, myRolesOptions } from "@/lib/queries";
 import { formatPrice } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import storeBanner from "@/assets/marketplace/store-banner.jpg.asset.json";
 
 const quickLinks = [
   { to: "/products", label: "Keep shopping", icon: Package },
