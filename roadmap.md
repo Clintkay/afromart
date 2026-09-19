@@ -156,3 +156,8 @@
 - [x] Browser-check browsing, add-to-cart, persisted cart reload, mobile layouts, signed-in seller and messages pages; no runtime errors. Added five-second conversation refresh.
 - [ ] Full document submission/review test needs an unverified test business; the supplied signed-in account already has a verified store.
 - [ ] Live payment confirmation requires configured Stripe credentials/webhook and a payment-provider test.
+## Current uploads and bank payments
+- [ ] Fix bank transfer payment flow.
+- [ ] Add direct product image upload.
+- [ ] Add profile picture upload.
+- [ ] Verify payment and uploads on desktop and phone.
