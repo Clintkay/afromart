@@ -1,20 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { CartPage } from "@/components/CartPage";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/cart")({
-  component: CartRoute,
+  beforeLoad: () => { throw redirect({ to: "/download", replace: true }); },
   head: () => ({
     meta: [
-      { title: "Your Cart | Afromart" },
-      { name: "description", content: "Review your cart at Afromart." },
-      { property: "og:title", content: "Your Cart | Afromart" },
-      { property: "og:description", content: "Review your cart at Afromart." },
+      { title: "Get the Afromart App" },
+      { name: "description", content: "The complete marketplace experience is available in the Afromart mobile app." },
+      { property: "og:title", content: "Get the Afromart App" },
+      { property: "og:description", content: "The complete marketplace experience is available in the Afromart mobile app." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
   }),
 });
-
-function CartRoute() {
-  return <CartPage />;
-}

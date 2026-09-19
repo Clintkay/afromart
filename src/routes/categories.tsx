@@ -1,15 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { CategoriesPage } from "@/components/CategoriesPage";
-import { categoriesOptions, productsOptions } from "@/lib/queries";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/categories")({
-  component: CategoriesPage,
-  loader: async ({ context }) => Promise.all([context.queryClient.ensureQueryData(categoriesOptions), context.queryClient.ensureQueryData(productsOptions({}))]),
+  beforeLoad: () => { throw redirect({ to: "/download", replace: true }); },
   head: () => ({ meta: [
     { title: "Categories | Afromart" },
-    { name: "description", content: "Browse Afromart products by category." },
+    { name: "description", content: "Explore Afromart categories in the mobile app." },
     { property: "og:title", content: "Categories | Afromart" },
-    { property: "og:description", content: "Browse Afromart products by category." },
+    { property: "og:description", content: "Explore Afromart categories in the mobile app." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
   ] }),

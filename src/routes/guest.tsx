@@ -1,13 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { GuestExperience } from "@/components/GuestExperience";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/guest")({
-  component: GuestExperience,
+  beforeLoad: () => { throw redirect({ to: "/download", replace: true }); },
   head: () => ({ meta: [
-    { title: "Browse as a Guest | Afro Mart" },
-    { name: "description", content: "Experience Afro Mart without signing up. Explore stores, services and listings in guest mode." },
-    { property: "og:title", content: "Browse as a Guest | Afro Mart" },
-    { property: "og:description", content: "Experience Afro Mart without signing up. Explore stores, services and listings in guest mode." },
+    { title: "Get the Afromart App" },
+    { name: "description", content: "Explore Afromart through the complete mobile marketplace experience." },
+    { property: "og:title", content: "Get the Afromart App" },
+    { property: "og:description", content: "Explore Afromart through the complete mobile marketplace experience." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),

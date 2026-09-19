@@ -1,50 +1,53 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Globe2, Menu, UserRound, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
+import { LanguageSelector } from "@/lib/language";
+import { useAuth } from "@/lib/auth-context";
 
 const navItems = [
-  { to: "/guest" as const, label: "Browse as guest" },
-  { to: "/sell/start" as const, label: "Start selling" },
+  { to: "/about" as const, label: "About" },
+  { to: "/services" as const, label: "Services" },
+  { to: "/business" as const, label: "For Businesses" },
+  { to: "/how-it-works" as const, label: "How It Works" },
+  { to: "/support" as const, label: "Help" },
 ];
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-      <div className="h-1 w-full bg-gradient-to-r from-brand-green via-brand-gold to-brand-terracotta" aria-hidden="true" />
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link to="/" aria-label="Afro Mart home">
-          <Logo />
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+      <div className="bg-primary py-1.5 text-center text-[10px] font-semibold text-primary-foreground">One marketplace. Many African markets.</div>
+      <div className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5 px-4 sm:px-6 lg:px-8">
+        <Link to="/" aria-label="Afromart home">
+          <Logo variant="full" className="h-8 sm:h-9" />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center justify-center gap-5 lg:flex">
           {navItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              className="text-sm font-semibold text-foreground transition-colors hover:text-brand-green"
+               activeProps={{ className: "text-primary" }}
+               className="text-sm font-semibold text-foreground transition-colors hover:text-primary"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <Link
-            to="/support"
-            className="hidden text-sm font-semibold text-foreground transition-colors hover:text-brand-green md:block"
-          >
-            Support
-          </Link>
-          <Link to="/guest" className="hidden md:block"><Button size="sm">Preview the app</Button></Link>
+        <div className="flex items-center gap-1 sm:gap-2">
+          <div className="hidden items-center gap-1 xl:flex"><Globe2 className="h-4 w-4 text-muted-foreground"/><LanguageSelector /></div>
+          <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label={user ? "Business account" : "Log in"}><Link to={user ? "/account" : "/auth"} {...(!user ? { search: { redirect: "/seller" } } : {})}><UserRound className="h-5 w-5"/></Link></Button>
+          <Button asChild size="sm" className="hidden sm:inline-flex"><Link to="/download">Download App</Link></Button>
 
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="lg:hidden"
             onClick={() => setMobileMenuOpen((open) => !open)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -54,7 +57,7 @@ export function Header() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="border-t bg-background px-4 py-4 md:hidden">
+        <div className="border-t bg-background px-4 py-4 lg:hidden">
           <nav className="flex flex-col gap-3">
             {navItems.map((item) => (
               <Link
@@ -66,9 +69,9 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link to="/support" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>
-              Support
-            </Link>
+            <div className="mt-2 border-t pt-4"><LanguageSelector /></div>
+            <Link to={user ? "/account" : "/auth"} {...(!user ? { search: { redirect: "/seller" } } : {})} className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>{user ? "Business account" : "Log in"}</Link>
+            <Button asChild className="mt-1"><Link to="/download" onClick={() => setMobileMenuOpen(false)}>Download App</Link></Button>
           </nav>
         </div>
       )}

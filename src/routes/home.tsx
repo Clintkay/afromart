@@ -1,20 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { MarketplaceHome } from "@/components/MarketplaceHome";
-import { categoriesOptions, productsOptions } from "@/lib/queries";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/home")({
-  component: MarketplaceHome,
-  loader: async ({ context }) => {
-    await Promise.all([
-      context.queryClient.ensureQueryData(productsOptions({})),
-      context.queryClient.ensureQueryData(categoriesOptions),
-    ]);
-  },
+  beforeLoad: () => { throw redirect({ to: "/", replace: true }); },
   head: () => ({ meta: [
     { title: "Home | Afromart" },
-    { name: "description", content: "Explore authentic African goods, services, and independent sellers on Afromart." },
+    { name: "description", content: "Discover the Afromart ecosystem and download the mobile marketplace app." },
     { property: "og:title", content: "Home | Afromart" },
-    { property: "og:description", content: "Explore authentic African goods, services, and independent sellers on Afromart." },
+    { property: "og:description", content: "Discover the Afromart ecosystem and download the mobile marketplace app." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ] }),

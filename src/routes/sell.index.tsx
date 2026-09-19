@@ -18,17 +18,17 @@ export const Route = createFileRoute("/sell/")({
   component: SellPage,
   head: () => ({
     meta: [
-      { title: "Become a Seller on Afro Mart" },
+      { title: "Build Your Business on Afromart" },
       {
         name: "description",
         content:
-          "Open a verified storefront on Afro Mart, list products or services, chat with customers and get paid through local methods.",
+          "Create a verified business profile on Afromart and manage the listings shown in the mobile marketplace.",
       },
-      { property: "og:title", content: "Become a Seller on Afro Mart" },
+      { property: "og:title", content: "Build Your Business on Afromart" },
       {
         property: "og:description",
         content:
-          "Open a verified storefront on Afro Mart, list products or services, chat with customers and get paid through local methods.",
+          "Create a verified business profile on Afromart and manage the listings shown in the mobile marketplace.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -79,22 +79,22 @@ function SellPage() {
           <div>
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
               <BadgeCheck className="h-3.5 w-3.5" />
-              Sell on Afro Mart
+              Business on Afromart
             </span>
             <h1 className="mt-6 font-heading text-4xl font-bold leading-tight text-foreground sm:text-5xl">
               Your store, your prices, your customers
             </h1>
             <p className="mt-6 max-w-xl text-muted-foreground">
-              Whether you grow, cook, sew, style, repair or deliver — set up a storefront on Afro Mart and reach people
+              Whether you grow, cook, sew, style, repair or deliver — set up a storefront on Afromart and reach people
               looking for exactly what you offer. It is free to open a store.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/sell/start">
                 <Button size="lg">Start selling</Button>
               </Link>
-              <Link to="/products">
+               <Link to="/download">
                 <Button size="lg" variant="outline">
-                  See the marketplace
+                   Explore the mobile app
                 </Button>
               </Link>
             </div>

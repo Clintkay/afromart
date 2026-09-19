@@ -8,6 +8,8 @@ import { useAuth } from "@/lib/auth-context";
 import { useCart } from "@/lib/cart-context";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { notificationsOptions } from "@/lib/queries";
@@ -47,10 +49,13 @@ export function AppShell({ children }: { children: ReactNode }) {
       cancelled = true;
     };
   }, [user, ensureWelcome, refetchNotifications]);
-  const isAuth = pathname === "/auth" || pathname === "/reset-password" || pathname === "/" || pathname === "/onboarding";
+  const isAuth = pathname === "/auth" || pathname === "/reset-password" || pathname === "/onboarding";
+  const publicWebsitePaths = ["/", "/about", "/services", "/business", "/how-it-works", "/support", "/download"];
+  const isPublicWebsite = publicWebsitePaths.includes(pathname) || pathname.startsWith("/stores/") || pathname.startsWith("/sell/");
   const accountTarget = user ? "/account" : "/auth";
 
   if (isAuth) return <>{children}</>;
+  if (isPublicWebsite) return <div className="min-h-screen bg-background text-foreground"><Header /><main>{children}</main><Footer /></div>;
 
   return (
     <div className="min-h-screen bg-background text-foreground md:grid md:grid-cols-[17rem_minmax(0,1fr)]">

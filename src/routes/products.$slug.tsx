@@ -1,24 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { productOptions } from "@/lib/queries";
-import { ProductDetail } from "@/components/ProductDetail";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/products/$slug")({
-  component: ProductDetailRoute,
-  loader: async ({ context, params }) => {
-    await context.queryClient.ensureQueryData(productOptions(params.slug));
-  },
+  beforeLoad: () => { throw redirect({ to: "/download", replace: true }); },
   head: () => ({
     meta: [
-      { title: "Product | Afromart" },
-      { name: "description", content: "Product details at Afromart." },
-      { property: "og:title", content: "Product | Afromart" },
-      { property: "og:description", content: "Product details at Afromart." },
+      { title: "View on the Afromart App" },
+      { name: "description", content: "Product discovery and purchasing are available in the Afromart mobile app." },
+      { property: "og:title", content: "View on the Afromart App" },
+      { property: "og:description", content: "Product discovery and purchasing are available in the Afromart mobile app." },
       { property: "og:type", content: "product" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
 });
-
-function ProductDetailRoute() {
-  return <ProductDetail />;
-}
