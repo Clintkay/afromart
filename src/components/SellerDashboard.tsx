@@ -117,6 +117,23 @@ export function SellerDashboard() {
     }
   };
 
+  const changePayment = async (orderId: string, paymentStatus: string) => {
+    setBusy(true);
+    try {
+      await updatePayment({ data: { orderId, paymentStatus } });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: sellerOrdersOptions.queryKey }),
+        queryClient.invalidateQueries({ queryKey: sellerEarningsOptions.queryKey }),
+      ]);
+      toast.success(paymentStatus === "paid" ? "Payment confirmed." : `Payment marked ${paymentStatus}.`);
+    } catch {
+      toast.error("Could not update the payment.");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+
   if (storeLoading) {
     return (
       <div className="grid min-h-[60vh] place-items-center">
