@@ -83,6 +83,7 @@ export const profileOptions = queryOptions<Profile | null>({
 export const conversationsOptions = queryOptions<ChatConversation[]>({
   queryKey: ["conversations"],
   queryFn: () => getConversations(),
+  refetchInterval: 20000,
 });
 
 export const myRolesOptions = queryOptions({
@@ -119,4 +120,5 @@ export const conversationOptions = (conversationId: string) =>
   queryOptions<ChatConversation | null>({
     queryKey: ["conversations", conversationId],
     queryFn: () => getConversation({ data: { conversationId } }),
+    refetchInterval: 10000,
   });
