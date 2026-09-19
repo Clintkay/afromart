@@ -70,14 +70,12 @@ export const submitVerification = createServerFn({ method: "POST" })
       .from("seller-credentials")
       .upload(path, bytes, { contentType: mime });
     if (uploadError) throw uploadError;
-    const { error: insertError } = await context.supabase
-      .from("store_verifications")
-      .insert({
-        store_id: store.id,
-        user_id: context.userId,
-        document_type: data.documentType,
-        document_path: path,
-      });
+    const { error: insertError } = await context.supabase.from("store_verifications").insert({
+      store_id: store.id,
+      user_id: context.userId,
+      document_type: data.documentType,
+      document_path: path,
+    });
     if (insertError) {
       await supabaseAdmin.storage.from("seller-credentials").remove([path]);
       throw insertError;
