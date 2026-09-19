@@ -34,6 +34,10 @@ export function ConversationPage() {
   }
 
   const store = conversation.stores;
+  const iAmSeller = !!user?.id && conversation.seller_id === user.id && conversation.buyer_id !== user.id;
+  const heading = iAmSeller
+    ? conversation.subject || "Buyer enquiry"
+    : store?.business_name || store?.name || "Afromart seller";
   const location = [store?.city, store?.country].filter(Boolean).join(", ");
 
   const submit = async (event: React.FormEvent) => {
@@ -61,12 +65,13 @@ export function ConversationPage() {
         </Button>
         <div className="min-w-0">
           <p className="flex min-w-0 items-center gap-1.5 font-heading text-lg font-bold">
-            <span className="truncate">{store?.business_name || store?.name || "Afromart seller"}</span>
-            {store?.is_verified ? <BadgeCheck className="h-4 w-4 shrink-0 text-primary" /> : null}
+            <span className="truncate">{heading}</span>
+            {!iAmSeller && store?.is_verified ? <BadgeCheck className="h-4 w-4 shrink-0 text-primary" /> : null}
           </p>
           <p className="flex items-center gap-2 text-xs text-muted-foreground">
-            {location ? <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{location}</span> : null}
-            {store?.response_time ? <span>Replies {store.response_time}</span> : null}
+            {iAmSeller ? <span>Buyer message for {store?.name ?? "your store"}</span> : null}
+            {!iAmSeller && location ? <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{location}</span> : null}
+            {!iAmSeller && store?.response_time ? <span>Replies {store.response_time}</span> : null}
           </p>
         </div>
       </header>
@@ -82,6 +87,11 @@ export function ConversationPage() {
       ) : null}
 
       <div className="mt-4 flex-1 space-y-3 overflow-y-auto pb-4">
+        {(conversation.product_messages ?? []).length === 0 ? (
+          <p className="rounded-lg border bg-secondary/40 p-4 text-sm text-muted-foreground">
+            No messages yet. Say hello and ask your question below.
+          </p>
+        ) : null}
         {(conversation.product_messages ?? []).map((message) => {
           const mine = message.sender_id === user?.id;
           return (
