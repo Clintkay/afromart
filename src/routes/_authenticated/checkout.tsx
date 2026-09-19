@@ -153,7 +153,16 @@ function CheckoutPage() {
                 </div>
                 <div>
                   <Label htmlFor="country">Country</Label>
-                  <Input id="country" value={form.country} onChange={(e) => setForm((f) => ({ ...f, country: e.target.value }))} />
+                  <select
+                    id="country"
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                    className="mt-1.5 h-10 w-full rounded-md border border-input bg-background px-2 text-sm"
+                  >
+                    {countryOptions.map((c) => (
+                      <option key={c.code} value={c.code}>{c.name}</option>
+                    ))}
+                  </select>
                 </div>
                 <div>
                   <Label htmlFor="phone">Phone</Label>
