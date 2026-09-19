@@ -45,7 +45,8 @@ function CheckoutPage() {
     phone: "",
   });
 
-  const selectedAddress = addresses.find((a) => a.is_default) ?? addresses[0];
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
+  const selectedAddress = addresses.find((a) => a.id === selectedAddressId) ?? addresses.find((a) => a.is_default) ?? addresses[0];
   const activeCountry = showForm || !selectedAddress
     ? countryCode
     : countryOptions.find((c) => c.name === selectedAddress.country)?.code ?? countryCode;
@@ -66,7 +67,7 @@ function CheckoutPage() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      let address = addresses.find((a) => a.is_default) ?? addresses[0];
+      let address = selectedAddress;
       if (showForm || !address) {
         address = await createAddress({ data: { ...form, country: countryNameOf(countryCode), is_default: true } });
       }
@@ -112,7 +113,7 @@ function CheckoutPage() {
       }
       navigate({ to: "/orders/$orderId", params: { orderId: order.id } });
     } catch (err) {
-      toast.error("Could not place order. Please try again.");
+      toast.error(err instanceof Error ? err.message : "Could not place order. Please try again.");
       console.error(err);
     } finally {
       setIsSubmitting(false);
@@ -133,7 +134,8 @@ function CheckoutPage() {
                     <input
                       type="radio"
                       name="address"
-                      defaultChecked={addr.is_default ?? false}
+                      checked={selectedAddress?.id === addr.id}
+                      onChange={() => setSelectedAddressId(addr.id)}
                       className="mt-1 accent-primary"
                     />
                     <div className="text-sm">
