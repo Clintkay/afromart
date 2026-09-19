@@ -27,6 +27,9 @@ import cateringImage from "@/assets/marketplace/svc-catering.jpg.asset.json";
 import homeScreen from "@/assets/app-screens/home.png.asset.json";
 import servicesScreen from "@/assets/app-screens/services-home.png.asset.json";
 import messagesScreen from "@/assets/app-screens/messages-list.png.asset.json";
+import fashionImage from "@/assets/marketplace/cat-fashion.jpg.asset.json";
+import craftsImage from "@/assets/marketplace/handwoven-basket.jpg.asset.json";
+import sellerSetupScreen from "@/assets/app-screens/storefront-setup.png.asset.json";
 
 const possibilities = [
   { icon: Search, title: "Discover products", body: "Explore goods from independent sellers and established African businesses in the mobile app." },
@@ -39,7 +42,7 @@ const services = [
   { title: "Tailoring", body: "Bespoke clothing and alterations", image: tailoringImage.url },
   { title: "Logistics", body: "Local and interstate delivery", image: logisticsImage.url },
   { title: "Repairs", body: "Device and household repairs", image: repairsImage.url },
-  { title: "Freelance services", body: "Creative and business support", image: cateringImage.url },
+  { title: "Catering", body: "Event and everyday food service", image: cateringImage.url },
 ];
 
 const trust = [
