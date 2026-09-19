@@ -113,6 +113,13 @@
       "when": 1789810871371,
       "tag": "0015_ai_support_threads",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1789811900908,
+      "tag": "0016_store_verification_requests",
+      "breakpoints": true
     }
   ]
 }
