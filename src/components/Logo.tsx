@@ -20,7 +20,7 @@ export function Logo({ className = "", variant = "horizontal" }: LogoProps) {
   return (
     <img
       src={asset.src}
-      alt="Afro Mart — Connecting African Commerce"
+      alt="Afromart — Connecting African Commerce"
       width={asset.width}
       height={asset.height}
       className={`${asset.className} ${className}`}

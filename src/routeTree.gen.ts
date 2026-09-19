@@ -11,12 +11,16 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BusinessRouteImport } from './routes/business'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
+import { Route as DownloadRouteImport } from './routes/download'
 import { Route as GuestRouteImport } from './routes/guest'
 import { Route as HomeRouteImport } from './routes/home'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ProductsRouteImport } from './routes/products'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -35,6 +39,7 @@ import { Route as ProductsIndexRouteImport } from './routes/products.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
 import { Route as SellIndexRouteImport } from './routes/sell.index'
 import { Route as SellStartRouteImport } from './routes/sell.start'
+import { Route as StoresSlugRouteImport } from './routes/stores.$slug'
 import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated/messages.index'
 import { Route as AuthenticatedMessagesConversationIdRouteImport } from './routes/_authenticated/messages.$conversationId'
 import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authenticated/orders.$orderId'
@@ -53,9 +58,19 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusinessRoute = BusinessRouteImport.update({
+  id: '/business',
+  path: '/business',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -73,6 +88,11 @@ const ComingSoonRoute = ComingSoonRouteImport.update({
   path: '/coming-soon',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DownloadRoute = DownloadRouteImport.update({
+  id: '/download',
+  path: '/download',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuestRoute = GuestRouteImport.update({
   id: '/guest',
   path: '/guest',
@@ -81,6 +101,11 @@ const GuestRoute = GuestRouteImport.update({
 const HomeRoute = HomeRouteImport.update({
   id: '/home',
   path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -175,6 +200,11 @@ const SellStartRoute = SellStartRouteImport.update({
   path: '/start',
   getParentRoute: () => SellRoute,
 } as any)
+const StoresSlugRoute = StoresSlugRouteImport.update({
+  id: '/stores/$slug',
+  path: '/stores/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedMessagesIndexRoute =
   AuthenticatedMessagesIndexRouteImport.update({
     id: '/',
@@ -223,12 +253,16 @@ const LovableEmailAuthWebhookRoute = LovableEmailAuthWebhookRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/business': typeof BusinessRoute
   '/cart': typeof CartRoute
   '/categories': typeof CategoriesRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/download': typeof DownloadRoute
   '/guest': typeof GuestRoute
   '/home': typeof HomeRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/onboarding': typeof OnboardingRoute
   '/products': typeof ProductsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
@@ -245,6 +279,7 @@ export interface FileRoutesByFullPath {
   '/api/support-chat': typeof ApiSupportChatRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
+  '/stores/$slug': typeof StoresSlugRoute
   '/products/': typeof ProductsIndexRoute
   '/sell/': typeof SellIndexRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
@@ -258,12 +293,16 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/business': typeof BusinessRoute
   '/cart': typeof CartRoute
   '/categories': typeof CategoriesRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/download': typeof DownloadRoute
   '/guest': typeof GuestRoute
   '/home': typeof HomeRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
@@ -276,6 +315,7 @@ export interface FileRoutesByTo {
   '/api/support-chat': typeof ApiSupportChatRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
+  '/stores/$slug': typeof StoresSlugRoute
   '/products': typeof ProductsIndexRoute
   '/sell': typeof SellIndexRoute
   '/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
@@ -291,12 +331,16 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
+  '/business': typeof BusinessRoute
   '/cart': typeof CartRoute
   '/categories': typeof CategoriesRoute
   '/coming-soon': typeof ComingSoonRoute
+  '/download': typeof DownloadRoute
   '/guest': typeof GuestRoute
   '/home': typeof HomeRoute
+  '/how-it-works': typeof HowItWorksRoute
   '/onboarding': typeof OnboardingRoute
   '/products': typeof ProductsRouteWithChildren
   '/reset-password': typeof ResetPasswordRoute
@@ -313,6 +357,7 @@ export interface FileRoutesById {
   '/api/support-chat': typeof ApiSupportChatRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/sell/start': typeof SellStartRoute
+  '/stores/$slug': typeof StoresSlugRoute
   '/products/': typeof ProductsIndexRoute
   '/sell/': typeof SellIndexRoute
   '/_authenticated/messages/$conversationId': typeof AuthenticatedMessagesConversationIdRoute
@@ -328,12 +373,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/auth'
+    | '/business'
     | '/cart'
     | '/categories'
     | '/coming-soon'
+    | '/download'
     | '/guest'
     | '/home'
+    | '/how-it-works'
     | '/onboarding'
     | '/products'
     | '/reset-password'
@@ -350,6 +399,7 @@ export interface FileRouteTypes {
     | '/api/support-chat'
     | '/products/$slug'
     | '/sell/start'
+    | '/stores/$slug'
     | '/products/'
     | '/sell/'
     | '/messages/$conversationId'
@@ -363,12 +413,16 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/auth'
+    | '/business'
     | '/cart'
     | '/categories'
     | '/coming-soon'
+    | '/download'
     | '/guest'
     | '/home'
+    | '/how-it-works'
     | '/onboarding'
     | '/reset-password'
     | '/services'
@@ -381,6 +435,7 @@ export interface FileRouteTypes {
     | '/api/support-chat'
     | '/products/$slug'
     | '/sell/start'
+    | '/stores/$slug'
     | '/products'
     | '/sell'
     | '/messages/$conversationId'
@@ -395,12 +450,16 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/about'
     | '/auth'
+    | '/business'
     | '/cart'
     | '/categories'
     | '/coming-soon'
+    | '/download'
     | '/guest'
     | '/home'
+    | '/how-it-works'
     | '/onboarding'
     | '/products'
     | '/reset-password'
@@ -417,6 +476,7 @@ export interface FileRouteTypes {
     | '/api/support-chat'
     | '/products/$slug'
     | '/sell/start'
+    | '/stores/$slug'
     | '/products/'
     | '/sell/'
     | '/_authenticated/messages/$conversationId'
@@ -432,12 +492,16 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
+  BusinessRoute: typeof BusinessRoute
   CartRoute: typeof CartRoute
   CategoriesRoute: typeof CategoriesRoute
   ComingSoonRoute: typeof ComingSoonRoute
+  DownloadRoute: typeof DownloadRoute
   GuestRoute: typeof GuestRoute
   HomeRoute: typeof HomeRoute
+  HowItWorksRoute: typeof HowItWorksRoute
   OnboardingRoute: typeof OnboardingRoute
   ProductsRoute: typeof ProductsRouteWithChildren
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -445,6 +509,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   SupportRoute: typeof SupportRoute
   ApiSupportChatRoute: typeof ApiSupportChatRoute
+  StoresSlugRoute: typeof StoresSlugRoute
   ApiPublicWebhooksStripeRoute: typeof ApiPublicWebhooksStripeRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -466,11 +531,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/business': {
+      id: '/business'
+      path: '/business'
+      fullPath: '/business'
+      preLoaderRoute: typeof BusinessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -494,6 +573,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComingSoonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/download': {
+      id: '/download'
+      path: '/download'
+      fullPath: '/download'
+      preLoaderRoute: typeof DownloadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guest': {
       id: '/guest'
       path: '/guest'
@@ -506,6 +592,13 @@ declare module '@tanstack/react-router' {
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -633,6 +726,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/sell/start'
       preLoaderRoute: typeof SellStartRouteImport
       parentRoute: typeof SellRoute
+    }
+    '/stores/$slug': {
+      id: '/stores/$slug'
+      path: '/stores/$slug'
+      fullPath: '/stores/$slug'
+      preLoaderRoute: typeof StoresSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/messages/': {
       id: '/_authenticated/messages/'
@@ -780,12 +880,16 @@ const SellRouteWithChildren = SellRoute._addFileChildren(SellRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
+  BusinessRoute: BusinessRoute,
   CartRoute: CartRoute,
   CategoriesRoute: CategoriesRoute,
   ComingSoonRoute: ComingSoonRoute,
+  DownloadRoute: DownloadRoute,
   GuestRoute: GuestRoute,
   HomeRoute: HomeRoute,
+  HowItWorksRoute: HowItWorksRoute,
   OnboardingRoute: OnboardingRoute,
   ProductsRoute: ProductsRouteWithChildren,
   ResetPasswordRoute: ResetPasswordRoute,
@@ -793,6 +897,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   SupportRoute: SupportRoute,
   ApiSupportChatRoute: ApiSupportChatRoute,
+  StoresSlugRoute: StoresSlugRoute,
   ApiPublicWebhooksStripeRoute: ApiPublicWebhooksStripeRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,

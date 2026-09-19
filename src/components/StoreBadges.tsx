@@ -21,8 +21,10 @@ export function StoreBadges({ className = "" }: { className?: string }) {
   return (
     <div className={`flex flex-wrap items-center gap-3 ${className}`}>
       <a
-        href="#app-preview"
-        className="flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-green/40 hover:shadow-md"
+        href="#"
+        onClick={(event) => event.preventDefault()}
+        aria-label="Afromart App Store link coming when the app launches"
+        className="flex items-center gap-3 rounded-md border border-border bg-card px-5 py-3 text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-green/40 hover:shadow-md"
       >
         <AppleIcon className="h-6 w-6 text-foreground" />
         <span className="flex flex-col leading-tight">
@@ -32,8 +34,10 @@ export function StoreBadges({ className = "" }: { className?: string }) {
       </a>
 
       <a
-        href="#app-preview"
-        className="flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3 text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-green/40 hover:shadow-md"
+        href="#"
+        onClick={(event) => event.preventDefault()}
+        aria-label="Afromart Google Play link coming when the app launches"
+        className="flex items-center gap-3 rounded-md border border-border bg-card px-5 py-3 text-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-green/40 hover:shadow-md"
       >
         <GooglePlayIcon className="h-6 w-6" />
         <span className="flex flex-col leading-tight">
