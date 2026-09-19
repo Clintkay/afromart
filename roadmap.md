@@ -123,3 +123,7 @@
 - 4-step walkthrough with real app screens, swipe gestures, tappable dots, skip/login links
 - Standalone full-screen: app header/bottom nav no longer wrap /onboarding
 - Typecheck clean, verified on phone-sized preview
+
+## AI support assistant — current request
+- [ ] Replace legacy assistant with streaming AI, private saved chats, and human escalation.
+- [ ] Verify separate conversations, restoration, errors and mobile layout.

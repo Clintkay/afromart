@@ -62,6 +62,65 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_support_access: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string
+          status: number
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          reason: string
+          status: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string
+          status?: number
+        }
+        Relationships: []
+      }
+      ai_support_threads: {
+        Row: {
+          created_at: string
+          id: string
+          messages: Json
+          ticket_id: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          ticket_id?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          ticket_id?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_support_threads_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "support_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       categories: {
         Row: {
           created_at: string | null
