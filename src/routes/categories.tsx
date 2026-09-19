@@ -1,12 +1,13 @@
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
+import { CategoriesPage } from "@/components/CategoriesPage";
 
 export const Route = createFileRoute("/categories")({
-  beforeLoad: () => { throw redirect({ to: "/download", replace: true }); },
+  component: CategoriesPage,
   head: () => ({ meta: [
-    { title: "Categories | Afromart" },
-    { name: "description", content: "Explore Afromart categories in the mobile app." },
-    { property: "og:title", content: "Categories | Afromart" },
-    { property: "og:description", content: "Explore Afromart categories in the mobile app." },
+    { title: "Categories | Afromart Web App" },
+    { name: "description", content: "Explore Afromart categories: fashion, beauty, groceries, home, electronics and agriculture." },
+    { property: "og:title", content: "Categories | Afromart Web App" },
+    { property: "og:description", content: "Explore Afromart categories across African markets." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary" },
   ] }),
