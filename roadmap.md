@@ -136,14 +136,14 @@
 
 ## Public website completion
 
-- [ ] Rebuild `/` closely from the supplied desktop and mobile Figma references
-- [ ] Make Download the App the primary action and Become a Seller secondary
-- [ ] Add About, Services, For Businesses, How It Works, Help, and Download App website journeys
-- [ ] Remove Shop, Cart, Checkout, Orders, pricing, and purchasing actions from public website navigation and pages
-- [ ] Replace product-shopping cards with informational ecosystem and category showcases
-- [ ] Create public seller profiles without purchase, cart, checkout, or payment controls
-- [ ] Keep seller authentication, store creation, product/service listing management, verification, and account settings
-- [ ] Direct product, service, seller interaction, booking, payment, and buying to the Afromart mobile app
-- [ ] Use the ten approved MVP languages and practical African-market messaging without unsupported statistics
+- [x] Rebuild `/` closely from the supplied desktop and mobile Figma references
+- [x] Make Download the App the primary action and Become a Seller secondary
+- [x] Add About, Services, For Businesses, How It Works, Help, and Download App website journeys
+- [x] Remove Shop, Cart, Checkout, Orders, pricing, and purchasing actions from public website navigation and pages
+- [x] Replace product-shopping cards with informational ecosystem and category showcases
+- [x] Create public seller profiles without purchase, cart, checkout, or payment controls
+- [x] Keep seller authentication, store creation, product/service listing management, verification, and account settings
+- [x] Direct product, service, seller interaction, booking, payment, and buying to the Afromart mobile app
+- [x] Use the ten approved MVP languages and practical African-market messaging without unsupported statistics
 - [ ] Verify desktop, tablet, and mobile layouts, imagery, navigation, metadata, and all CTAs
 - [x] Review linked project message and supplied desktop/mobile screenshots
