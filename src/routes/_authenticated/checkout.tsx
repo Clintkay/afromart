@@ -31,6 +31,7 @@ function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(addresses.length === 0);
   const [countryCode, setCountryCode] = useState("NG");
+  const [payWithCard, setPayWithCard] = useState(true);
   const [form, setForm] = useState({
     full_name: "",
     address_line1: "",
