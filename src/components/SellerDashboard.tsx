@@ -1,4 +1,5 @@
 import { StoreVerification } from "@/components/StoreVerification";
+import { ImageUpload } from "@/components/ImageUpload";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -35,6 +36,7 @@ export function SellerDashboard() {
   const updatePayment = useServerFn(updateSellerPaymentStatus);
 
   const [busy, setBusy] = useState(false);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const { data: roles } = useQuery(myRolesOptions);
   const claimSellerRole = useServerFn(addMyRole);
 
@@ -250,11 +252,9 @@ export function SellerDashboard() {
               <Textarea id="product-about" rows={3} disabled={!store} value={productForm.description} onChange={(event) => setProductForm({ ...productForm, description: event.target.value })} className="mt-1.5" placeholder="Materials, sizes, delivery time" />
             </div>
             <div>
-              <label htmlFor="product-image" className="text-sm font-semibold">Product photo link</label>
-              <Input id="product-image" type="url" disabled={!store} value={productForm.imageUrl} onChange={(event) => setProductForm({ ...productForm, imageUrl: event.target.value })} className="mt-1.5" placeholder="https://..." />
-              <p className="mt-1 text-xs text-muted-foreground">Paste a link to a clear photo of the product.</p>
+              <ImageUpload kind="product" value={productForm.imageUrl} disabled={!store || busy} onBusyChange={setUploadingPhoto} onChange={url => setProductForm(current => ({ ...current, imageUrl: url }))} />
             </div>
-            <Button type="submit" disabled={busy || !store} className="w-full">Publish product</Button>
+            <Button type="submit" disabled={busy || uploadingPhoto || !store} className="w-full">Publish product</Button>
             {!store ? <p className="text-xs text-muted-foreground">Create your store first to add products.</p> : null}
           </form>
 
