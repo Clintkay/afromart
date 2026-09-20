@@ -303,6 +303,7 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
+          payment_method: string
           payment_status: string
           shipping_address: Json
           shipping_cost: number
@@ -315,6 +316,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           id?: string
+          payment_method?: string
           payment_status?: string
           shipping_address: Json
           shipping_cost?: number
@@ -327,6 +329,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           id?: string
+          payment_method?: string
           payment_status?: string
           shipping_address?: Json
           shipping_cost?: number

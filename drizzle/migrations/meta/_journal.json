@@ -141,6 +141,13 @@
       "when": 1789867964861,
       "tag": "0019_bank_transfer_payments",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1789867981645,
+      "tag": "0020_order_payment_method",
+      "breakpoints": true
     }
   ]
 }
