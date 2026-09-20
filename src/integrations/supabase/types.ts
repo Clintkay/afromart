@@ -178,6 +178,69 @@ export type Database = {
         }
         Relationships: []
       }
+      order_bank_transfers: {
+        Row: {
+          account_name: string
+          account_number: string
+          amount: number
+          bank_name: string
+          confirmed_at: string | null
+          confirmed_by: string | null
+          id: string
+          order_id: string
+          reference: string
+          sender_reference: string | null
+          status: string
+          store_id: string
+          submitted_at: string | null
+        }
+        Insert: {
+          account_name: string
+          account_number: string
+          amount: number
+          bank_name: string
+          confirmed_at?: string | null
+          confirmed_by?: string | null
+          id?: string
+          order_id: string
+          reference?: string
+          sender_reference?: string | null
+          status?: string
+          store_id: string
+          submitted_at?: string | null
+        }
+        Update: {
+          account_name?: string
+          account_number?: string
+          amount?: number
+          bank_name?: string
+          confirmed_at?: string | null
+          confirmed_by?: string | null
+          id?: string
+          order_id?: string
+          reference?: string
+          sender_reference?: string | null
+          status?: string
+          store_id?: string
+          submitted_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_bank_transfers_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_bank_transfers_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_items: {
         Row: {
           created_at: string | null
@@ -240,6 +303,7 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
+          payment_method: string
           payment_status: string
           shipping_address: Json
           shipping_cost: number
@@ -252,6 +316,7 @@ export type Database = {
         Insert: {
           created_at?: string | null
           id?: string
+          payment_method?: string
           payment_status?: string
           shipping_address: Json
           shipping_cost?: number
@@ -264,6 +329,7 @@ export type Database = {
         Update: {
           created_at?: string | null
           id?: string
+          payment_method?: string
           payment_status?: string
           shipping_address?: Json
           shipping_cost?: number
@@ -580,6 +646,38 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      seller_bank_accounts: {
+        Row: {
+          account_name: string
+          account_number: string
+          bank_name: string
+          store_id: string
+          updated_at: string
+        }
+        Insert: {
+          account_name: string
+          account_number: string
+          bank_name: string
+          store_id: string
+          updated_at?: string
+        }
+        Update: {
+          account_name?: string
+          account_number?: string
+          bank_name?: string
+          store_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seller_bank_accounts_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: true
+            referencedRelation: "stores"
             referencedColumns: ["id"]
           },
         ]
@@ -903,7 +1001,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      confirm_bank_transfer: {
+        Args: { p_transfer: string; p_user: string }
+        Returns: undefined
+      }
+      prepare_bank_transfers: {
+        Args: { p_order: string; p_user: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role:
