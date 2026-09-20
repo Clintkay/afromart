@@ -157,7 +157,8 @@
 - [ ] Full document submission/review test needs an unverified test business; the supplied signed-in account already has a verified store.
 - [ ] Live payment confirmation requires configured Stripe credentials/webhook and a payment-provider test.
 ## Current uploads and bank payments
-- [ ] Fix bank transfer payment flow.
-- [ ] Add direct product image upload.
-- [ ] Add profile picture upload.
-- [ ] Verify payment and uploads on desktop and phone.
+- [ ] Enable bank transfer: blocked by missing merchant bank-transfer provider configuration; Stripe webhook secret also absent from this environment.
+- [x] Add direct product image upload with preview, size/type validation, and publishing disabled during upload.
+- [x] Add profile picture upload in Settings, saving to the profile and refreshing displayed data.
+- [x] Verify desktop/phone controls: no overflow or runtime errors; real product photo upload and image retrieval succeeded.
+- [ ] Profile photo persistence end-to-end test: requires permission to replace the signed-in user's existing profile picture; upload transport verified using the seller photo control.

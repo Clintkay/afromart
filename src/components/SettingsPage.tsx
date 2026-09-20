@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ImageUpload } from "@/components/ImageUpload";
 import { useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useNavigate } from "@tanstack/react-router";
@@ -188,6 +189,10 @@ export function SettingsPage() {
 
       <section className="mt-5 rounded-xl border bg-card p-5">
         <h2 className="flex items-center gap-2 font-heading text-lg font-bold"><UserRound className="h-5 w-5 text-primary" />Your details</h2>
+        <div className="mt-4"><ImageUpload kind="profile" value={profile?.avatar_url ?? ""} onChange={async avatarUrl => {
+          await save({ data: { avatarUrl } });
+          await refresh();
+        }} /></div>
         <label htmlFor="settings-name" className="mt-4 block text-sm font-semibold">Full name</label>
         <div className="mt-1.5 grid grid-cols-[minmax(0,1fr)_auto] gap-2">
           <Input id="settings-name" value={fullName} onChange={(event) => setFullName(event.target.value)} placeholder="Your name" />

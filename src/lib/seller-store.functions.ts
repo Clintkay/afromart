@@ -187,7 +187,11 @@ export const saveMyProduct = createServerFn({ method: "POST" })
     if (error) throw error;
 
     if (data.imageUrl) {
-      await context.supabase.from("product_images").insert({ product_id: created.id, url: data.imageUrl, position: 0 });
+      const { error: imageError } = await context.supabase.from("product_images").insert({ product_id: created.id, url: data.imageUrl, position: 0 });
+      if (imageError) {
+        await context.supabase.from("products").delete().eq("id", created.id).eq("store_id", store.id);
+        throw imageError;
+      }
     }
 
     return created as SellerProduct;
