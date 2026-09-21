@@ -43,7 +43,7 @@ export function OrderTrackingPage({ order }: { order: OrderWithItems }) {
       .then((result) => {
         if (result.paid) {
           toast.success("Payment received. Your order is being prepared.");
-          void queryClient.invalidateQueries({ queryKey: ["order", order.id] });
+          void queryClient.invalidateQueries({ queryKey: ["orders", order.id] });
         }
       })
       .catch(() => { /* The webhook still confirms the payment shortly after. */ });
