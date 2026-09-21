@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
 import type { OrderWithItems } from "@/lib/orders.functions";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { createOrderCheckoutSession } from "@/lib/payments.functions";
+import { createOrderCheckoutSession, confirmOrderPayment } from "@/lib/payments.functions";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const stages = [
