@@ -8,6 +8,15 @@ export const getMyBankAccount = createServerFn({ method: 'GET' }).middleware([re
   if(error) throw error;
   return data;
 });
+/** Transfers buyers reported against this seller's store, newest first. */
+export const getStoreTransfers = createServerFn({ method: 'GET' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
+  const { data: store } = await context.supabase.from('stores').select('id').eq('owner_id', context.userId).maybeSingle();
+  if (!store) return [];
+  const { data, error } = await context.supabase.from('order_bank_transfers').select('*').eq('store_id', store.id).order('submitted_at', { ascending: false, nullsFirst: false });
+  if (error) throw error;
+  return data ?? [];
+});
+
 export const saveBankAccount = createServerFn({method:'POST'}).middleware([requireSupabaseAuth])
 .inputValidator((input:{bankName:string;accountName:string;accountNumber:string})=>z.object({bankName:z.string().trim().min(2).max(100),accountName:z.string().trim().min(2).max(120),accountNumber:z.string().trim().regex(/^\d{10}$/, 'Enter a 10-digit Nigerian account number.')}).parse(input))
 .handler(async({data,context})=>{
