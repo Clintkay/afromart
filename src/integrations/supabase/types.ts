@@ -308,6 +308,7 @@ export type Database = {
           shipping_address: Json
           shipping_cost: number
           status: string
+          stripe_session_id: string | null
           subtotal: number
           total: number
           updated_at: string | null
@@ -321,6 +322,7 @@ export type Database = {
           shipping_address: Json
           shipping_cost?: number
           status?: string
+          stripe_session_id?: string | null
           subtotal: number
           total: number
           updated_at?: string | null
@@ -334,6 +336,7 @@ export type Database = {
           shipping_address?: Json
           shipping_cost?: number
           status?: string
+          stripe_session_id?: string | null
           subtotal?: number
           total?: number
           updated_at?: string | null

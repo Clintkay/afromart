@@ -60,5 +60,71 @@ export const createOrderCheckoutSession = createServerFn({ method: "POST" })
     });
 
     if (!session.url) throw new Error("Stripe did not return a payment link.");
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    await supabaseAdmin.from("orders").update({ stripe_session_id: session.id }).eq("id", order.id);
+
     return { url: session.url };
+  });
+
+/**
+ * Confirms payment straight from Stripe when the buyer returns from checkout.
+ * Acts as a safety net alongside the webhook; both paths verify amount, currency
+ * and ownership before marking the order paid.
+ */
+export const confirmOrderPayment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: { orderId: string }) => z.object({ orderId: z.string().uuid() }).parse(input))
+  .handler(async ({ data, context }) => {
+    const secretKey = process.env["STRIPE_LIVE_API_KEY"];
+    if (!secretKey) throw new Error("Stripe is not configured yet.");
+
+    const { data: order, error } = await context.supabase
+      .from("orders")
+      .select("id, total, user_id, payment_status, stripe_session_id")
+      .eq("id", data.orderId)
+      .single();
+    if (error || !order) throw new Error("Order not found.");
+    if (order.user_id !== context.userId) throw new Error("Forbidden");
+    if (order.payment_status === "paid") return { paid: true };
+    if (!order.stripe_session_id) return { paid: false };
+
+    const { default: Stripe } = await import("stripe");
+    const stripe = new Stripe(secretKey, { httpClient: Stripe.createFetchHttpClient() });
+    const session = await stripe.checkout.sessions.retrieve(order.stripe_session_id);
+
+    if (session.payment_status !== "paid") return { paid: false };
+    if (session.currency !== "ngn" || session.amount_total !== order.total) return { paid: false };
+    if (session.metadata?.["order_id"] !== order.id || session.metadata?.["user_id"] !== order.user_id) return { paid: false };
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: updated } = await supabaseAdmin
+      .from("orders")
+      .update({ payment_status: "paid", status: "processing", updated_at: new Date().toISOString() })
+      .eq("id", order.id)
+      .eq("payment_status", "pending")
+      .select("id");
+
+    if (updated?.length) {
+      await supabaseAdmin.from("notifications").insert({
+        user_id: order.user_id,
+        kind: "order",
+        title: "Payment confirmed",
+        body: "Afromart received your payment. Your order is now being prepared for delivery.",
+      });
+      const { data: storeItems } = await supabaseAdmin.from("order_items").select("store_id").eq("order_id", order.id);
+      const storeIds = [...new Set((storeItems ?? []).map((i) => i.store_id).filter(Boolean))] as string[];
+      if (storeIds.length > 0) {
+        const { data: stores } = await supabaseAdmin.from("stores").select("name, owner_id").in("id", storeIds);
+        const rows = (stores ?? []).filter((s) => s.owner_id).map((s) => ({
+          user_id: s.owner_id as string,
+          kind: "order",
+          title: "Order paid",
+          body: `${s.name}: a buyer has paid for their order. You can start fulfilment.`,
+        }));
+        if (rows.length > 0) await supabaseAdmin.from("notifications").insert(rows);
+      }
+    }
+
+    return { paid: true };
   });
