@@ -69,6 +69,7 @@ export const createOrder = createServerFn({ method: "POST" })
     const { data: order, error } = await context.supabase.from("orders").insert({
       user_id: context.userId, subtotal, shipping_cost: shipping, total: subtotal + shipping,
       shipping_address: data.shippingAddress, status: "pending", payment_status: "pending",
+      payment_method: data.paymentMethod,
     }).select().single();
     if (error) throw error;
     const orderItems = lines.map(line => ({ ...line, order_id: order.id }));
