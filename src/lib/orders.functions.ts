@@ -43,9 +43,11 @@ export const createOrder = createServerFn({ method: "POST" })
       total: number;
       shippingAddress: Tables<"orders">["shipping_address"];
       items: { productId: string; name: string; price: number; quantity: number; storeId?: string | null }[];
+      paymentMethod?: "card" | "bank_transfer";
     }) => z.object({
       shippingAddress: z.object({ full_name: z.string().trim().min(2), address_line1: z.string().trim().min(3), address_line2: z.string().nullable().optional(), city: z.string().trim().min(2), state: z.string().nullable().optional(), country: z.string().min(2), phone: z.string().nullable().optional() }),
       items: z.array(z.object({ productId: z.string().uuid(), quantity: z.number().int().min(1).max(999) })).min(1).max(100),
+      paymentMethod: z.enum(["card", "bank_transfer"]).default("card"),
     }).parse(input),
   )
   .handler(async ({ data, context }) => {
