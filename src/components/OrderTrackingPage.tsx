@@ -31,6 +31,24 @@ export function OrderTrackingPage({ order }: { order: OrderWithItems }) {
       toast.error("Payment could not start. Your order is saved; please try again or contact support.");
     } finally { setPaying(false); }
   }
+  const confirm = useServerFn(confirmOrderPayment);
+  const queryClient = useQueryClient();
+  const confirmed = useRef(false);
+  useEffect(() => {
+    if (confirmed.current || order.payment_status === "paid") return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("payment") !== "success") return;
+    confirmed.current = true;
+    confirm({ data: { orderId: order.id } })
+      .then((result) => {
+        if (result.paid) {
+          toast.success("Payment received. Your order is being prepared.");
+          void queryClient.invalidateQueries({ queryKey: ["order", order.id] });
+        }
+      })
+      .catch(() => { /* The webhook still confirms the payment shortly after. */ });
+  }, [confirm, order.id, order.payment_status, queryClient]);
+
   const activeIndex = stageIndex[order.status] ?? 0;
   const address = order.shipping_address && typeof order.shipping_address === "object" && !Array.isArray(order.shipping_address)
     ? order.shipping_address as Record<string, unknown>
