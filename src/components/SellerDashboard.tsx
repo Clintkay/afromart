@@ -1,5 +1,6 @@
 import { StoreVerification } from "@/components/StoreVerification";
 import { ImageUpload } from "@/components/ImageUpload";
+import { SellerBankSettings } from "@/components/SellerBankSettings";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -273,6 +274,12 @@ export function SellerDashboard() {
           ) : null}
         </section>
       </div>
+
+      <div className="mt-9">
+        <SellerBankSettings hasStore={Boolean(store)} />
+      </div>
+
+
 
       <section className="mt-9">
         <div className="flex flex-wrap items-center justify-between gap-3">
