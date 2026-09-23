@@ -9,6 +9,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { createOrderCheckoutSession, confirmOrderPayment } from "@/lib/payments.functions";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { BankTransferPanel } from "@/components/BankTransferPanel";
 
 const stages = [
   { key: "pending", title: "Order confirmed", note: "Your order was received.", icon: Check },
@@ -65,8 +66,15 @@ export function OrderTrackingPage({ order }: { order: OrderWithItems }) {
 
       <div className="mt-5 flex flex-wrap items-center gap-3 border-y py-4">
         <p className="text-sm font-semibold capitalize">Payment: {order.payment_status}</p>
-        {order.payment_status === "pending" && order.status !== "cancelled" && <Button disabled={paying} onClick={pay}>{paying ? "Opening payment…" : "Pay securely by card"}</Button>}
+        {order.payment_status === "pending" && order.status !== "cancelled" && <Button disabled={paying} onClick={pay}>{paying ? "Opening payment…" : order.payment_method === "bank_transfer" ? "Pay by card instead" : "Pay securely by card"}</Button>}
       </div>
+      {order.payment_method === "bank_transfer" && order.payment_status !== "refunded" && order.status !== "cancelled" ? (
+        <div className="mt-6">
+          <h2 className="font-heading text-xl font-bold">Bank transfer</h2>
+          <p className="mt-1 mb-4 text-sm text-muted-foreground">Send the exact amount to each seller below and quote the reference, then tap “I have sent it”. The order moves to paid once every seller confirms the money arrived.</p>
+          <BankTransferPanel orderId={order.id} paymentStatus={order.payment_status} />
+        </div>
+      ) : null}
       <div className="mt-7 grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
         <section className="rounded-lg border bg-card p-5 sm:p-7">
           <h2 className="font-heading text-xl font-bold">Delivery progress</h2>
