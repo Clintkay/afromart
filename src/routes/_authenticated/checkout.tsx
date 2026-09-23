@@ -35,7 +35,7 @@ function CheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(addresses.length === 0);
   const [countryCode, setCountryCode] = useState("NG");
-  const payWithCard = true;
+  const [payWithCard, setPayWithCard] = useState(true);
   const [form, setForm] = useState({
     full_name: "",
     address_line1: "",
@@ -93,6 +93,7 @@ function CheckoutPage() {
             quantity: item.quantity,
             storeId: null,
           })),
+          paymentMethod: payWithCard ? "card" : "bank_transfer",
         },
       });
 
@@ -109,7 +110,7 @@ function CheckoutPage() {
           toast.error("Order saved as unpaid. Card payment could not start; please contact support.");
         }
       } else {
-        toast.info("Payment is required before delivery.");
+        toast.info("Bank details are on your order page. Transfer, then tap “I have sent it”.");
       }
       navigate({ to: "/orders/$orderId", params: { orderId: order.id } });
     } catch (err) {
@@ -217,7 +218,7 @@ function CheckoutPage() {
             <p className="text-sm font-medium">Payment method</p>
             {[
               { value: true, label: "Pay by card now", hint: "Secure card payment" },
-              { value: false, label: "Bank transfer", hint: "Not available yet — bank payment setup required" },
+              { value: false, label: "Bank transfer", hint: "Transfer to the seller's account, then confirm on your order page" },
             ].map((option) => (
               <label
                 key={String(option.value)}
@@ -228,8 +229,7 @@ function CheckoutPage() {
                   name="payment-method"
                   className="mt-1 accent-[var(--primary)]"
                   checked={payWithCard === option.value}
-                  disabled={!option.value}
-                  readOnly
+                  onChange={() => setPayWithCard(option.value)}
                 />
                 <span>
                   <span className="block font-medium">{option.label}</span>
@@ -239,7 +239,7 @@ function CheckoutPage() {
             ))}
           </div>
           <Button className="mt-6 w-full" size="lg" disabled={isSubmitting} onClick={handleSubmit}>
-            {isSubmitting ? "Placing order..." : payWithCard ? "Pay now" : "Place order"}
+            {isSubmitting ? "Placing order..." : payWithCard ? "Pay now" : "Place order & get bank details"}
           </Button>
           <p className="mt-3 text-center text-xs text-muted-foreground">
             Card payments are processed securely; Afromart never stores your card details.
