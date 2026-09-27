@@ -1,6 +1,7 @@
 import { StoreVerification } from "@/components/StoreVerification";
 import { ImageUpload } from "@/components/ImageUpload";
 import { SellerBankSettings } from "@/components/SellerBankSettings";
+import { SellerDisputes } from "@/components/DisputePanel";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -277,6 +278,7 @@ export function SellerDashboard() {
 
       <div className="mt-9">
         <SellerBankSettings hasStore={Boolean(store)} />
+        <SellerDisputes hasStore={Boolean(store)} />
       </div>
 
 
