@@ -31,7 +31,7 @@ export const Route = createFileRoute("/_authenticated/checkout")({
 function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart();
   const { data: allAddresses } = useSuspenseQuery(addressesOptions);
-  const addresses = allAddresses.filter((a) => a.full_name.trim().length >= 2 && a.address_line1.trim().length >= 3 && a.city.trim().length >= 2);
+  const addresses = allAddresses.filter((a) => (a.full_name ?? "").trim().length >= 2 && (a.address_line1 ?? "").trim().length >= 3 && (a.city ?? "").trim().length >= 2);
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(addresses.length === 0);
