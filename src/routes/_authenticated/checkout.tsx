@@ -65,6 +65,12 @@ function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (showForm || !selectedAddress) {
+      if (form.full_name.trim().length < 2 || form.address_line1.trim().length < 3 || form.city.trim().length < 2) {
+        toast.error("Please enter your full name, street address and city.");
+        return;
+      }
+    }
     setIsSubmitting(true);
     try {
       let address = selectedAddress;
