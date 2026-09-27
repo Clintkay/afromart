@@ -10,6 +10,7 @@ import { createOrderCheckoutSession, confirmOrderPayment } from "@/lib/payments.
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { BankTransferPanel } from "@/components/BankTransferPanel";
+import { DisputePanel } from "@/components/DisputePanel";
 
 const stages = [
   { key: "pending", title: "Order confirmed", note: "Your order was received.", icon: Check },
@@ -98,6 +99,7 @@ export function OrderTrackingPage({ order }: { order: OrderWithItems }) {
         <aside className="space-y-4">
           <section className="rounded-lg border bg-card p-5"><h2 className="font-heading font-bold">Order summary</h2><ul className="mt-4 space-y-3">{order.order_items.map((item) => <li key={item.id} className="flex justify-between gap-3 text-sm"><span className="min-w-0"><span className="block truncate font-medium">{item.name}</span><span className="text-muted-foreground">Qty {item.quantity}</span></span><span className="font-semibold">{formatPrice(item.total)}</span></li>)}</ul><div className="mt-4 flex justify-between border-t pt-4 font-bold"><span>Total</span><span>{formatPrice(order.total)}</span></div></section>
           {destination ? <section className="rounded-lg border bg-card p-5"><div className="flex gap-3"><MapPin className="mt-0.5 h-5 w-5 shrink-0 text-primary" /><div><h2 className="font-heading font-bold">Delivering to</h2><p className="mt-1 text-sm leading-6 text-muted-foreground">{destination}</p></div></div></section> : null}
+          <DisputePanel orderId={order.id} stores={[...new Set(order.order_items.map((i) => i.store_id).filter((s): s is string => Boolean(s)))].map((id, n) => ({ id, name: `Seller ${n + 1}` }))} />
           <Button asChild variant="outline" className="w-full"><Link to="/support"><Headphones className="h-4 w-4" />Get order help</Link></Button>
         </aside>
       </div>
