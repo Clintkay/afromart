@@ -28,7 +28,12 @@ export const getAddresses = createServerFn({ method: "GET" })
 
 export const createAddress = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: AddressInput) => input)
+  .inputValidator((input: AddressInput) => {
+    if ((input.full_name ?? "").trim().length < 2 || (input.address_line1 ?? "").trim().length < 3 || (input.city ?? "").trim().length < 2) {
+      throw new Error("Please enter your full name, street address and city.");
+    }
+    return input;
+  })
   .handler(async ({ data, context }) => {
     if (data.is_default) {
       await context.supabase.from("addresses").update({ is_default: false }).eq("user_id", context.userId);
