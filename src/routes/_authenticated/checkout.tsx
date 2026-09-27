@@ -30,7 +30,8 @@ export const Route = createFileRoute("/_authenticated/checkout")({
 
 function CheckoutPage() {
   const { items, subtotal, clearCart } = useCart();
-  const { data: addresses } = useSuspenseQuery(addressesOptions);
+  const { data: allAddresses } = useSuspenseQuery(addressesOptions);
+  const addresses = allAddresses.filter((a) => (a.full_name ?? "").trim().length >= 2 && (a.address_line1 ?? "").trim().length >= 3 && (a.city ?? "").trim().length >= 2);
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showForm, setShowForm] = useState(addresses.length === 0);
@@ -65,6 +66,12 @@ function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (showForm || !selectedAddress) {
+      if (form.full_name.trim().length < 2 || form.address_line1.trim().length < 3 || form.city.trim().length < 2) {
+        toast.error("Please enter your full name, street address and city.");
+        return;
+      }
+    }
     setIsSubmitting(true);
     try {
       let address = selectedAddress;
