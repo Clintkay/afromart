@@ -742,6 +742,53 @@ export type Database = {
           },
         ]
       }
+      seller_payouts: {
+        Row: {
+          account_name: string
+          account_number: string
+          amount: number
+          bank_name: string
+          created_at: string
+          id: string
+          note: string | null
+          status: string
+          store_id: string
+          updated_at: string
+        }
+        Insert: {
+          account_name: string
+          account_number: string
+          amount: number
+          bank_name: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          status?: string
+          store_id: string
+          updated_at?: string
+        }
+        Update: {
+          account_name?: string
+          account_number?: string
+          amount?: number
+          bank_name?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          status?: string
+          store_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "seller_payouts_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_listings: {
         Row: {
           category: string
@@ -1069,6 +1116,11 @@ export type Database = {
         Args: { p_order: string; p_user: string }
         Returns: undefined
       }
+      request_payout: {
+        Args: { p_amount: number; p_store: string; p_user: string }
+        Returns: string
+      }
+      store_payout_balance: { Args: { p_store: string }; Returns: Json }
     }
     Enums: {
       app_role:
