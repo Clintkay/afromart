@@ -169,6 +169,13 @@
       "when": 1790599043267,
       "tag": "0023_seller_payouts",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1790773460283,
+      "tag": "0024_order_paystack_reference",
+      "breakpoints": true
     }
   ]
 }
