@@ -362,6 +362,7 @@ export type Database = {
           id: string
           payment_method: string
           payment_status: string
+          paystack_reference: string | null
           shipping_address: Json
           shipping_cost: number
           status: string
@@ -376,6 +377,7 @@ export type Database = {
           id?: string
           payment_method?: string
           payment_status?: string
+          paystack_reference?: string | null
           shipping_address: Json
           shipping_cost?: number
           status?: string
@@ -390,6 +392,7 @@ export type Database = {
           id?: string
           payment_method?: string
           payment_status?: string
+          paystack_reference?: string | null
           shipping_address?: Json
           shipping_cost?: number
           status?: string
