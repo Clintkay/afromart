@@ -162,3 +162,11 @@
 - [x] Add profile picture upload in Settings, saving to the profile and refreshing displayed data.
 - [x] Verify desktop/phone controls: no overflow or runtime errors; real product photo upload and image retrieval succeeded.
 - [ ] Profile photo persistence end-to-end test: requires permission to replace the signed-in user's existing profile picture; upload transport verified using the seller photo control.
+
+## Paystack (live)
+- [x] Paystack transaction initialize + verify server functions (src/lib/paystack.functions.ts)
+- [x] Shared markOrderPaid helper (src/lib/payments.server.ts)
+- [x] Signed webhook at /api/public/webhooks/paystack (charge.success)
+- [x] Checkout + order page pay online via Paystack; manual bank transfer kept
+- [ ] User: add webhook URL https://afromart.lovable.app/api/public/webhooks/paystack in Paystack dashboard
+- [ ] Stripe kept as legacy code path (unused in UI)
