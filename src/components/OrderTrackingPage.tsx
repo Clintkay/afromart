@@ -6,7 +6,7 @@ import { formatPrice } from "@/lib/utils";
 import type { OrderWithItems } from "@/lib/orders.functions";
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { createOrderCheckoutSession, confirmOrderPayment } from "@/lib/payments.functions";
+import { startPaystackPayment, verifyPaystackPayment } from "@/lib/paystack.functions";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { BankTransferPanel } from "@/components/BankTransferPanel";
@@ -22,18 +22,18 @@ const stages = [
 const stageIndex: Record<string, number> = { pending: 0, confirmed: 0, processing: 1, shipped: 2, out_for_delivery: 2, delivered: 3 };
 
 export function OrderTrackingPage({ order }: { order: OrderWithItems }) {
-  const checkout = useServerFn(createOrderCheckoutSession);
+  const checkout = useServerFn(startPaystackPayment);
   const [paying, setPaying] = useState(false);
   async function pay() {
     setPaying(true);
     try {
-      const result = await checkout({ data: { orderId: order.id, origin: window.location.origin } });
+      const result = await checkout({ data: { orderId: order.id } });
       window.location.assign(result.url);
     } catch {
       toast.error("Payment could not start. Your order is saved; please try again or contact support.");
     } finally { setPaying(false); }
   }
-  const confirm = useServerFn(confirmOrderPayment);
+  const confirm = useServerFn(verifyPaystackPayment);
   const queryClient = useQueryClient();
   const confirmed = useRef(false);
   useEffect(() => {
@@ -67,7 +67,7 @@ export function OrderTrackingPage({ order }: { order: OrderWithItems }) {
 
       <div className="mt-5 flex flex-wrap items-center gap-3 border-y py-4">
         <p className="text-sm font-semibold capitalize">Payment: {order.payment_status}</p>
-        {order.payment_status === "pending" && order.status !== "cancelled" && <Button disabled={paying} onClick={pay}>{paying ? "Opening payment…" : order.payment_method === "bank_transfer" ? "Pay by card instead" : "Pay securely by card"}</Button>}
+        {order.payment_status === "pending" && order.status !== "cancelled" && <Button disabled={paying} onClick={pay}>{paying ? "Opening payment…" : order.payment_method === "bank_transfer" ? "Pay online instead" : "Pay securely now"}</Button>}
       </div>
       {order.payment_method === "bank_transfer" && order.payment_status !== "refunded" && order.status !== "cancelled" ? (
         <div className="mt-6">
