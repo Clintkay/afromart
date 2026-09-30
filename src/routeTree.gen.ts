@@ -46,6 +46,7 @@ import { Route as AuthenticatedOrdersOrderIdRouteImport } from './routes/_authen
 import { Route as AuthenticatedSupportChatIndexRouteImport } from './routes/_authenticated/support-chat.index'
 import { Route as AuthenticatedSupportChatThreadIdRouteImport } from './routes/_authenticated/support-chat.$threadId'
 import { Route as ApiPublicMediaObjectRouteImport } from './routes/api/public/media.$object'
+import { Route as ApiPublicWebhooksPaystackRouteImport } from './routes/api/public/webhooks/paystack'
 import { Route as ApiPublicWebhooksStripeRouteImport } from './routes/api/public/webhooks/stripe'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
@@ -241,6 +242,12 @@ const ApiPublicMediaObjectRoute = ApiPublicMediaObjectRouteImport.update({
   path: '/api/public/media/$object',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicWebhooksPaystackRoute =
+  ApiPublicWebhooksPaystackRouteImport.update({
+    id: '/api/public/webhooks/paystack',
+    path: '/api/public/webhooks/paystack',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicWebhooksStripeRoute = ApiPublicWebhooksStripeRouteImport.update({
   id: '/api/public/webhooks/stripe',
   path: '/api/public/webhooks/stripe',
@@ -294,6 +301,7 @@ export interface FileRoutesByFullPath {
   '/messages/': typeof AuthenticatedMessagesIndexRoute
   '/support-chat/': typeof AuthenticatedSupportChatIndexRoute
   '/api/public/media/$object': typeof ApiPublicMediaObjectRoute
+  '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -331,6 +339,7 @@ export interface FileRoutesByTo {
   '/messages': typeof AuthenticatedMessagesIndexRoute
   '/support-chat': typeof AuthenticatedSupportChatIndexRoute
   '/api/public/media/$object': typeof ApiPublicMediaObjectRoute
+  '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -374,6 +383,7 @@ export interface FileRoutesById {
   '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
   '/_authenticated/support-chat/': typeof AuthenticatedSupportChatIndexRoute
   '/api/public/media/$object': typeof ApiPublicMediaObjectRoute
+  '/api/public/webhooks/paystack': typeof ApiPublicWebhooksPaystackRoute
   '/api/public/webhooks/stripe': typeof ApiPublicWebhooksStripeRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -417,6 +427,7 @@ export interface FileRouteTypes {
     | '/messages/'
     | '/support-chat/'
     | '/api/public/media/$object'
+    | '/api/public/webhooks/paystack'
     | '/api/public/webhooks/stripe'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -454,6 +465,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/support-chat'
     | '/api/public/media/$object'
+    | '/api/public/webhooks/paystack'
     | '/api/public/webhooks/stripe'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -496,6 +508,7 @@ export interface FileRouteTypes {
     | '/_authenticated/messages/'
     | '/_authenticated/support-chat/'
     | '/api/public/media/$object'
+    | '/api/public/webhooks/paystack'
     | '/api/public/webhooks/stripe'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -523,6 +536,7 @@ export interface RootRouteChildren {
   ApiSupportChatRoute: typeof ApiSupportChatRoute
   StoresSlugRoute: typeof StoresSlugRoute
   ApiPublicMediaObjectRoute: typeof ApiPublicMediaObjectRoute
+  ApiPublicWebhooksPaystackRoute: typeof ApiPublicWebhooksPaystackRoute
   ApiPublicWebhooksStripeRoute: typeof ApiPublicWebhooksStripeRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -789,6 +803,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicMediaObjectRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/webhooks/paystack': {
+      id: '/api/public/webhooks/paystack'
+      path: '/api/public/webhooks/paystack'
+      fullPath: '/api/public/webhooks/paystack'
+      preLoaderRoute: typeof ApiPublicWebhooksPaystackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/webhooks/stripe': {
       id: '/api/public/webhooks/stripe'
       path: '/api/public/webhooks/stripe'
@@ -919,6 +940,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiSupportChatRoute: ApiSupportChatRoute,
   StoresSlugRoute: StoresSlugRoute,
   ApiPublicMediaObjectRoute: ApiPublicMediaObjectRoute,
+  ApiPublicWebhooksPaystackRoute: ApiPublicWebhooksPaystackRoute,
   ApiPublicWebhooksStripeRoute: ApiPublicWebhooksStripeRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,

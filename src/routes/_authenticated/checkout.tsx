@@ -5,7 +5,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { addressesOptions } from "@/lib/queries";
 import { useCart } from "@/lib/cart-context";
 import { createOrder } from "@/lib/orders.functions";
-import { createOrderCheckoutSession } from "@/lib/payments.functions";
+import { startPaystackPayment } from "@/lib/paystack.functions";
 import { createAddress } from "@/lib/addresses.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -100,7 +100,7 @@ function CheckoutPage() {
             quantity: item.quantity,
             storeId: null,
           })),
-          paymentMethod: payWithCard ? "card" : "bank_transfer",
+          paymentMethod: payWithCard ? "paystack" : "bank_transfer",
         },
       });
 
@@ -108,13 +108,11 @@ function CheckoutPage() {
 
       if (payWithCard) {
         try {
-          const { url } = await createOrderCheckoutSession({
-            data: { orderId: order.id, origin: window.location.origin },
-          });
+          const { url } = await startPaystackPayment({ data: { orderId: order.id } });
           window.location.href = url;
           return;
         } catch {
-          toast.error("Order saved as unpaid. Card payment could not start; please contact support.");
+          toast.error("Order saved as unpaid. Payment could not start; please try again from your order page.");
         }
       } else {
         toast.info("Bank details are on your order page. Transfer, then tap “I have sent it”.");
@@ -224,8 +222,8 @@ function CheckoutPage() {
           <div className="mt-5 space-y-2">
             <p className="text-sm font-medium">Payment method</p>
             {[
-              { value: true, label: "Pay by card now", hint: "Secure card payment" },
-              { value: false, label: "Bank transfer", hint: "Transfer to the seller's account, then confirm on your order page" },
+              { value: true, label: "Pay now with card, transfer or USSD", hint: "Secure payment powered by Paystack" },
+              { value: false, label: "Manual bank transfer", hint: "Transfer to the seller's account, then confirm on your order page" },
             ].map((option) => (
               <label
                 key={String(option.value)}
@@ -249,7 +247,7 @@ function CheckoutPage() {
             {isSubmitting ? "Placing order..." : payWithCard ? "Pay now" : "Place order & get bank details"}
           </Button>
           <p className="mt-3 text-center text-xs text-muted-foreground">
-            Card payments are processed securely; Afromart never stores your card details.
+            Payments are processed securely by Paystack; Afromart never stores your card details.
           </p>
         </div>
       </div>
