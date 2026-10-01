@@ -21,41 +21,41 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="bg-primary py-1.5 text-center text-[10px] font-semibold text-primary-foreground">One marketplace. Many African markets.</div>
-      <div className="mx-auto grid h-16 max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-5 px-4 sm:px-6 lg:px-8">
-        <Link to="/" aria-label="Afromart home">
-          <Logo variant="full" className="h-8 sm:h-9" />
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+        <Link to="/" aria-label="Afromart home" className="shrink-0">
+          <Logo variant="full" className="h-7 sm:h-8" />
         </Link>
 
-        <nav className="hidden items-center justify-center gap-5 lg:flex">
+        <nav className="hidden min-w-0 flex-1 items-center justify-center gap-6 xl:flex">
           {navItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
-               activeProps={{ className: "text-primary" }}
-               className="text-sm font-semibold text-foreground transition-colors hover:text-primary"
+              activeProps={{ className: "text-primary" }}
+              className="whitespace-nowrap text-sm font-semibold text-foreground transition-colors hover:text-primary"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <div className="hidden items-center gap-1 xl:flex"><Globe2 className="h-4 w-4 text-muted-foreground"/><LanguageSelector /></div>
           {!user ? (
             <>
-              <Button asChild size="sm" variant="ghost" className="hidden sm:inline-flex"><Link to="/auth">Log in</Link></Button>
-              <Button asChild size="sm" variant="outline" className="hidden md:inline-flex"><Link to="/auth" search={{ mode: "signup" }}>Join Afromart</Link></Button>
+              <Button asChild size="sm" variant="ghost" className="hidden md:inline-flex"><Link to="/auth">Log in</Link></Button>
+              <Button asChild size="sm" variant="outline" className="hidden sm:inline-flex"><Link to="/auth" search={{ mode: "signup" }}>Join Afromart</Link></Button>
             </>
           ) : null}
-          <Button asChild size="sm" className="hidden sm:inline-flex"><Link to="/home">Browse marketplace</Link></Button>
+          <Button asChild size="sm" className="hidden whitespace-nowrap lg:inline-flex"><Link to="/home">Browse marketplace</Link></Button>
           {user ? (
-            <Button asChild variant="outline" size="icon" className="hidden rounded-full sm:inline-flex" aria-label="My account" title="My account"><Link to="/account"><UserRound className="h-5 w-5"/></Link></Button>
+            <Button asChild variant="outline" size="icon" className="shrink-0 rounded-full" aria-label="My account" title="My account"><Link to="/account"><UserRound className="h-5 w-5"/></Link></Button>
           ) : null}
 
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
+            className="shrink-0 xl:hidden"
             onClick={() => setMobileMenuOpen((open) => !open)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
@@ -65,7 +65,7 @@ export function Header() {
       </div>
 
       {mobileMenuOpen && (
-        <div className="border-t bg-background px-4 py-4 lg:hidden">
+        <div className="max-h-[calc(100dvh-6rem)] overflow-y-auto border-t bg-background px-4 py-4 sm:px-6 xl:hidden">
           <nav className="flex flex-col gap-3">
             {navItems.map((item) => (
               <Link
@@ -86,7 +86,7 @@ export function Header() {
                 <Link to="/auth" search={{ mode: "signup" }} className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>Join Afromart</Link>
               </>
             )}
-            <Button asChild className="mt-1"><Link to="/home" onClick={() => setMobileMenuOpen(false)}>Download App</Link></Button>
+            <Button asChild className="mt-1"><Link to="/home" onClick={() => setMobileMenuOpen(false)}>Browse marketplace</Link></Button>
           </nav>
         </div>
       )}
