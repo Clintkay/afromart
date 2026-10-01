@@ -3,7 +3,7 @@ import { AuthPage } from "@/components/AuthPage";
 
 export const Route = createFileRoute("/auth")({
   component: AuthRoute,
-  validateSearch: (search: { redirect?: string; mode?: "signin" | "signup" }) => search,
+  validateSearch: (search: { redirect?: string; mode?: "signin" | "signup"; role?: "buyer" | "seller" }) => search,
   head: () => ({
     meta: [
       { title: "Sign In | Afromart" },

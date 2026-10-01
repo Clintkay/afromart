@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { StoreBadges } from "@/components/StoreBadges";
 import { SellerVerificationEntry } from "@/components/SellerVerificationEntry";
+import { useIsSeller } from "@/lib/use-is-seller";
 import communityImage from "@/assets/onboarding/afromart-community.png.asset.json";
 import storeImage from "@/assets/marketplace/store-banner.jpg.asset.json";
 import tailoringImage from "@/assets/marketplace/svc-tailoring.jpg.asset.json";
@@ -65,6 +66,7 @@ const steps = [
 const languages = ["English", "Français", "العربية", "Português", "Kiswahili", "Hausa", "Yorùbá", "isiZulu", "አማርኛ", "Igbo"];
 
 export function PublicHome() {
+  const isSeller = useIsSeller();
   return (
     <div className="bg-background text-foreground">
       <section className="brand-soft border-b">
@@ -75,7 +77,7 @@ export function PublicHome() {
             <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">Afromart connects people with African products, services, businesses and opportunities through one trusted mobile marketplace.</p>
             <div className="mt-7 flex flex-col gap-3 min-[420px]:flex-row">
               <Button asChild size="lg"><Link to="/home"><Smartphone className="h-4 w-4" />Download the App</Link></Button>
-              <Button asChild size="lg" variant="outline"><Link to="/business"><Store className="h-4 w-4" />Become a Seller</Link></Button>
+              <Button asChild size="lg" variant="outline">{isSeller ? <Link to="/seller"><Store className="h-4 w-4" />Seller Dashboard</Link> : <Link to="/business"><Store className="h-4 w-4" />Become a Seller</Link>}</Button>
             </div>
             <p className="mt-5 text-xs font-semibold text-muted-foreground">Discover locally · connect across borders · grow with confidence</p>
           </div>
@@ -110,7 +112,7 @@ export function PublicHome() {
               <span className="grid h-10 w-10 place-items-center rounded-md bg-primary/10 text-primary"><UserPlus className="h-5 w-5" /></span>
               <h3 className="mt-4 font-heading text-lg font-bold">1. Create your free account</h3>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">Sign up with your email or Google, confirm your code and you are in.</p>
-              <Button asChild className="mt-5 w-full"><Link to="/auth" search={{ redirect: "/seller" }}>Create account</Link></Button>
+              <Button asChild className="mt-5 w-full"><Link to="/auth" search={{ mode: "signup" }}>Create account</Link></Button>
             </article>
             <article className="rounded-lg border bg-card p-6">
               <span className="grid h-10 w-10 place-items-center rounded-md bg-primary/10 text-primary"><Store className="h-5 w-5" /></span>

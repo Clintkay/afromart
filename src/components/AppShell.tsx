@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { notificationsOptions } from "@/lib/queries";
 import { ensureWelcomeNotification } from "@/lib/notifications.functions";
+import { useIsSeller } from "@/lib/use-is-seller";
 
 const primaryNav = [
   { to: "/home" as const, label: "Home", icon: Home },
@@ -29,6 +30,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { t } = useLanguage();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { user } = useAuth();
+  const isSeller = useIsSeller();
   const { totalItems } = useCart();
   const ensureWelcome = useServerFn(ensureWelcomeNotification);
   const { data: notifications, refetch: refetchNotifications } = useQuery({ ...notificationsOptions, enabled: Boolean(user) });
@@ -98,10 +100,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="rounded-lg bg-primary p-4 text-primary-foreground">
-          <p className="text-xs font-semibold uppercase text-primary-foreground/70">Sell on Afromart</p>
-          <p className="mt-1 text-sm font-semibold">Grow your business across Africa.</p>
+          <p className="text-xs font-semibold uppercase text-primary-foreground/70">{isSeller ? "Seller workspace" : "Sell on Afromart"}</p>
+          <p className="mt-1 text-sm font-semibold">{isSeller ? "Manage your store, orders and payouts." : "Grow your business across Africa."}</p>
           <Button asChild variant="secondary" size="sm" className="mt-4 w-full">
-            <Link to="/sell/start"><Store className="h-4 w-4" />Start selling</Link>
+            {isSeller ? <Link to="/seller"><Store className="h-4 w-4" />Go to dashboard</Link> : <Link to="/sell/start"><Store className="h-4 w-4" />Start selling</Link>}
           </Button>
         </div>
       </aside>

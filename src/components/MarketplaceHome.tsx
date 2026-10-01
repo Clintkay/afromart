@@ -6,10 +6,12 @@ import { ProductCard } from "@/components/ProductCard";
 import { categoriesOptions, productsOptions } from "@/lib/queries";
 import { SafeImage } from "@/components/SafeImage";
 import { categoryImage } from "@/lib/category-images";
+import { useIsSeller } from "@/lib/use-is-seller";
 
 export function MarketplaceHome() {
   const { data: products } = useSuspenseQuery(productsOptions({}));
   const { data: categories } = useSuspenseQuery(categoriesOptions);
+  const isSeller = useIsSeller();
 
   return (
     <div className="mx-auto max-w-7xl px-3 py-4 sm:px-6 sm:py-6 lg:px-10 lg:py-8">
@@ -20,7 +22,7 @@ export function MarketplaceHome() {
           <p className="mt-3 max-w-xl text-sm leading-6 text-primary-foreground/75 sm:mt-4 sm:text-base">Shop independent African brands, book local services, and connect directly with trusted sellers.</p>
           <div className="mt-5 flex flex-col gap-3 min-[420px]:flex-row sm:mt-7">
             <Button asChild variant="secondary" size="lg"><Link to="/products">Explore marketplace <ArrowRight className="h-4 w-4" /></Link></Button>
-            <Button asChild size="lg" className="border border-primary-foreground/25 bg-primary-foreground/10 text-primary-foreground shadow-none hover:bg-primary-foreground/15"><Link to="/sell/start"><Store className="h-4 w-4" />Start selling</Link></Button>
+            <Button asChild size="lg" className="border border-primary-foreground/25 bg-primary-foreground/10 text-primary-foreground shadow-none hover:bg-primary-foreground/15">{isSeller ? <Link to="/seller"><Store className="h-4 w-4" />Seller dashboard</Link> : <Link to="/sell/start"><Store className="h-4 w-4" />Start selling</Link>}</Button>
           </div>
         </div>
         <div className="absolute -bottom-20 -right-12 h-72 w-72 rounded-full border-[44px] border-accent/20" aria-hidden="true" />
