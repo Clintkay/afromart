@@ -39,8 +39,10 @@ export function AuthPage() {
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [website, setWebsite] = useState("");
   const [resendSeconds, setResendSeconds] = useState(0);
+  const [accountType, setAccountType] = useState<"buyer" | "seller">(search.role === "seller" ? "seller" : "buyer");
   const navigate = useNavigate();
-  const redirect = typeof search.redirect === "string" && search.redirect.startsWith("/") ? search.redirect : "/home";
+  const baseRedirect = typeof search.redirect === "string" && search.redirect.startsWith("/") ? search.redirect : "/home";
+  const redirect = mode === "signup" ? (accountType === "seller" ? "/seller" : baseRedirect === "/seller" ? "/home" : baseRedirect) : baseRedirect;
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -80,7 +82,7 @@ export function AuthPage() {
           email: safeEmail,
           password: safePassword,
           options: {
-            data: { full_name: fullName.trim().slice(0, 100), phone: parsedPhone.number },
+            data: { full_name: fullName.trim().slice(0, 100), phone: parsedPhone.number, account_type: accountType },
             emailRedirectTo: `${window.location.origin}/auth?redirect=${encodeURIComponent(redirect)}`,
           },
         });
@@ -259,6 +261,23 @@ export function AuthPage() {
           </p>
 
           <form onSubmit={handleEmailSubmit} className="mt-5 space-y-3 sm:mt-8 sm:space-y-4">
+            {mode === "signup" ? (
+              <fieldset>
+                <legend className="text-sm font-medium">I'm joining as</legend>
+                <div className="mt-1.5 grid grid-cols-2 gap-2">
+                  {([
+                    { value: "buyer", title: "Buyer", body: "Shop and hire services" },
+                    { value: "seller", title: "Seller", body: "Open a store and sell" },
+                  ] as const).map((option) => (
+                    <button key={option.value} type="button" onClick={() => setAccountType(option.value)} aria-pressed={accountType === option.value}
+                      className={`rounded-lg border p-3 text-left transition-colors ${accountType === option.value ? "border-primary bg-primary/10" : "hover:bg-secondary"}`}>
+                      <span className="block text-sm font-bold">{option.title}</span>
+                      <span className="block text-xs text-muted-foreground">{option.body}</span>
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+            ) : null}
             {mode === "signup" ? (
               <div>
                 <Label htmlFor="full-name">{t("Full Name")}</Label>
