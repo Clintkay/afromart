@@ -41,11 +41,16 @@ export function Header() {
 
         <div className="flex items-center gap-1 sm:gap-2">
           <div className="hidden items-center gap-1 xl:flex"><Globe2 className="h-4 w-4 text-muted-foreground"/><LanguageSelector /></div>
-          <Button asChild variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label={user ? "Business account" : "Log in"}><Link to={user ? "/account" : "/auth"} {...(!user ? { search: { redirect: "/seller" } } : {})}><UserRound className="h-5 w-5"/></Link></Button>
           {!user ? (
-            <Button asChild size="sm" variant="outline" className="hidden md:inline-flex"><Link to="/auth" search={{ redirect: "/seller" }}>Join Afromart</Link></Button>
+            <>
+              <Button asChild size="sm" variant="ghost" className="hidden sm:inline-flex"><Link to="/auth">Log in</Link></Button>
+              <Button asChild size="sm" variant="outline" className="hidden md:inline-flex"><Link to="/auth" search={{ mode: "signup" }}>Join Afromart</Link></Button>
+            </>
           ) : null}
           <Button asChild size="sm" className="hidden sm:inline-flex"><Link to="/home">Browse marketplace</Link></Button>
+          {user ? (
+            <Button asChild variant="outline" size="icon" className="hidden rounded-full sm:inline-flex" aria-label="My account" title="My account"><Link to="/account"><UserRound className="h-5 w-5"/></Link></Button>
+          ) : null}
 
           <Button
             variant="ghost"
@@ -73,7 +78,14 @@ export function Header() {
               </Link>
             ))}
             <div className="mt-2 border-t pt-4"><LanguageSelector /></div>
-            <Link to={user ? "/account" : "/auth"} {...(!user ? { search: { redirect: "/seller" } } : {})} className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>{user ? "Business account" : "Log in"}</Link>
+            {user ? (
+              <Link to="/account" className="flex items-center gap-2 text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}><UserRound className="h-5 w-5" />My account</Link>
+            ) : (
+              <>
+                <Link to="/auth" className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>Log in</Link>
+                <Link to="/auth" search={{ mode: "signup" }} className="text-base font-medium text-foreground" onClick={() => setMobileMenuOpen(false)}>Join Afromart</Link>
+              </>
+            )}
             <Button asChild className="mt-1"><Link to="/home" onClick={() => setMobileMenuOpen(false)}>Download App</Link></Button>
           </nav>
         </div>
