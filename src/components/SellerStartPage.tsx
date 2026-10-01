@@ -20,7 +20,7 @@ export function SellerStartPage() {
   const { user } = useAuth();
   const startHref = user
     ? ({ to: "/seller" } as const)
-    : ({ to: "/auth", search: { redirect: "/seller" } } as const);
+    : ({ to: "/auth", search: { mode: "signup", role: "seller" } } as const);
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-background">
       <section className="brand-soft px-4 py-14 text-center sm:px-6">
