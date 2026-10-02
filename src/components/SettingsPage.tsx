@@ -10,7 +10,7 @@ import { addMyRole } from "@/lib/roles.functions";
 import { Switch } from "@/components/ui/switch";
 import { updateProfileSettings } from "@/lib/profile.functions";
 import { useTheme } from "@/lib/theme";
-import { useLanguage } from "@/lib/language";
+import { LANGUAGES as languages, useLanguage } from "@/lib/language";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -18,12 +18,6 @@ import { Input } from "@/components/ui/input";
 import { InternationalPhoneInput } from "@/components/InternationalPhoneInput";
 import { parsePhoneNumberFromString, type CountryCode } from "libphonenumber-js";
 
-const languages = [
-  { value: "en", label: "English" },
-  { value: "fr", label: "Français" },
-  { value: "pt", label: "Português" },
-  { value: "sw", label: "Kiswahili" },
-];
 
 export function SettingsPage() {
   const { data: profile } = useSuspenseQuery(profileOptions);
@@ -72,13 +66,12 @@ export function SettingsPage() {
   };
 
   const applyLanguage = async (next: string) => {
-    setLanguage(next);
     try {
       await save({ data: { preferredLanguage: next } });
-      await refresh();
     } catch {
       /* language is stored locally too */
     }
+    setLanguage(next);
   };
 
   const requestPhoneCode = async () => {
