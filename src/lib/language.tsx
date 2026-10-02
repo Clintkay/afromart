@@ -1,19 +1,87 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-const translations: Record<string, Record<string, string>> = {
- fr: { "Welcome Back":"Bon retour", "Create Account":"Créer un compte", "Full Name":"Nom complet", "Email Address":"Adresse e-mail", "Phone Number":"Numéro de téléphone", "Password":"Mot de passe", "Log In":"Se connecter", "Sign Up":"S’inscrire", "Sign up with Email":"S’inscrire par e-mail", "Log in with Google":"Se connecter avec Google", "Sign up with Google":"S’inscrire avec Google", "Forgot Password?":"Mot de passe oublié ?", "Home":"Accueil", "Categories":"Catégories", "Services":"Services", "Orders":"Commandes", "Cart":"Panier", "Profile":"Profil", "Support":"Assistance", "Search Afromart":"Rechercher sur Afromart", "My account":"Mon compte", "Sign in":"Se connecter", "Start selling":"Commencer à vendre", "Don't have an account?":"Vous n’avez pas de compte ?", "Already have an account?":"Vous avez déjà un compte ?", "Log in securely to continue.":"Connectez-vous en toute sécurité pour continuer.", "Join Afromart to shop, hire professionals and sell across Africa.":"Rejoignez Afromart pour acheter, engager des professionnels et vendre en Afrique." },
- pt: { "Welcome Back":"Bem-vindo de volta", "Create Account":"Criar conta", "Full Name":"Nome completo", "Email Address":"Endereço de e-mail", "Phone Number":"Número de telefone", "Password":"Senha", "Log In":"Entrar", "Sign Up":"Cadastrar-se", "Sign up with Email":"Cadastrar com e-mail", "Log in with Google":"Entrar com Google", "Sign up with Google":"Cadastrar com Google", "Forgot Password?":"Esqueceu a senha?", "Home":"Início", "Categories":"Categorias", "Services":"Serviços", "Orders":"Pedidos", "Cart":"Carrinho", "Profile":"Perfil", "Support":"Suporte", "Search Afromart":"Pesquisar no Afromart", "My account":"Minha conta", "Sign in":"Entrar", "Start selling":"Começar a vender", "Don't have an account?":"Não tem uma conta?", "Already have an account?":"Já tem uma conta?", "Log in securely to continue.":"Entre com segurança para continuar.", "Join Afromart to shop, hire professionals and sell across Africa.":"Junte-se ao Afromart para comprar, contratar profissionais e vender em África." },
- sw: { "Welcome Back":"Karibu tena", "Create Account":"Fungua akaunti", "Full Name":"Jina kamili", "Email Address":"Barua pepe", "Phone Number":"Nambari ya simu", "Password":"Nenosiri", "Log In":"Ingia", "Sign Up":"Jisajili", "Sign up with Email":"Jisajili kwa barua pepe", "Log in with Google":"Ingia kwa Google", "Sign up with Google":"Jisajili kwa Google", "Forgot Password?":"Umesahau nenosiri?", "Home":"Nyumbani", "Categories":"Makundi", "Services":"Huduma", "Orders":"Maagizo", "Cart":"Kikapu", "Profile":"Wasifu", "Support":"Msaada", "Search Afromart":"Tafuta Afromart", "My account":"Akaunti yangu", "Sign in":"Ingia", "Start selling":"Anza kuuza", "Don't have an account?":"Huna akaunti?", "Already have an account?":"Tayari una akaunti?", "Log in securely to continue.":"Ingia kwa usalama ili kuendelea.", "Join Afromart to shop, hire professionals and sell across Africa.":"Jiunge na Afromart kununua, kuajiri wataalamu na kuuza kote Afrika." },
-};
+
+/**
+ * Site-wide translation is handled by the Google Website Translator, which
+ * translates every page (public site, buyer and seller areas). The chosen
+ * language is stored in localStorage and the `googtrans` cookie so it
+ * persists across pages and visits.
+ */
+export const LANGUAGES = [
+  { value: "en", label: "English" },
+  { value: "fr", label: "Français" },
+  { value: "ar", label: "العربية" },
+  { value: "pt", label: "Português" },
+  { value: "sw", label: "Kiswahili" },
+  { value: "ha", label: "Hausa" },
+  { value: "yo", label: "Yorùbá" },
+  { value: "zu", label: "isiZulu" },
+  { value: "am", label: "አማርኛ" },
+  { value: "ig", label: "Igbo" },
+] as const;
+
+const STORAGE_KEY = "afromart-language";
 const LanguageContext = createContext({ language: "en", setLanguage: (_: string) => {}, t: (text: string) => text });
-export function LanguageProvider({ children }: { children: ReactNode }) {
- const [language, setLanguage] = useState("en");
- useEffect(() => { const saved = localStorage.getItem("afromart-language"); if (saved && (saved === "en" || translations[saved])) setLanguage(saved); }, []);
- const update = (value: string) => { setLanguage(value); localStorage.setItem("afromart-language", value); };
- useEffect(() => { document.documentElement.lang = language; }, [language]);
- return <LanguageContext.Provider value={{ language, setLanguage: update, t: (text) => translations[language]?.[text] ?? text }}>{children}</LanguageContext.Provider>;
+
+function writeCookie(lang: string) {
+  const host = window.location.hostname;
+  const value = lang === "en" ? "" : `/en/${lang}`;
+  const expires = lang === "en" ? "Thu, 01 Jan 1970 00:00:00 GMT" : "Fri, 31 Dec 2099 23:59:59 GMT";
+  for (const domain of ["", host, `.${host.split(".").slice(-2).join(".")}`]) {
+    document.cookie = `googtrans=${value}; expires=${expires}; path=/${domain ? `; domain=${domain}` : ""}`;
+  }
 }
+
+function loadTranslator() {
+  if (document.getElementById("google-translate-script")) return;
+  const holder = document.createElement("div");
+  holder.id = "google_translate_element";
+  holder.style.display = "none";
+  document.body.appendChild(holder);
+  (window as unknown as { googleTranslateElementInit: () => void }).googleTranslateElementInit = () => {
+    const g = (window as unknown as { google?: { translate?: { TranslateElement: new (o: object, id: string) => unknown } } }).google;
+    if (g?.translate) new g.translate.TranslateElement({ pageLanguage: "en", autoDisplay: false }, "google_translate_element");
+  };
+  const script = document.createElement("script");
+  script.id = "google-translate-script";
+  script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+  script.async = true;
+  document.body.appendChild(script);
+}
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [language, setLanguageState] = useState("en");
+
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved && LANGUAGES.some((l) => l.value === saved)) {
+      setLanguageState(saved);
+      writeCookie(saved);
+    }
+    loadTranslator();
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+  }, [language]);
+
+  const setLanguage = (value: string) => {
+    if (value === language) return;
+    localStorage.setItem(STORAGE_KEY, value);
+    writeCookie(value);
+    setLanguageState(value);
+    window.location.reload();
+  };
+
+  return <LanguageContext.Provider value={{ language, setLanguage, t: (text) => text }}>{children}</LanguageContext.Provider>;
+}
+
 export const useLanguage = () => useContext(LanguageContext);
+
 export function LanguageSelector() {
- const { language, setLanguage } = useLanguage();
- return <select aria-label="Language" value={language} onChange={(e) => setLanguage(e.target.value)} className="h-9 max-w-40 rounded-md border border-input bg-background px-2 text-sm text-foreground"><option value="en">English</option><option value="fr">Français</option><option value="ar">العربية</option><option value="pt">Português</option><option value="sw">Kiswahili</option><option value="ha">Hausa</option><option value="yo">Yorùbá</option><option value="zu">isiZulu</option><option value="am">አማርኛ</option><option value="ig">Igbo</option></select>;
+  const { language, setLanguage } = useLanguage();
+  return (
+    <select aria-label="Language" translate="no" value={language} onChange={(e) => setLanguage(e.target.value)} className="notranslate h-9 max-w-40 rounded-md border border-input bg-background px-2 text-sm text-foreground">
+      {LANGUAGES.map((l) => <option key={l.value} value={l.value}>{l.label}</option>)}
+    </select>
+  );
 }

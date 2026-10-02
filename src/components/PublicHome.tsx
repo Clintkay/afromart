@@ -10,6 +10,7 @@ import {
   Languages,
   MessageCircle,
   Search,
+  ShoppingBag,
   ShieldCheck,
   Smartphone,
   Star,
@@ -21,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { StoreBadges } from "@/components/StoreBadges";
 import { SellerVerificationEntry } from "@/components/SellerVerificationEntry";
 import { useIsSeller } from "@/lib/use-is-seller";
+import { useAuth } from "@/lib/auth-context";
 import communityImage from "@/assets/onboarding/afromart-community.png.asset.json";
 import storeImage from "@/assets/marketplace/store-banner.jpg.asset.json";
 import tailoringImage from "@/assets/marketplace/svc-tailoring.jpg.asset.json";
@@ -67,6 +69,7 @@ const languages = ["English", "Français", "العربية", "Português", "Kisw
 
 export function PublicHome() {
   const isSeller = useIsSeller();
+  const { user } = useAuth();
   return (
     <div className="bg-background text-foreground">
       <section className="brand-soft border-b">
@@ -76,7 +79,7 @@ export function PublicHome() {
             <h1 className="mt-4 max-w-xl font-heading text-4xl font-bold leading-[1.05] text-primary sm:text-6xl">Everything Africa.<br />One Marketplace.</h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground sm:text-lg">Afromart connects people with African products, services, businesses and opportunities through one trusted mobile marketplace.</p>
             <div className="mt-7 flex flex-col gap-3 min-[420px]:flex-row">
-              <Button asChild size="lg"><Link to="/home"><Smartphone className="h-4 w-4" />Download the App</Link></Button>
+              <Button asChild size="lg">{user ? <Link to="/home"><ShoppingBag className="h-4 w-4" />Shop Now</Link> : <Link to="/auth" search={{ mode: "signup" }}><UserPlus className="h-4 w-4" />Sign Up Free</Link>}</Button>
               <Button asChild size="lg" variant="outline">{isSeller ? <Link to="/seller"><Store className="h-4 w-4" />Seller Dashboard</Link> : <Link to="/business"><Store className="h-4 w-4" />Become a Seller</Link>}</Button>
             </div>
             <p className="mt-5 text-xs font-semibold text-muted-foreground">Discover locally · connect across borders · grow with confidence</p>

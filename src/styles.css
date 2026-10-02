@@ -225,3 +225,8 @@
   background-size: 120px 120px;
 }
 
+
+/* Hide Google Website Translator chrome; translation still applies. */
+.goog-te-banner-frame, .skiptranslate iframe, #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+body { top: 0 !important; }
+.goog-text-highlight { background: none !important; box-shadow: none !important; }
