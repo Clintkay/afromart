@@ -148,7 +148,7 @@ export function PublicHome() {
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
           <p className="text-xs font-bold uppercase text-accent">Services marketplace</p>
-          <div className="mt-2 grid items-end gap-4 sm:grid-cols-[minmax(0,1fr)_auto]"><div><h2 className="font-heading text-3xl font-bold sm:text-4xl">Find skilled services, close to you.</h2><p className="mt-3 max-w-2xl text-primary-foreground/75">Discover local professionals and continue the conversation inside Afromart.</p></div><Button asChild variant="secondary"><Link to="/services">Explore Services <ArrowRight className="h-4 w-4" /></Link></Button></div>
+          <div className="mt-2 grid items-end gap-4 sm:grid-cols-[minmax(0,1fr)_auto]"><div><h2 className="font-heading text-3xl font-bold sm:text-4xl">Find skilled services, close to you.</h2><p className="mt-3 max-w-2xl text-primary-foreground/75">Discover local professionals and continue the conversation inside Afromart.</p></div><Button asChild variant="secondary"><Link to="/hire">Explore Services <ArrowRight className="h-4 w-4" /></Link></Button></div>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((service) => <article key={service.title} className="overflow-hidden rounded-md bg-card text-card-foreground"><img src={service.image} alt={`${service.title} service in Africa`} className="aspect-[1.45/1] w-full object-cover" /><div className="p-4"><h3 className="font-heading font-bold">{service.title}</h3><p className="mt-1 text-sm text-muted-foreground">{service.body}</p></div></article>)}
           </div>

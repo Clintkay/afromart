@@ -73,7 +73,7 @@ export function ServicesPage() {
 
   const contactProvider = async (service: ServiceListing) => {
     if (!user) {
-      navigate({ to: "/auth", search: { redirect: "/services" } });
+      navigate({ to: "/auth", search: { redirect: "/hire" } });
       return;
     }
     setChatting(service.id);
@@ -193,7 +193,7 @@ export function ServicesPage() {
                         {user ? (
                           <Button size="sm" onClick={() => setSelected(service)}>Continue</Button>
                         ) : (
-                          <Button asChild size="sm"><Link to="/auth" search={{ redirect: "/services" }}>Continue</Link></Button>
+                          <Button asChild size="sm"><Link to="/auth" search={{ redirect: "/hire" }}>Continue</Link></Button>
                         )}
                       </div>
                     </div>
