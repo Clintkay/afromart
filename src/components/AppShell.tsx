@@ -19,7 +19,7 @@ import { useIsSeller } from "@/lib/use-is-seller";
 const primaryNav = [
   { to: "/home" as const, label: "Home", icon: Home },
   { to: "/categories" as const, label: "Categories", icon: Grid2X2 },
-  { to: "/services" as const, label: "Services", icon: Wrench },
+  { to: "/hire" as const, label: "Services", icon: Wrench },
   { to: "/messages" as const, label: "Messages", icon: MessageCircle },
   { to: "/account" as const, label: "Orders", icon: Package },
   { to: "/seller" as const, label: "Sell", icon: Store },
@@ -143,7 +143,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           { to: "/home" as const, label: "Home", icon: Home },
           { to: "/categories" as const, label: "Categories", icon: Grid2X2 },
           { to: "/cart" as const, label: "Cart", icon: ShoppingBag, badge: totalItems },
-          { to: "/services" as const, label: "Services", icon: Wrench },
+          { to: "/hire" as const, label: "Services", icon: Wrench },
           { to: accountTarget, label: "Profile", icon: UserRound },
         ].map((item) => {
           const active = pathname.startsWith(item.to);

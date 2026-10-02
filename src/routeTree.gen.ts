@@ -19,6 +19,7 @@ import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ComingSoonRouteImport } from './routes/coming-soon'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as GuestRouteImport } from './routes/guest'
+import { Route as HireRouteImport } from './routes/hire'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -98,6 +99,11 @@ const DownloadRoute = DownloadRouteImport.update({
 const GuestRoute = GuestRouteImport.update({
   id: '/guest',
   path: '/guest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HireRoute = HireRouteImport.update({
+  id: '/hire',
+  path: '/hire',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeRoute = HomeRouteImport.update({
@@ -274,6 +280,7 @@ export interface FileRoutesByFullPath {
   '/coming-soon': typeof ComingSoonRoute
   '/download': typeof DownloadRoute
   '/guest': typeof GuestRoute
+  '/hire': typeof HireRoute
   '/home': typeof HomeRoute
   '/how-it-works': typeof HowItWorksRoute
   '/onboarding': typeof OnboardingRoute
@@ -316,6 +323,7 @@ export interface FileRoutesByTo {
   '/coming-soon': typeof ComingSoonRoute
   '/download': typeof DownloadRoute
   '/guest': typeof GuestRoute
+  '/hire': typeof HireRoute
   '/home': typeof HomeRoute
   '/how-it-works': typeof HowItWorksRoute
   '/onboarding': typeof OnboardingRoute
@@ -356,6 +364,7 @@ export interface FileRoutesById {
   '/coming-soon': typeof ComingSoonRoute
   '/download': typeof DownloadRoute
   '/guest': typeof GuestRoute
+  '/hire': typeof HireRoute
   '/home': typeof HomeRoute
   '/how-it-works': typeof HowItWorksRoute
   '/onboarding': typeof OnboardingRoute
@@ -400,6 +409,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/download'
     | '/guest'
+    | '/hire'
     | '/home'
     | '/how-it-works'
     | '/onboarding'
@@ -442,6 +452,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/download'
     | '/guest'
+    | '/hire'
     | '/home'
     | '/how-it-works'
     | '/onboarding'
@@ -481,6 +492,7 @@ export interface FileRouteTypes {
     | '/coming-soon'
     | '/download'
     | '/guest'
+    | '/hire'
     | '/home'
     | '/how-it-works'
     | '/onboarding'
@@ -525,6 +537,7 @@ export interface RootRouteChildren {
   ComingSoonRoute: typeof ComingSoonRoute
   DownloadRoute: typeof DownloadRoute
   GuestRoute: typeof GuestRoute
+  HireRoute: typeof HireRoute
   HomeRoute: typeof HomeRoute
   HowItWorksRoute: typeof HowItWorksRoute
   OnboardingRoute: typeof OnboardingRoute
@@ -612,6 +625,13 @@ declare module '@tanstack/react-router' {
       path: '/guest'
       fullPath: '/guest'
       preLoaderRoute: typeof GuestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hire': {
+      id: '/hire'
+      path: '/hire'
+      fullPath: '/hire'
+      preLoaderRoute: typeof HireRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home': {
@@ -929,6 +949,7 @@ const rootRouteChildren: RootRouteChildren = {
   ComingSoonRoute: ComingSoonRoute,
   DownloadRoute: DownloadRoute,
   GuestRoute: GuestRoute,
+  HireRoute: HireRoute,
   HomeRoute: HomeRoute,
   HowItWorksRoute: HowItWorksRoute,
   OnboardingRoute: OnboardingRoute,
