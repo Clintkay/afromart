@@ -10,7 +10,6 @@ import {
   MessageCircle,
   Package,
   Settings,
-  Bell,
   Store,
   BadgeCheck,
 } from "lucide-react";
@@ -22,7 +21,6 @@ import { Badge } from "@/components/ui/badge";
 const quickLinks = [
   { to: "/products", label: "Keep shopping", icon: Package },
   { to: "/messages", label: "Messages", icon: MessageCircle },
-  { to: "/notifications", label: "Inbox", icon: Bell },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 

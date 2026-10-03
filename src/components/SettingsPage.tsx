@@ -226,8 +226,8 @@ export function SettingsPage() {
 
       <section className="mt-5 rounded-xl border bg-card p-5">
         <h2 className="flex items-center gap-2 font-heading text-lg font-bold"><Bell className="h-5 w-5 text-primary" />Messages from the app</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Order updates, support replies and account alerts arrive in your inbox.</p>
-        <Button variant="outline" className="mt-4" onClick={() => navigate({ to: "/notifications" })}>Open inbox</Button>
+        <p className="mt-1 text-sm text-muted-foreground">Order updates, support replies and account alerts.</p>
+        <Button variant="outline" className="mt-4" onClick={() => navigate({ to: "/messages", search: { tab: "system" } })}>Open messages</Button>
       </section>
 
       <section className="mt-5 rounded-xl border bg-card p-5">

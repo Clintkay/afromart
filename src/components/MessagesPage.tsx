@@ -1,21 +1,28 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { BadgeCheck, MessageCircle, RefreshCw } from "lucide-react";
-import { conversationsOptions } from "@/lib/queries";
+import { conversationsOptions, notificationsOptions } from "@/lib/queries";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { NotificationsPage } from "@/components/NotificationsPage";
 
 export function MessagesPage() {
   const { data: conversations } = useSuspenseQuery(conversationsOptions);
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [refreshing, setRefreshing] = useState(false);
+  const { tab } = useSearch({ from: "/_authenticated/messages/" });
+  const navigate = useNavigate();
 
   const refresh = async () => {
     setRefreshing(true);
     try {
-      await queryClient.invalidateQueries({ queryKey: conversationsOptions.queryKey });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: conversationsOptions.queryKey }),
+        queryClient.invalidateQueries({ queryKey: notificationsOptions.queryKey }),
+      ]);
     } finally {
       setRefreshing(false);
     }
@@ -26,14 +33,19 @@ export function MessagesPage() {
       <header className="flex items-start justify-between gap-3">
         <div>
         <p className="text-xs font-bold uppercase text-primary">Messages</p>
-        <h1 className="mt-2 font-heading text-3xl font-bold">Your chats</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Ask about stock, delivery times or custom orders before you buy.</p>
+        <h1 className="mt-2 font-heading text-3xl font-bold">Your messages</h1>
         </div>
         <Button variant="outline" size="sm" className="mt-1 shrink-0 gap-2" onClick={refresh} disabled={refreshing}>
           <RefreshCw className={`h-4 w-4 ${refreshing ? "animate-spin" : ""}`} />Refresh
         </Button>
       </header>
 
+      <Tabs value={tab} onValueChange={(value) => void navigate({ to: "/messages", search: { tab: value === "system" ? "system" : "chats" } })} className="mt-6">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="chats">Chats</TabsTrigger>
+          <TabsTrigger value="system">System messages</TabsTrigger>
+        </TabsList>
+        <TabsContent value="chats">
       {conversations.length === 0 ? (
         <div className="mt-8 rounded-xl border bg-card p-8 text-center">
           <MessageCircle className="mx-auto h-8 w-8 text-muted-foreground" />
@@ -77,6 +89,9 @@ export function MessagesPage() {
           })}
         </ul>
       )}
+        </TabsContent>
+        <TabsContent value="system"><NotificationsPage embedded /></TabsContent>
+      </Tabs>
     </div>
   );
 }

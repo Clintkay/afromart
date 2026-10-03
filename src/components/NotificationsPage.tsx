@@ -12,7 +12,7 @@ const icons: Record<string, typeof Bell> = {
   security: ShieldCheck,
 };
 
-export function NotificationsPage() {
+export function NotificationsPage({ embedded = false }: { embedded?: boolean }) {
   const { data: notifications } = useSuspenseQuery(notificationsOptions);
   const queryClient = useQueryClient();
   const ensureWelcome = useServerFn(ensureWelcomeNotification);
@@ -26,6 +26,7 @@ export function NotificationsPage() {
         await markRead({});
         if (cancelled) return;
         if (result?.created) await queryClient.invalidateQueries({ queryKey: notificationsOptions.queryKey });
+        else queryClient.setQueryData(notificationsOptions.queryKey, (items) => items?.map((item) => ({ ...item, is_read: true })));
       } catch {
         /* notifications are non-critical */
       }
@@ -36,12 +37,12 @@ export function NotificationsPage() {
   }, [ensureWelcome, markRead, queryClient]);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-7 sm:px-6 sm:py-10">
-      <header>
+    <div className={embedded ? "py-2" : "mx-auto max-w-3xl px-4 py-7 sm:px-6 sm:py-10"}>
+      {!embedded ? <header>
         <p className="text-xs font-bold uppercase text-primary">Inbox</p>
         <h1 className="mt-2 font-heading text-3xl font-bold">Messages from Afromart</h1>
         <p className="mt-2 text-sm text-muted-foreground">Order updates, support replies and account alerts.</p>
-      </header>
+      </header> : null}
 
       {notifications.length === 0 ? (
         <div className="mt-8 rounded-xl border bg-card p-8 text-center">
