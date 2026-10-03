@@ -175,3 +175,8 @@
 - [x] Keep the bottom-navigation section active on related pages.
 - [x] Add Messages to bottom navigation and consolidate system messages into its tabs.
 - [x] Verify mobile and desktop navigation and Messages tabs.
+
+## Account-specific carts — October 3
+- [x] Persist each signed-in cart to its account with ownership protection.
+- [x] Separate guest storage and clear visible items immediately on account changes.
+- [x] Verified real authenticated save/reload, stored owner, rejected alternate owner, and sign-out/sign-in separation; guest cart has no account items.
