@@ -4,7 +4,7 @@ import { conversationsOptions, notificationsOptions } from "@/lib/queries";
 
 export const Route = createFileRoute("/_authenticated/messages/")({
   component: MessagesRoute,
-  validateSearch: (search: Record<string, unknown>): { tab: "chats" | "system" } => ({ tab: search.tab === "system" ? "system" : "chats" }),
+  validateSearch: (search: Record<string, unknown>): { tab?: "chats" | "system" } => ({ tab: search["tab"] === "system" ? "system" : "chats" }),
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.ensureQueryData(conversationsOptions),
