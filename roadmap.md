@@ -172,6 +172,6 @@
 - [ ] Stripe kept as legacy code path (unused in UI)
 
 ## Navigation and communication — October 3
-- [ ] Keep the bottom-navigation section active on related pages.
-- [ ] Add Messages to bottom navigation and consolidate system messages into its tabs.
-- [ ] Verify mobile and desktop navigation and Messages tabs.
+- [x] Keep the bottom-navigation section active on related pages.
+- [x] Add Messages to bottom navigation and consolidate system messages into its tabs.
+- [x] Verify mobile and desktop navigation and Messages tabs.
