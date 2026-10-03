@@ -40,7 +40,7 @@ export function MessagesPage() {
         </Button>
       </header>
 
-      <Tabs value={tab} onValueChange={(value) => void navigate({ to: "/messages", search: { tab: value === "system" ? "system" : "chats" } })} className="mt-6">
+      <Tabs value={tab ?? "chats"} onValueChange={(value) => void navigate({ to: "/messages", search: { tab: value === "system" ? "system" : "chats" } })} className="mt-6">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="chats">Chats</TabsTrigger>
           <TabsTrigger value="system">System messages</TabsTrigger>
