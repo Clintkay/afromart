@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Messages owns seller-chat and system-notification tabs; legacy notification URLs redirect there to keep communication unified.
+- AppShell maps related marketplace pages to stable navigation sections so detail pages retain an active destination.

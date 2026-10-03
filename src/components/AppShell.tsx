@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Bell, Grid2X2, Headphones, Home, MessageCircle, Package, Settings, ShoppingBag, Store, UserRound, Wrench } from "lucide-react";
+import { Grid2X2, Headphones, Home, MessageCircle, Package, Settings, ShoppingBag, Store, UserRound, Wrench } from "lucide-react";
 import { LanguageSelector, useLanguage } from "@/lib/language";
 import { SearchBar } from "@/components/SearchBar";
 import { Logo } from "@/components/Logo";
@@ -55,6 +55,17 @@ export function AppShell({ children }: { children: ReactNode }) {
   const publicWebsitePaths = ["/", "/about", "/services", "/business", "/how-it-works", "/support", "/download"];
   const isPublicWebsite = publicWebsitePaths.includes(pathname) || pathname.startsWith("/stores/") || pathname.startsWith("/sell/");
   const accountTarget = user ? "/account" : "/auth";
+  const mobileSection = pathname.startsWith("/messages") || pathname.startsWith("/support-chat") || pathname === "/notifications"
+    ? "/messages"
+    : pathname.startsWith("/categories") ? "/categories"
+    : pathname === "/cart" || pathname === "/checkout" ? "/cart"
+    : pathname.startsWith("/hire") ? "/hire"
+    : ["/account", "/settings", "/seller", "/orders"].some((path) => pathname === path || pathname.startsWith(`${path}/`)) ? accountTarget
+    : "/home";
+  const desktopSection = pathname.startsWith("/products") || pathname === "/guest" ? "/home"
+    : pathname.startsWith("/support-chat") || pathname === "/notifications" ? "/messages"
+    : pathname.startsWith("/orders/") ? "/account"
+    : pathname === "/checkout" ? "/cart" : pathname;
 
   if (isAuth) return <>{children}</>;
   if (isPublicWebsite) return <div className="min-h-screen bg-background text-foreground"><Header /><main>{children}</main><Footer /></div>;
@@ -69,11 +80,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="mt-5"><LanguageSelector /></div>
         <nav className="mt-10 flex flex-1 flex-col gap-2" aria-label="Main navigation">
           {primaryNav.map((item) => {
-            const active = pathname.startsWith(item.to);
+            const active = desktopSection === item.to || desktopSection.startsWith(`${item.to}/`);
             return (
               <Link
                 key={t(item.label)}
                 to={item.to}
+                aria-current={active ? "page" : undefined}
                 className={`flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
               >
                 <item.icon className="h-5 w-5" />
@@ -83,7 +95,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           })}
           <Link
             to="/cart"
-            className={`flex items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${pathname === "/cart" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
+            aria-current={desktopSection === "/cart" ? "page" : undefined}
+            className={`flex items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${desktopSection === "/cart" ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}
           >
             <span className="flex items-center gap-3"><ShoppingBag className="h-5 w-5" />Cart</span>
             {totalItems > 0 ? <span className="grid h-5 min-w-5 place-items-center rounded-full bg-accent px-1 text-[11px] font-bold text-accent-foreground">{totalItems}</span> : null}
@@ -117,10 +130,10 @@ export function AppShell({ children }: { children: ReactNode }) {
               <Button asChild variant="ghost" size="icon" aria-label="Support">
                 <Link to="/support"><Headphones className="h-5 w-5" /></Link>
               </Button>
-              <Button asChild variant="ghost" size="icon" aria-label="Notifications">
+              <Button asChild variant="ghost" size="icon" aria-label="Messages">
                 {user ? (
-              <Link to="/notifications" aria-label="Inbox" className="relative">
-                <Bell className="h-5 w-5" />
+              <Link to="/messages" search={{ tab: "system" }} aria-label="Messages" className="relative">
+                <MessageCircle className="h-5 w-5" />
                 {unread > 0 ? (
                   <span className="absolute -right-1.5 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-accent-foreground">
                     {unread > 9 ? "9+" : unread}
@@ -128,7 +141,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 ) : null}
               </Link>
             ) : (
-              <Link to="/auth" search={{ redirect: "/notifications" }} aria-label="Inbox"><Bell className="h-5 w-5" /></Link>
+              <Link to="/auth" search={{ redirect: "/messages" }} aria-label="Messages"><MessageCircle className="h-5 w-5" /></Link>
             )}
               </Button>
             </div>
@@ -138,22 +151,23 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main className="min-h-[calc(100vh-4rem)] pb-24 md:min-h-[calc(100vh-5rem)] md:pb-0">{children}</main>
       </div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-50 grid min-h-16 grid-cols-5 border-t bg-card/95 px-1 pb-[max(.35rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-md md:hidden" aria-label="Mobile navigation">
+      <nav className="fixed inset-x-0 bottom-0 z-50 grid min-h-16 grid-cols-6 border-t bg-card/95 px-1 pb-[max(.35rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-md md:hidden" aria-label="Mobile navigation">
         {[
           { to: "/home" as const, label: "Home", icon: Home },
           { to: "/categories" as const, label: "Categories", icon: Grid2X2 },
           { to: "/cart" as const, label: "Cart", icon: ShoppingBag, badge: totalItems },
           { to: "/hire" as const, label: "Services", icon: Wrench },
+          { to: "/messages" as const, label: "Messages", icon: MessageCircle, badge: unread },
           { to: accountTarget, label: "Profile", icon: UserRound },
         ].map((item) => {
-          const active = pathname.startsWith(item.to);
+          const active = mobileSection === item.to;
           return (
             item.to === "/auth" ? (
-              <Link key={t(item.label)} to="/auth" search={{ redirect: "/account" }} className={`flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>
+              <Link key={t(item.label)} to="/auth" search={{ redirect: "/account" }} aria-current={active ? "page" : undefined} className={`flex min-w-0 flex-col items-center gap-1 rounded-md py-1 text-[10px] font-semibold ${active ? "bg-primary/10 text-primary" : "text-muted-foreground"}`}>
                 <span className="relative"><item.icon className="h-5 w-5" /></span><span className="truncate">{t(item.label)}</span>
               </Link>
             ) : (
-              <Link key={t(item.label)} to={item.to} className={`flex min-w-0 flex-col items-center gap-1 text-[10px] font-semibold ${active ? "text-primary" : "text-muted-foreground"}`}>
+              <Link key={t(item.label)} to={item.to} aria-current={active ? "page" : undefined} className={`flex min-w-0 flex-col items-center gap-1 rounded-md py-1 text-[10px] font-semibold ${active ? "bg-primary/10 text-primary" : "text-muted-foreground"}`}>
                 <span className="relative"><item.icon className="h-5 w-5" />{"badge" in item && item.badge ? <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[9px] text-accent-foreground">{item.badge}</span> : null}</span>
                 <span className="truncate">{t(item.label)}</span>
               </Link>

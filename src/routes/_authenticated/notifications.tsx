@@ -1,12 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { NotificationsPage } from "@/components/NotificationsPage";
-import { notificationsOptions } from "@/lib/queries";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/notifications")({
-  component: NotificationsRoute,
-  loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(notificationsOptions);
-  },
+  beforeLoad: () => { throw redirect({ to: "/messages", search: { tab: "system" }, replace: true }); },
   head: () => ({
     meta: [
       { title: "Notifications | Afromart" },
@@ -19,6 +14,3 @@ export const Route = createFileRoute("/_authenticated/notifications")({
   }),
 });
 
-function NotificationsRoute() {
-  return <NotificationsPage />;
-}

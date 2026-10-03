@@ -170,3 +170,8 @@
 - [x] Checkout + order page pay online via Paystack; manual bank transfer kept
 - [ ] User: add webhook URL https://afromart.lovable.app/api/public/webhooks/paystack in Paystack dashboard
 - [ ] Stripe kept as legacy code path (unused in UI)
+
+## Navigation and communication — October 3
+- [x] Keep the bottom-navigation section active on related pages.
+- [x] Add Messages to bottom navigation and consolidate system messages into its tabs.
+- [x] Verify mobile and desktop navigation and Messages tabs.
