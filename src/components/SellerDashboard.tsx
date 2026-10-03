@@ -54,13 +54,14 @@ export function SellerDashboard() {
     businessName: store?.business_name ?? "",
     description: store?.description ?? "",
     city: store?.city ?? "",
+    state: store?.state ?? "",
     country: store?.country ?? "Nigeria",
     responseTime: store?.response_time ?? "within 2 hours",
   });
   const [productForm, setProductForm] = useState({ name: "", description: "", price: "", inventory: "", imageUrl: "" });
   useEffect(() => {
     if (!store) return;
-    setStoreForm({ name: store.name, businessName: store.business_name ?? "", description: store.description ?? "", city: store.city ?? "", country: store.country ?? "Nigeria", responseTime: store.response_time ?? "within 2 hours" });
+    setStoreForm({ name: store.name, businessName: store.business_name ?? "", description: store.description ?? "", city: store.city ?? "", state: store.state ?? "", country: store.country ?? "Nigeria", responseTime: store.response_time ?? "within 2 hours" });
   }, [store]);
 
   const submitStore = async (event: React.FormEvent) => {
@@ -73,6 +74,7 @@ export function SellerDashboard() {
           businessName: storeForm.businessName.trim() || undefined,
           description: storeForm.description.trim() || undefined,
           city: storeForm.city.trim() || undefined,
+          state: storeForm.state.trim(),
           country: storeForm.country.trim() || undefined,
           responseTime: storeForm.responseTime.trim() || undefined,
         },
@@ -170,7 +172,7 @@ export function SellerDashboard() {
       {store ? (
             <p className="mt-2 flex items-center gap-1.5 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4" />
-              {[store.city, store.country].filter(Boolean).join(", ") || "Location not set"}
+              {[store.city, store.state, store.country].filter(Boolean).join(", ") || "Location not set"}
             </p>
           ) : (
             <p className="mt-2 text-sm text-muted-foreground">Add your business details to open your Afromart storefront.</p>
@@ -212,11 +214,15 @@ export function SellerDashboard() {
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
                 <label htmlFor="store-city" className="text-sm font-semibold">City</label>
-                <Input id="store-city" value={storeForm.city} onChange={(event) => setStoreForm({ ...storeForm, city: event.target.value })} className="mt-1.5" placeholder="Lagos" />
+                <Input id="store-city" required maxLength={80} autoComplete="address-level2" value={storeForm.city} onChange={(event) => setStoreForm({ ...storeForm, city: event.target.value })} className="mt-1.5" placeholder="Ikeja" />
+              </div>
+              <div>
+                <label htmlFor="store-state" className="text-sm font-semibold">State / Province / Region</label>
+                <Input id="store-state" required maxLength={80} autoComplete="address-level1" value={storeForm.state} onChange={(event) => setStoreForm({ ...storeForm, state: event.target.value })} className="mt-1.5" placeholder="Lagos State" />
               </div>
               <div>
                 <label htmlFor="store-country" className="text-sm font-semibold">Country</label>
-                <Input id="store-country" value={storeForm.country} onChange={(event) => setStoreForm({ ...storeForm, country: event.target.value })} className="mt-1.5" placeholder="Nigeria" />
+                <Input id="store-country" required maxLength={80} autoComplete="country-name" value={storeForm.country} onChange={(event) => setStoreForm({ ...storeForm, country: event.target.value })} className="mt-1.5" placeholder="Nigeria" />
               </div>
             </div>
             <div>

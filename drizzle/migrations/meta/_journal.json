@@ -183,6 +183,13 @@
       "when": 1791036239558,
       "tag": "0025_account_specific_carts",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1791036448073,
+      "tag": "0026_seller_store_state",
+      "breakpoints": true
     }
   ]
 }

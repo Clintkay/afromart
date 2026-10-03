@@ -33,6 +33,7 @@ export const saveMyStore = createServerFn({ method: "POST" })
       businessName?: string | undefined;
       description?: string | undefined;
       city?: string | undefined;
+      state?: string | undefined;
       country?: string | undefined;
       responseTime?: string | undefined;
       logoUrl?: string | undefined;
@@ -44,6 +45,7 @@ export const saveMyStore = createServerFn({ method: "POST" })
           businessName: z.string().trim().max(120).optional(),
           description: z.string().trim().max(1000).optional(),
           city: z.string().trim().max(80).optional(),
+          state: z.string().trim().max(80).optional(),
           country: z.string().trim().max(80).optional(),
           responseTime: z.string().trim().max(60).optional(),
           logoUrl: z.string().trim().url().max(500).optional(),
@@ -57,6 +59,7 @@ export const saveMyStore = createServerFn({ method: "POST" })
       business_name: data.businessName ?? null,
       description: data.description ?? null,
       city: data.city ?? null,
+      ...(data.state !== undefined ? { state: data.state } : {}),
       country: data.country ?? "Nigeria",
       response_time: data.responseTime ?? null,
       logo_url: data.logoUrl ?? null,
