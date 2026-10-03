@@ -971,6 +971,7 @@ export type Database = {
           rating: number | null
           response_time: string | null
           slug: string
+          state: string | null
           total_sales: number | null
           updated_at: string | null
         }
@@ -989,6 +990,7 @@ export type Database = {
           rating?: number | null
           response_time?: string | null
           slug: string
+          state?: string | null
           total_sales?: number | null
           updated_at?: string | null
         }
@@ -1007,6 +1009,7 @@ export type Database = {
           rating?: number | null
           response_time?: string | null
           slug?: string
+          state?: string | null
           total_sales?: number | null
           updated_at?: string | null
         }
