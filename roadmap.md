@@ -177,6 +177,6 @@
 - [x] Verify mobile and desktop navigation and Messages tabs.
 
 ## Account-specific carts — October 3
-- [ ] Persist each signed-in cart to its account with ownership protection.
-- [ ] Separate guest storage and clear visible items immediately on account changes.
-- [ ] Verify persistence, account switching, and ownership protection.
+- [x] Persist each signed-in cart to its account with ownership protection.
+- [x] Separate guest storage and clear visible items immediately on account changes.
+- [x] Verified real authenticated save/reload, stored owner, rejected alternate owner, and sign-out/sign-in separation; guest cart has no account items.
