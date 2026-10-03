@@ -12,3 +12,4 @@
 - Messages owns seller-chat and system-notification tabs; legacy notification URLs redirect there to keep communication unified.
 - AppShell maps related marketplace pages to stable navigation sections so detail pages retain an active destination.
 - Signed-in carts persist through authenticated server functions with RLS ownership; remount cart state per identity and keep guest storage separate to prevent cross-account leakage.
+- Store location fields persist through the owner-scoped store save function; additive nullable columns keep existing sellers compatible while onboarding collects complete locations.
